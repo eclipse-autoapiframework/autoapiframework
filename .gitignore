@@ -1,0 +1,6 @@
+.tmp/
+*.bkp
+.cache
+build
+public
+**/__pycache__/

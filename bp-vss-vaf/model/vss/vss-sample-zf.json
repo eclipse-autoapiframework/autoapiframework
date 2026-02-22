@@ -1,0 +1,175 @@
+{
+    "Vehicle": {
+        "type": "branch",
+        "children": {
+            "Acceleration": {
+                "type": "branch",
+                "children": {
+                    "Longitudinal": {
+                        "type": "sensor",
+                        "datatype": "float",
+                        "unit": "m/s^2",
+                        "description": "Vehicle acceleration in X (longitudinal acceleration)."
+                    }
+                }
+            },
+            "Chassis": {
+                "type": "branch",
+                "children": {
+                    "Axle": {
+                        "type": "branch",
+                        "children": {
+                            "Row1": {
+                                "type": "branch",
+                                "children": {
+                                    "Wheel": {
+                                        "type": "branch",
+                                        "children": {
+                                            "Left": {
+                                                "type": "branch",
+                                                "children": {
+                                                    "Speed": {
+                                                        "type": "sensor",
+                                                        "datatype": "float",
+                                                        "unit": "km/h",
+                                                        "description": "Rotational speed of a vehicle's wheel."
+                                                    }
+                                                }
+                                            },
+                                            "Right": {
+                                                "type": "branch",
+                                                "children": {
+                                                    "Speed": {
+                                                        "type": "sensor",
+                                                        "datatype": "float",
+                                                        "unit": "km/h",
+                                                        "description": "Rotational speed of a vehicle's wheel."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "Row2": {
+                                "type": "branch",
+                                "children": {
+                                    "Wheel": {
+                                        "type": "branch",
+                                        "children": {
+                                            "Left": {
+                                                "type": "branch",
+                                                "children": {
+                                                    "Speed": {
+                                                        "type": "sensor",
+                                                        "datatype": "float",
+                                                        "unit": "km/h",
+                                                        "description": "Rotational speed of a vehicle's wheel."
+                                                    }
+                                                }
+                                            },
+                                            "Right": {
+                                                "type": "branch",
+                                                "children": {
+                                                    "Speed": {
+                                                        "type": "sensor",
+                                                        "datatype": "float",
+                                                        "unit": "km/h",
+                                                        "description": "Rotational speed of a vehicle's wheel."
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "SpeedHazardForward": {
+                        "type": "attribute",
+                        "datatype": "float",
+                        "unit": "percent",
+                        "min": 0.0,
+                        "max": 100.0,
+                        "default": 10.0,
+                        "description": "Active hazard warning light requests shall be sent if vehicle speed increases by this percentage within a time period defined based on safety level (during forward driving)"
+                    },
+                    "SpeedHazardReverse": {
+                        "type": "attribute",
+                        "datatype": "float",
+                        "unit": "percent",
+                        "min": 0.0,
+                        "max": 100.0,
+                        "default": 7.0,
+                        "description": "Active hazard warning light requests shall be sent if vehicle speed increases by this percentage within a time period defined based on safety level (during reverse driving)"
+                    }
+                }
+            },
+            "Powertrain": {
+                "type": "branch",
+                "children": {
+                    "Transmission": {
+                        "type": "branch",
+                        "children": {
+                            "DriveType": {
+                                "type": "attribute",
+                                "datatype": "string",
+                                "default": "UNKNOWN",
+                                "allowed": [
+                                    "UNKNOWN",
+                                    "FORWARD_WHEEL_DRIVE",
+                                    "REAR_WHEEL_DRIVE",
+                                    "ALL_WHEEL_DRIVE"
+                                ],
+                                "description": "Drive type."
+                            }
+                        }
+                    }
+                }
+            },
+            "DriveDirection": {
+                "type": "sensor",
+                "datatype": "string",
+                "allowed": [
+                    "STANDSTILL",
+                    "FORWARD",
+                    "REVERSE"
+                ],
+                "description": "Driving direction of the vehicle indicating forward driving, reverse driving and standstill situations."
+            },
+            "Speed": {
+                "type": "sensor",
+                "datatype": "float",
+                "unit": "km/h",
+                "description": "Vehicle speed."
+            },
+            "Body": {
+                "type": "branch",
+                "children": {
+                    "Lights": {
+                        "type": "branch",
+                        "children": {
+                            "Hazard": {
+                                "type": "branch",
+                                "children": {
+                                    "IsSignaling": {
+                                        "type": "actuator",
+                                        "datatype": "boolean",
+                                        "description": "Indicates if light is signaling or off. True = signaling. False = Off."
+                                    },
+                                    "Request": {
+                                        "type": "sensor",
+                                        "datatype": "boolean",
+                                        "min": 0.0,
+                                        "max": 1.0,
+                                        "description": "Indicates active requests of hazard warning lights by vehicle control units"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

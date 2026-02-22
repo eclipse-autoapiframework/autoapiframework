@@ -1,0 +1,401 @@
+{
+  "version": "0.7.0",
+  "DataTypeDefinitions": {
+    "Strings": [
+      {
+        "Name": "String",
+        "Namespace": "vaf"
+      }
+    ],
+    "Enums": [
+      {
+        "Name": "DriveType",
+        "Namespace": "vss::vehicle::powertrain::transmission",
+        "BaseType": "uint8_t",
+        "Literals": [
+          {
+            "Item": "UNKNOWN",
+            "Value": 1
+          },
+          {
+            "Item": "FORWARD_WHEEL_DRIVE",
+            "Value": 2
+          },
+          {
+            "Item": "REAR_WHEEL_DRIVE",
+            "Value": 3
+          },
+          {
+            "Item": "ALL_WHEEL_DRIVE",
+            "Value": 4
+          }
+        ]
+      },
+      {
+        "Name": "DriveDirection",
+        "Namespace": "vss::vehicle",
+        "BaseType": "uint8_t",
+        "Literals": [
+          {
+            "Item": "STANDSTILL",
+            "Value": 1
+          },
+          {
+            "Item": "FORWARD",
+            "Value": 2
+          },
+          {
+            "Item": "REVERSE",
+            "Value": 3
+          }
+        ]
+      }
+    ],
+    "TypeRefs": [
+      {
+        "Name": "Longitudinal",
+        "Namespace": "vss::vehicle::acceleration",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "Speed",
+        "Namespace": "vss::vehicle",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "Speed",
+        "Namespace": "vss::vehicle::chassis::axle::row1::wheel::left",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "Speed",
+        "Namespace": "vss::vehicle::chassis::axle::row1::wheel::right",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "Speed",
+        "Namespace": "vss::vehicle::chassis::axle::row2::wheel::left",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "Speed",
+        "Namespace": "vss::vehicle::chassis::axle::row2::wheel::right",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "SpeedHazardReverse",
+        "Namespace": "vss::vehicle::chassis",
+        "TypeRef": "float",
+        "Min": 0.0,
+        "Max": 100.0
+      },
+      {
+        "Name": "SpeedHazardForward",
+        "Namespace": "vss::vehicle::chassis",
+        "TypeRef": "float",
+        "Min": 0.0,
+        "Max": 100.0
+      },
+      {
+        "Name": "IsSignaling",
+        "Namespace": "vss::vehicle::body::lights::hazard",
+        "TypeRef": "bool"
+      },
+      {
+        "Name": "Request",
+        "Namespace": "vss::vehicle::body::lights::hazard",
+        "TypeRef": "bool"
+      }
+    ],
+    "Structs": [
+      {
+        "Name": "Acceleration",
+        "Namespace": "vss::vehicle",
+        "SubElements": [
+          {
+            "Name": "Longitudinal",
+            "TypeRef": "vss::vehicle::acceleration::Longitudinal"
+          }
+        ]
+      },
+      {
+        "Name": "Powertrain",
+        "Namespace": "vss::vehicle",
+        "SubElements": [
+          {
+            "Name": "Transmission",
+            "TypeRef": "vss::vehicle::powertrain::Transmission"
+          }
+        ]
+      },
+      {
+        "Name": "Chassis",
+        "Namespace": "vss::vehicle",
+        "SubElements": [
+          {
+            "Name": "Axle",
+            "TypeRef": "vss::vehicle::chassis::Axle"
+          },
+          {
+            "Name": "SpeedHazardForward",
+            "TypeRef": "vss::vehicle::chassis::SpeedHazardForward"
+          },
+          {
+            "Name": "SpeedHazardReverse",
+            "TypeRef": "vss::vehicle::chassis::SpeedHazardReverse"
+          }
+        ]
+      },
+      {
+        "Name": "Body",
+        "Namespace": "vss::vehicle",
+        "SubElements": [
+          {
+            "Name": "Lights",
+            "TypeRef": "vss::vehicle::body::Lights"
+          }
+        ]
+      },
+      {
+        "Name": "Right",
+        "Namespace": "vss::vehicle::chassis::axle::row1::wheel",
+        "SubElements": [
+          {
+            "Name": "Speed",
+            "TypeRef": "vss::vehicle::chassis::axle::row1::wheel::right::Speed"
+          }
+        ]
+      },
+      {
+        "Name": "Left",
+        "Namespace": "vss::vehicle::chassis::axle::row1::wheel",
+        "SubElements": [
+          {
+            "Name": "Speed",
+            "TypeRef": "vss::vehicle::chassis::axle::row1::wheel::left::Speed"
+          }
+        ]
+      },
+      {
+        "Name": "Wheel",
+        "Namespace": "vss::vehicle::chassis::axle::row1",
+        "SubElements": [
+          {
+            "Name": "Left",
+            "TypeRef": "vss::vehicle::chassis::axle::row1::wheel::Left"
+          },
+          {
+            "Name": "Right",
+            "TypeRef": "vss::vehicle::chassis::axle::row1::wheel::Right"
+          }
+        ]
+      },
+      {
+        "Name": "Row1",
+        "Namespace": "vss::vehicle::chassis::axle",
+        "SubElements": [
+          {
+            "Name": "Wheel",
+            "TypeRef": "vss::vehicle::chassis::axle::row1::Wheel"
+          }
+        ]
+      },
+      {
+        "Name": "Row2",
+        "Namespace": "vss::vehicle::chassis::axle",
+        "SubElements": [
+          {
+            "Name": "Wheel",
+            "TypeRef": "vss::vehicle::chassis::axle::row2::Wheel"
+          }
+        ]
+      },
+      {
+        "Name": "Left",
+        "Namespace": "vss::vehicle::chassis::axle::row2::wheel",
+        "SubElements": [
+          {
+            "Name": "Speed",
+            "TypeRef": "vss::vehicle::chassis::axle::row2::wheel::left::Speed"
+          }
+        ]
+      },
+      {
+        "Name": "Right",
+        "Namespace": "vss::vehicle::chassis::axle::row2::wheel",
+        "SubElements": [
+          {
+            "Name": "Speed",
+            "TypeRef": "vss::vehicle::chassis::axle::row2::wheel::right::Speed"
+          }
+        ]
+      },
+      {
+        "Name": "Wheel",
+        "Namespace": "vss::vehicle::chassis::axle::row2",
+        "SubElements": [
+          {
+            "Name": "Left",
+            "TypeRef": "vss::vehicle::chassis::axle::row2::wheel::Left"
+          },
+          {
+            "Name": "Right",
+            "TypeRef": "vss::vehicle::chassis::axle::row2::wheel::Right"
+          }
+        ]
+      },
+      {
+        "Name": "Axle",
+        "Namespace": "vss::vehicle::chassis",
+        "SubElements": [
+          {
+            "Name": "Row1",
+            "TypeRef": "vss::vehicle::chassis::axle::Row1"
+          },
+          {
+            "Name": "Row2",
+            "TypeRef": "vss::vehicle::chassis::axle::Row2"
+          }
+        ]
+      },
+      {
+        "Name": "Transmission",
+        "Namespace": "vss::vehicle::powertrain",
+        "SubElements": [
+          {
+            "Name": "DriveType",
+            "TypeRef": "vss::vehicle::powertrain::transmission::DriveType"
+          }
+        ]
+      },
+      {
+        "Name": "Hazard",
+        "Namespace": "vss::vehicle::body::lights",
+        "SubElements": [
+          {
+            "Name": "IsSignaling",
+            "TypeRef": "vss::vehicle::body::lights::hazard::IsSignaling"
+          },
+          {
+            "Name": "Request",
+            "TypeRef": "vss::vehicle::body::lights::hazard::Request"
+          }
+        ]
+      },
+      {
+        "Name": "Lights",
+        "Namespace": "vss::vehicle::body",
+        "SubElements": [
+          {
+            "Name": "Hazard",
+            "TypeRef": "vss::vehicle::body::lights::Hazard"
+          }
+        ]
+      },
+      {
+        "Name": "Vehicle",
+        "Namespace": "vss",
+        "SubElements": [
+          {
+            "Name": "Acceleration",
+            "TypeRef": "vss::vehicle::Acceleration"
+          },
+          {
+            "Name": "Chassis",
+            "TypeRef": "vss::vehicle::Chassis"
+          },
+          {
+            "Name": "Powertrain",
+            "TypeRef": "vss::vehicle::Powertrain"
+          },
+          {
+            "Name": "DriveDirection",
+            "TypeRef": "vss::vehicle::DriveDirection"
+          },
+          {
+            "Name": "Speed",
+            "TypeRef": "vss::vehicle::Speed"
+          },
+          {
+            "Name": "Body",
+            "TypeRef": "vss::vehicle::Body"
+          }
+        ]
+      }
+    ]
+  },
+  "ModuleInterfaces": [
+    {
+      "Name": "SpeedIf",
+      "Namespace": "demo",
+      "DataElements": [
+        {
+          "Name": "Longitudinal",
+          "TypeRef": "vss::vehicle::acceleration::Longitudinal"
+        },
+        {
+          "Name": "SpeedRow1WheelLeft",
+          "TypeRef": "vss::vehicle::chassis::axle::row1::wheel::left::Speed"
+        },
+        {
+          "Name": "SpeedRow1WheelRight",
+          "TypeRef": "vss::vehicle::chassis::axle::row1::wheel::right::Speed"
+        },
+        {
+          "Name": "SpeedRow2WheelLeft",
+          "TypeRef": "vss::vehicle::chassis::axle::row2::wheel::left::Speed"
+        },
+        {
+          "Name": "SpeedRow2WheelRight",
+          "TypeRef": "vss::vehicle::chassis::axle::row2::wheel::right::Speed"
+        },
+        {
+          "Name": "DriveType",
+          "TypeRef": "vss::vehicle::powertrain::transmission::DriveType"
+        }
+      ]
+    },
+    {
+      "Name": "SpeedCalculationIf",
+      "Namespace": "demo",
+      "DataElements": [
+        {
+          "Name": "DriveDirection",
+          "TypeRef": "vss::vehicle::DriveDirection"
+        },
+        {
+          "Name": "Speed",
+          "TypeRef": "vss::vehicle::Speed"
+        }
+      ]
+    },
+    {
+      "Name": "HazardIf",
+      "Namespace": "demo",
+      "DataElements": [
+        {
+          "Name": "IsSignaling",
+          "TypeRef": "vss::vehicle::body::lights::hazard::IsSignaling"
+        },
+        {
+          "Name": "SpeedHazardForward",
+          "TypeRef": "vss::vehicle::chassis::SpeedHazardForward"
+        },
+        {
+          "Name": "SpeedHazardReverse",
+          "TypeRef": "vss::vehicle::chassis::SpeedHazardReverse"
+        }
+      ]
+    },
+    {
+      "Name": "HazardDetectionIf",
+      "Namespace": "demo",
+      "DataElements": [
+        {
+          "Name": "Request",
+          "TypeRef": "vss::vehicle::body::lights::hazard::Request"
+        }
+      ]
+    }
+  ]
+}

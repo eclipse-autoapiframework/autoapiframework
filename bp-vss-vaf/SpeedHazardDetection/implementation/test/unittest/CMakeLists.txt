@@ -1,0 +1,64 @@
+cmake_minimum_required(VERSION 3.21)
+project(speed_hazard_detection_unittest)
+
+find_package(Threads)
+find_package(GTest REQUIRED)
+if (NOT GTest_FOUND)
+    message(FATAL_ERROR "Cannot find Google Test Framework!")
+endif()
+
+include(GoogleTest)
+
+add_executable(${PROJECT_NAME})
+
+target_compile_options(${PROJECT_NAME}
+  PRIVATE
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wall>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wextra>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wshadow>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wnon-virtual-dtor>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wold-style-cast>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wcast-align>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wunused>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Woverloaded-virtual>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-pedantic>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wconversion>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wsign-conversion>)
+
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC)
+
+target_include_directories(${PROJECT_NAME}
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+target_sources(
+  ${PROJECT_NAME}
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include/demo/speed_hazard_detection.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../src/speed_hazard_detection.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/demo/speed_hazard_detection_base.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/demo/speed_hazard_detection_base.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/tests.cpp
+)
+
+# cmake-format: off
+target_link_libraries(
+  ${PROJECT_NAME}
+  PRIVATE
+    Threads::Threads
+    vaf_core
+    gmock
+    gtest::gtest
+    $<TARGET_NAME_IF_EXISTS:vaf_data_types>
+    $<TARGET_NAME_IF_EXISTS:vaf_module_interfaces>
+    $<TARGET_NAME_IF_EXISTS:vaf_module_interface_mocks>
+)
+# cmake-format: on
+
+gtest_discover_tests(${PROJECT_NAME} DISCOVERY_MODE PRE_TEST)

@@ -1,0 +1,12 @@
+{
+    "cmake.configureOnEdit": false,
+    "cmake.configureOnOpen": false,
+    "cmake.sourceDirectory": [
+        "${workspaceFolder}/IntegrationProject",
+        "${workspaceFolder}/Interfaces",
+        "${workspaceFolder}/SpeedHazardDetection",
+        "${workspaceFolder}/TestModule",
+        "${workspaceFolder}/VehicleSpeedCalculation"
+    ],
+    "cmake.buildDirectory": "${sourceDirectory}/build"
+}
