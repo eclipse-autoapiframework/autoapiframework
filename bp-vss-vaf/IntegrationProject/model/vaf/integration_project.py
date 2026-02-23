@@ -1,11 +1,6 @@
 from datetime import timedelta
 
-from .application_modules import (
-    TestModule,
-    VehicleSpeedCalculation,
-    Instances,
-    SpeedHazardDetection,
-)
+from .application_modules import SpeedHazardDetection, TestModule, Instances, VehicleSpeedCalculation
 from vaf import *
 
 # If applicable, import the CaC support depending on your middleware for access to platform interfaces and executables.

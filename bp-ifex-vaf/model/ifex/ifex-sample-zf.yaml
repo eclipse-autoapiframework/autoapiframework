@@ -8,7 +8,7 @@ minor_version: 0
 #    description: "Import of common datatypes"
 
 namespaces:
-  - name: Vehicle
+  - name: vss.vehicle
     # description: ""
     enumerations:
     - name: DriveDirection
@@ -27,13 +27,13 @@ namespaces:
       datatype: float
       description: "Vehicle speed."
 
-  - name: Vehicle.Acceleration
+  - name: vss.vehicle.acceleration
     typedefs:
       - name: Longitudinal
         datatype: float
         description: "Vehicle acceleration in X (longitudinal acceleration)."
 
-  - name: Vehicle.Chassis
+  - name: vss.vehicle.chassis
     typedefs:
     - name: SpeedHazardForward
       datatype: float
@@ -42,7 +42,7 @@ namespaces:
       datatype: float
       description: "Active hazard warning light requests shall be sent if vehicle speed increases by this percentage within a time period defined based on safety level (during reverse driving)."
 
-  - name: Vehicle.Powertrain.Transmission
+  - name: vss.vehicle.powertrain.transmission
     enumerations:
     - name: DriveType
       description: "Drive type."
@@ -57,7 +57,7 @@ namespaces:
         - name: ALL_WHEEL_DRIVE
           value: 4
 
-  - name: Vehicle.Body.Lights.Hazard
+  - name: vss.vehicle.body.lights.hazard
     typedefs:
     - name: IsSignaling
       datatype: bool

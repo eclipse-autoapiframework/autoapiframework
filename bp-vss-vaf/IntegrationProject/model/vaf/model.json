@@ -53,6 +53,11 @@
       },
       {
         "Name": "Speed",
+        "Namespace": "vss::vehicle",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "Speed",
         "Namespace": "vss::vehicle::chassis::axle::row1::wheel::left",
         "TypeRef": "float"
       },
@@ -94,11 +99,6 @@
         "Name": "Request",
         "Namespace": "vss::vehicle::body::lights::hazard",
         "TypeRef": "bool"
-      },
-      {
-        "Name": "Speed",
-        "Namespace": "vss::vehicle",
-        "TypeRef": "float"
       }
     ],
     "Structs": [
@@ -109,20 +109,6 @@
           {
             "Name": "Longitudinal",
             "TypeRef": "vss::vehicle::acceleration::Longitudinal"
-          }
-        ]
-      },
-      {
-        "Name": "Chassis",
-        "Namespace": "vss::vehicle",
-        "SubElements": [
-          {
-            "Name": "SpeedHazardForward",
-            "TypeRef": "vss::vehicle::chassis::SpeedHazardForward"
-          },
-          {
-            "Name": "SpeedHazardReverse",
-            "TypeRef": "vss::vehicle::chassis::SpeedHazardReverse"
           }
         ]
       },
@@ -177,20 +163,6 @@
         ]
       },
       {
-        "Name": "Hazard",
-        "Namespace": "vss::vehicle::body::lights",
-        "SubElements": [
-          {
-            "Name": "IsSignaling",
-            "TypeRef": "vss::vehicle::body::lights::hazard::IsSignaling"
-          },
-          {
-            "Name": "Request",
-            "TypeRef": "vss::vehicle::body::lights::hazard::Request"
-          }
-        ]
-      },
-      {
         "Name": "Vehicle",
         "Namespace": "vss",
         "SubElements": [
@@ -201,6 +173,34 @@
           {
             "Name": "Speed",
             "TypeRef": "vss::vehicle::Speed"
+          }
+        ]
+      },
+      {
+        "Name": "Chassis",
+        "Namespace": "vss::vehicle",
+        "SubElements": [
+          {
+            "Name": "SpeedHazardForward",
+            "TypeRef": "vss::vehicle::chassis::SpeedHazardForward"
+          },
+          {
+            "Name": "SpeedHazardReverse",
+            "TypeRef": "vss::vehicle::chassis::SpeedHazardReverse"
+          }
+        ]
+      },
+      {
+        "Name": "Hazard",
+        "Namespace": "vss::vehicle::body::lights",
+        "SubElements": [
+          {
+            "Name": "IsSignaling",
+            "TypeRef": "vss::vehicle::body::lights::hazard::IsSignaling"
+          },
+          {
+            "Name": "Request",
+            "TypeRef": "vss::vehicle::body::lights::hazard::Request"
           }
         ]
       }
@@ -238,6 +238,20 @@
       ]
     },
     {
+      "Name": "SpeedCalculationIf",
+      "Namespace": "demo",
+      "DataElements": [
+        {
+          "Name": "DriveDirection",
+          "TypeRef": "vss::vehicle::DriveDirection"
+        },
+        {
+          "Name": "Speed",
+          "TypeRef": "vss::vehicle::Speed"
+        }
+      ]
+    },
+    {
       "Name": "HazardIf",
       "Namespace": "demo",
       "DataElements": [
@@ -262,20 +276,6 @@
         {
           "Name": "Request",
           "TypeRef": "vss::vehicle::body::lights::hazard::Request"
-        }
-      ]
-    },
-    {
-      "Name": "SpeedCalculationIf",
-      "Namespace": "demo",
-      "DataElements": [
-        {
-          "Name": "DriveDirection",
-          "TypeRef": "vss::vehicle::DriveDirection"
-        },
-        {
-          "Name": "Speed",
-          "TypeRef": "vss::vehicle::Speed"
         }
       ]
     }
@@ -379,61 +379,30 @@
       ]
     }
   ],
-  "PlatformConsumerModules": [
-    {
-      "Name": "ConsumerModule_SpeedIf_SpeedIfConsumer",
-      "Namespace": "demo",
-      "ModuleInterfaceRef": "demo::SpeedIf",
-      "OriginalEcoSystem": "SILKIT",
-      "ConnectionPointRef": "ConnectionPoint_consumer_SpeedIfConsumer"
-    },
-    {
-      "Name": "ConsumerModule_HazardIf_HazardIfConsumer",
-      "Namespace": "demo",
-      "ModuleInterfaceRef": "demo::HazardIf",
-      "OriginalEcoSystem": "SILKIT",
-      "ConnectionPointRef": "ConnectionPoint_consumer_HazardIfConsumer"
-    },
-    {
-      "Name": "ConsumerModule_HazardDetectionIf_HazardDetectionIfConsumer",
-      "Namespace": "demo",
-      "ModuleInterfaceRef": "demo::HazardDetectionIf",
-      "OriginalEcoSystem": "SILKIT",
-      "ConnectionPointRef": "ConnectionPoint_consumer_HazardDetectionIfConsumer"
-    }
-  ],
-  "PlatformProviderModules": [
-    {
-      "Name": "ProviderModule_SpeedIf_SpeedIfProvider",
-      "Namespace": "demo",
-      "ModuleInterfaceRef": "demo::SpeedIf",
-      "OriginalEcoSystem": "SILKIT",
-      "ConnectionPointRef": "ConnectionPoint_provider_SpeedIfProvider"
-    },
-    {
-      "Name": "ProviderModule_HazardIf_HazardIfProvider",
-      "Namespace": "demo",
-      "ModuleInterfaceRef": "demo::HazardIf",
-      "OriginalEcoSystem": "SILKIT",
-      "ConnectionPointRef": "ConnectionPoint_provider_HazardIfProvider"
-    },
-    {
-      "Name": "ProviderModule_HazardDetectionIf_HazardDetectionIfProvider",
-      "Namespace": "demo",
-      "ModuleInterfaceRef": "demo::HazardDetectionIf",
-      "OriginalEcoSystem": "SILKIT",
-      "ConnectionPointRef": "ConnectionPoint_provider_HazardDetectionIfProvider"
-    }
-  ],
   "Executables": [
     {
       "Name": "DemoExecutable",
       "ExecutorPeriod": "10ms",
       "InternalCommunicationModules": [
         {
+          "Name": "SpeedIfTestModuleSpeedIfProviderToVehicleSpeedCalculationSpeedIfConsumerModule",
+          "Namespace": "application_communication",
+          "ModuleInterfaceRef": "demo::SpeedIf"
+        },
+        {
           "Name": "SpeedCalculationIfVehicleSpeedCalculationSpeedCalculationIfProviderToSpeedHazardDetectionSpeedCalculationIfConsumerModule",
           "Namespace": "application_communication",
           "ModuleInterfaceRef": "demo::SpeedCalculationIf"
+        },
+        {
+          "Name": "HazardIfTestModuleHazardIfProviderToSpeedHazardDetectionHazardIfConsumerModule",
+          "Namespace": "application_communication",
+          "ModuleInterfaceRef": "demo::HazardIf"
+        },
+        {
+          "Name": "HazardDetectionIfSpeedHazardDetectionHazardDetectionIfProviderToTestModuleHazardDetectionIfConsumerModule",
+          "Namespace": "application_communication",
+          "ModuleInterfaceRef": "demo::HazardDetectionIf"
         }
       ],
       "ApplicationModules": [
@@ -442,7 +411,7 @@
           "InterfaceInstanceToModuleMappings": [
             {
               "InstanceName": "SpeedIfConsumer",
-              "ModuleRef": "demo::ConsumerModule_SpeedIf_SpeedIfConsumer"
+              "ModuleRef": "application_communication::SpeedIfTestModuleSpeedIfProviderToVehicleSpeedCalculationSpeedIfConsumerModule"
             },
             {
               "InstanceName": "SpeedCalculationIfProvider",
@@ -459,66 +428,32 @@
             },
             {
               "InstanceName": "HazardIfConsumer",
-              "ModuleRef": "demo::ConsumerModule_HazardIf_HazardIfConsumer"
+              "ModuleRef": "application_communication::HazardIfTestModuleHazardIfProviderToSpeedHazardDetectionHazardIfConsumerModule"
             },
             {
               "InstanceName": "HazardDetectionIfProvider",
-              "ModuleRef": "demo::ProviderModule_HazardDetectionIf_HazardDetectionIfProvider"
+              "ModuleRef": "application_communication::HazardDetectionIfSpeedHazardDetectionHazardDetectionIfProviderToTestModuleHazardDetectionIfConsumerModule"
             }
           ]
-        }
-      ]
-    },
-    {
-      "Name": "TestExecutable",
-      "ExecutorPeriod": "10ms",
-      "ApplicationModules": [
+        },
         {
           "ApplicationModuleRef": "demo::TestModule",
           "InterfaceInstanceToModuleMappings": [
             {
               "InstanceName": "SpeedIfProvider",
-              "ModuleRef": "demo::ProviderModule_SpeedIf_SpeedIfProvider"
+              "ModuleRef": "application_communication::SpeedIfTestModuleSpeedIfProviderToVehicleSpeedCalculationSpeedIfConsumerModule"
             },
             {
               "InstanceName": "HazardIfProvider",
-              "ModuleRef": "demo::ProviderModule_HazardIf_HazardIfProvider"
+              "ModuleRef": "application_communication::HazardIfTestModuleHazardIfProviderToSpeedHazardDetectionHazardIfConsumerModule"
             },
             {
               "InstanceName": "HazardDetectionIfConsumer",
-              "ModuleRef": "demo::ConsumerModule_HazardDetectionIf_HazardDetectionIfConsumer"
+              "ModuleRef": "application_communication::HazardDetectionIfSpeedHazardDetectionHazardDetectionIfProviderToTestModuleHazardDetectionIfConsumerModule"
             }
           ]
         }
       ]
     }
-  ],
-  "SILKITAdditionalConfiguration": {
-    "ConnectionPoints": [
-      {
-        "Name": "ConnectionPoint_provider_SpeedIfProvider",
-        "SilkitInstance": "SilkitSpeedIf"
-      },
-      {
-        "Name": "ConnectionPoint_consumer_SpeedIfConsumer",
-        "SilkitInstance": "SilkitSpeedIf"
-      },
-      {
-        "Name": "ConnectionPoint_provider_HazardIfProvider",
-        "SilkitInstance": "SilkitHazardIf"
-      },
-      {
-        "Name": "ConnectionPoint_consumer_HazardIfConsumer",
-        "SilkitInstance": "SilkitHazardIf"
-      },
-      {
-        "Name": "ConnectionPoint_provider_HazardDetectionIfProvider",
-        "SilkitInstance": "SilkitHazardDetectionIf"
-      },
-      {
-        "Name": "ConnectionPoint_consumer_HazardDetectionIfConsumer",
-        "SilkitInstance": "SilkitHazardDetectionIf"
-      }
-    ]
-  }
+  ]
 }

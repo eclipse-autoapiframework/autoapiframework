@@ -4,7 +4,7 @@
     "Enums": [
       {
         "Name": "DriveDirection",
-        "Namespace": "Vehicle",
+        "Namespace": "vss::vehicle",
         "Literals": [
           {
             "Item": "STANDSTILL",
@@ -22,7 +22,7 @@
       },
       {
         "Name": "DriveType",
-        "Namespace": "Vehicle::Powertrain::Transmission",
+        "Namespace": "vss::vehicle::powertrain::transmission",
         "Literals": [
           {
             "Item": "UNKNOWN",
@@ -46,32 +46,32 @@
     "TypeRefs": [
       {
         "Name": "Speed",
-        "Namespace": "Vehicle",
+        "Namespace": "vss::vehicle",
         "TypeRef": "float"
       },
       {
         "Name": "Longitudinal",
-        "Namespace": "Vehicle::Acceleration",
+        "Namespace": "vss::vehicle::acceleration",
         "TypeRef": "float"
       },
       {
         "Name": "SpeedHazardForward",
-        "Namespace": "Vehicle::Chassis",
+        "Namespace": "vss::vehicle::chassis",
         "TypeRef": "float"
       },
       {
         "Name": "SpeedHazardReverse",
-        "Namespace": "Vehicle::Chassis",
+        "Namespace": "vss::vehicle::chassis",
         "TypeRef": "float"
       },
       {
         "Name": "IsSignaling",
-        "Namespace": "Vehicle::Body::Lights::Hazard",
+        "Namespace": "vss::vehicle::body::lights::hazard",
         "TypeRef": "bool"
       },
       {
         "Name": "Request",
-        "Namespace": "Vehicle::Body::Lights::Hazard",
+        "Namespace": "vss::vehicle::body::lights::hazard",
         "TypeRef": "bool"
       }
     ]
@@ -83,27 +83,27 @@
       "DataElements": [
         {
           "Name": "Longitudinal",
-          "TypeRef": "Vehicle::Acceleration::Longitudinal"
+          "TypeRef": "vss::vehicle::acceleration::Longitudinal"
         },
         {
           "Name": "SpeedRow1WheelLeft",
-          "TypeRef": "Vehicle::Speed"
+          "TypeRef": "vss::vehicle::Speed"
         },
         {
           "Name": "SpeedRow1WheelRight",
-          "TypeRef": "Vehicle::Speed"
+          "TypeRef": "vss::vehicle::Speed"
         },
         {
           "Name": "SpeedRow2WheelLeft",
-          "TypeRef": "Vehicle::Speed"
+          "TypeRef": "vss::vehicle::Speed"
         },
         {
           "Name": "SpeedRow2WheelRight",
-          "TypeRef": "Vehicle::Speed"
+          "TypeRef": "vss::vehicle::Speed"
         },
         {
           "Name": "DriveType",
-          "TypeRef": "Vehicle::Powertrain::Transmission::DriveType"
+          "TypeRef": "vss::vehicle::powertrain::transmission::DriveType"
         }
       ]
     },
@@ -113,11 +113,11 @@
       "DataElements": [
         {
           "Name": "DriveDirection",
-          "TypeRef": "Vehicle::DriveDirection"
+          "TypeRef": "vss::vehicle::DriveDirection"
         },
         {
           "Name": "Speed",
-          "TypeRef": "Vehicle::Speed"
+          "TypeRef": "vss::vehicle::Speed"
         }
       ]
     },
@@ -127,15 +127,15 @@
       "DataElements": [
         {
           "Name": "IsSignaling",
-          "TypeRef": "Vehicle::Body::Lights::Hazard::IsSignaling"
+          "TypeRef": "vss::vehicle::body::lights::hazard::IsSignaling"
         },
         {
           "Name": "SpeedHazardForward",
-          "TypeRef": "Vehicle::Chassis::SpeedHazardForward"
+          "TypeRef": "vss::vehicle::chassis::SpeedHazardForward"
         },
         {
           "Name": "SpeedHazardReverse",
-          "TypeRef": "Vehicle::Chassis::SpeedHazardReverse"
+          "TypeRef": "vss::vehicle::chassis::SpeedHazardReverse"
         }
       ]
     },
@@ -145,7 +145,7 @@
       "DataElements": [
         {
           "Name": "Request",
-          "TypeRef": "Vehicle::Body::Lights::Hazard::Request"
+          "TypeRef": "vss::vehicle::body::lights::hazard::Request"
         }
       ]
     }
