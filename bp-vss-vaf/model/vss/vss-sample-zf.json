@@ -92,7 +92,7 @@
                         "min": 0.0,
                         "max": 100.0,
                         "default": 10.0,
-                        "description": "Active hazard warning light requests shall be sent if vehicle speed increases by this percentage within a time period defined based on safety level (during forward driving)"
+                        "description": "Active hazard warning light requests shall be sent if vehicle speed increases by this percentage within a time period defined based on safety level (during forward driving)."
                     },
                     "SpeedHazardReverse": {
                         "type": "attribute",
@@ -101,7 +101,7 @@
                         "min": 0.0,
                         "max": 100.0,
                         "default": 7.0,
-                        "description": "Active hazard warning light requests shall be sent if vehicle speed increases by this percentage within a time period defined based on safety level (during reverse driving)"
+                        "description": "Active hazard warning light requests shall be sent if vehicle speed increases by this percentage within a time period defined based on safety level (during reverse driving)."
                     }
                 }
             },
@@ -162,7 +162,7 @@
                                         "datatype": "boolean",
                                         "min": 0.0,
                                         "max": 1.0,
-                                        "description": "Indicates active requests of hazard warning lights by vehicle control units"
+                                        "description": "Indicates active requests of hazard warning lights by vehicle control units."
                                     }
                                 }
                             }
