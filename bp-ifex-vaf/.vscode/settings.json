@@ -1,0 +1,6 @@
+{
+    "cmake.configureOnEdit": false,
+    "cmake.configureOnOpen": false,
+    "cmake.sourceDirectory": [ ],
+    "cmake.buildDirectory": "${sourceDirectory}/build"
+}
