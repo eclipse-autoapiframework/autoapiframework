@@ -1,0 +1,79 @@
+{
+  "version": "0.7.0",
+  "DataTypeDefinitions": {
+    "Enums": [
+      {
+        "Name": "DriveDirection",
+        "Namespace": "vss::vehicle",
+        "Literals": [
+          {
+            "Item": "STANDSTILL",
+            "Value": 1
+          },
+          {
+            "Item": "FORWARD",
+            "Value": 2
+          },
+          {
+            "Item": "REVERSE",
+            "Value": 3
+          }
+        ]
+      },
+      {
+        "Name": "DriveType",
+        "Namespace": "vss::vehicle::powertrain::transmission",
+        "Literals": [
+          {
+            "Item": "UNKNOWN",
+            "Value": 1
+          },
+          {
+            "Item": "FORWARD_WHEEL_DRIVE",
+            "Value": 2
+          },
+          {
+            "Item": "REAR_WHEEL_DRIVE",
+            "Value": 3
+          },
+          {
+            "Item": "ALL_WHEEL_DRIVE",
+            "Value": 4
+          }
+        ]
+      }
+    ],
+    "TypeRefs": [
+      {
+        "Name": "Speed",
+        "Namespace": "vss::vehicle",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "Longitudinal",
+        "Namespace": "vss::vehicle::acceleration",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "SpeedHazardForward",
+        "Namespace": "vss::vehicle::chassis",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "SpeedHazardReverse",
+        "Namespace": "vss::vehicle::chassis",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "IsSignaling",
+        "Namespace": "vss::vehicle::body::lights::hazard",
+        "TypeRef": "bool"
+      },
+      {
+        "Name": "Request",
+        "Namespace": "vss::vehicle::body::lights::hazard",
+        "TypeRef": "bool"
+      }
+    ]
+  }
+}

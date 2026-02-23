@@ -1,0 +1,68 @@
+name: SpeedHazardDetection
+description: "Collection of types (signals) for the speed hazard detection example."
+major_version: 1
+minor_version: 0
+
+#includes:
+#  - file: datatypes.yaml
+#    description: "Import of common datatypes"
+
+namespaces:
+  - name: vss.vehicle
+    # description: ""
+    enumerations:
+    - name: DriveDirection
+      description: "Driving direction of the vehicle indicating forward driving, reverse driving and standstill situations."
+      datatype: uint8_t
+      options:
+        - name: STANDSTILL
+          value: 1
+        - name: FORWARD
+          value: 2
+        - name: REVERSE
+          value: 3
+
+    typedefs:
+    - name: Speed
+      datatype: float
+      description: "Vehicle speed."
+
+  - name: vss.vehicle.acceleration
+    typedefs:
+      - name: Longitudinal
+        datatype: float
+        description: "Vehicle acceleration in X (longitudinal acceleration)."
+
+  - name: vss.vehicle.chassis
+    typedefs:
+    - name: SpeedHazardForward
+      datatype: float
+      description: "Active hazard warning light requests shall be sent if vehicle speed increases by this percentage within a time period defined based on safety level (during forward driving)."
+    - name: SpeedHazardReverse
+      datatype: float
+      description: "Active hazard warning light requests shall be sent if vehicle speed increases by this percentage within a time period defined based on safety level (during reverse driving)."
+
+  - name: vss.vehicle.powertrain.transmission
+    enumerations:
+    - name: DriveType
+      description: "Drive type."
+      datatype: uint8_t
+      options:
+        - name: UNKNOWN
+          value: 1
+        - name: FORWARD_WHEEL_DRIVE
+          value: 2
+        - name: REAR_WHEEL_DRIVE
+          value: 3
+        - name: ALL_WHEEL_DRIVE
+          value: 4
+
+  - name: vss.vehicle.body.lights.hazard
+    typedefs:
+    - name: IsSignaling
+      datatype: bool
+      description: "Indicates if light is signaling or off. True = signaling. False = Off."
+
+    - name: Request
+      datatype: bool
+      description: "Indicates active requests of hazard warning lights by vehicle control units."

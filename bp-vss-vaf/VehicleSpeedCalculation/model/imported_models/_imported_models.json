@@ -1,0 +1,9 @@
+{
+  "ImportedModels": [
+    {
+      "Name": "Interfaces",
+      "SourceDir": "../../../Interfaces/export",
+      "ImportMode": "copy"
+    }
+  ]
+}

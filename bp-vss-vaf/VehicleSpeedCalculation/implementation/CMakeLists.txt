@@ -1,0 +1,109 @@
+##=======================================================================
+##  COPYRIGHT
+##  -------------------------------------------------------------------------------------------------------------------
+##  \verbatim
+##  Copyright (c) 2024-2026 by Vector Informatik GmbH. All rights reserved.
+##  SPDX-License-Identifier: Apache-2.0
+##  \endverbatim
+##  -------------------------------------------------------------------------------------------------------------------
+##  FILE DESCRIPTION
+##  -------------------------------------------------------------------------------------------------------------------
+##        \file    CMakeLists.txt
+##=======================================================================
+
+cmake_minimum_required(VERSION 3.21)
+
+project(vehicle_speed_calculation VERSION 1.0.0)
+
+find_package(Threads)
+find_package(GTest)
+
+set(TARGET vehicle_speed_calculation)
+
+add_library(${TARGET} STATIC "")
+
+target_compile_options(${TARGET}
+  PRIVATE
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wall>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wextra>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wshadow>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wnon-virtual-dtor>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wold-style-cast>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wcast-align>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wunused>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Woverloaded-virtual>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-pedantic>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wconversion>
+    $<$<AND:$<PLATFORM_ID:Linux>,$<C_COMPILER_ID:GNU>>:-Wsign-conversion>)
+
+target_compile_features(${TARGET} PUBLIC cxx_std_14)
+
+target_compile_definitions(${TARGET} PUBLIC)
+
+target_include_directories(${TARGET}
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<INSTALL_INTERFACE:include>
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+target_sources(${TARGET}
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/demo/vehicle_speed_calculation.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/vehicle_speed_calculation.cpp
+    )
+
+# cmake-format: off
+target_link_libraries(${TARGET}
+  PUBLIC
+    Threads::Threads
+    vaf_core
+    vaf_module_interfaces
+
+    vaf_vehicle_speed_calculation_base
+)
+# cmake-format: on
+
+if(VAF_BUILD_TESTS)
+  add_subdirectory(test)
+endif()
+
+if(VAF_STAND_ALONE_BUILD)
+  # Install headers only if the include directory exists
+  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/include")
+      install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+              DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+  endif()
+
+  # Install target
+  install(TARGETS ${TARGET}
+      EXPORT ${TARGET}Targets
+      ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+      INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  )
+
+  # Export targets
+  install(EXPORT ${TARGET}Targets
+      FILE ${TARGET}Targets.cmake
+
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${TARGET}
+  )
+
+  # Create and install config files
+  include(CMakePackageConfigHelpers)
+
+  write_basic_package_version_file(
+      "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}ConfigVersion.cmake"
+      VERSION ${PROJECT_VERSION}
+      COMPATIBILITY AnyNewerVersion
+  )
+
+  install(FILES
+      "${CMAKE_CURRENT_SOURCE_DIR}/cmake/${TARGET}Config.cmake"
+      "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}ConfigVersion.cmake"
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${TARGET}
+  )
+endif()

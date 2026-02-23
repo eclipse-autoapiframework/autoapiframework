@@ -1,0 +1,459 @@
+{
+  "version": "0.7.0",
+  "DataTypeDefinitions": {
+    "Enums": [
+      {
+        "Name": "DriveType",
+        "Namespace": "vss::vehicle::powertrain::transmission",
+        "BaseType": "uint8_t",
+        "Literals": [
+          {
+            "Item": "UNKNOWN",
+            "Value": 1
+          },
+          {
+            "Item": "FORWARD_WHEEL_DRIVE",
+            "Value": 2
+          },
+          {
+            "Item": "REAR_WHEEL_DRIVE",
+            "Value": 3
+          },
+          {
+            "Item": "ALL_WHEEL_DRIVE",
+            "Value": 4
+          }
+        ]
+      },
+      {
+        "Name": "DriveDirection",
+        "Namespace": "vss::vehicle",
+        "BaseType": "uint8_t",
+        "Literals": [
+          {
+            "Item": "STANDSTILL",
+            "Value": 1
+          },
+          {
+            "Item": "FORWARD",
+            "Value": 2
+          },
+          {
+            "Item": "REVERSE",
+            "Value": 3
+          }
+        ]
+      }
+    ],
+    "TypeRefs": [
+      {
+        "Name": "Longitudinal",
+        "Namespace": "vss::vehicle::acceleration",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "Speed",
+        "Namespace": "vss::vehicle",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "Speed",
+        "Namespace": "vss::vehicle::chassis::axle::row1::wheel::left",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "Speed",
+        "Namespace": "vss::vehicle::chassis::axle::row1::wheel::right",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "Speed",
+        "Namespace": "vss::vehicle::chassis::axle::row2::wheel::left",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "Speed",
+        "Namespace": "vss::vehicle::chassis::axle::row2::wheel::right",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "SpeedHazardReverse",
+        "Namespace": "vss::vehicle::chassis",
+        "TypeRef": "float",
+        "Min": 0.0,
+        "Max": 100.0
+      },
+      {
+        "Name": "SpeedHazardForward",
+        "Namespace": "vss::vehicle::chassis",
+        "TypeRef": "float",
+        "Min": 0.0,
+        "Max": 100.0
+      },
+      {
+        "Name": "IsSignaling",
+        "Namespace": "vss::vehicle::body::lights::hazard",
+        "TypeRef": "bool"
+      },
+      {
+        "Name": "Request",
+        "Namespace": "vss::vehicle::body::lights::hazard",
+        "TypeRef": "bool"
+      }
+    ],
+    "Structs": [
+      {
+        "Name": "Acceleration",
+        "Namespace": "vss::vehicle",
+        "SubElements": [
+          {
+            "Name": "Longitudinal",
+            "TypeRef": "vss::vehicle::acceleration::Longitudinal"
+          }
+        ]
+      },
+      {
+        "Name": "Right",
+        "Namespace": "vss::vehicle::chassis::axle::row1::wheel",
+        "SubElements": [
+          {
+            "Name": "Speed",
+            "TypeRef": "vss::vehicle::chassis::axle::row1::wheel::right::Speed"
+          }
+        ]
+      },
+      {
+        "Name": "Left",
+        "Namespace": "vss::vehicle::chassis::axle::row1::wheel",
+        "SubElements": [
+          {
+            "Name": "Speed",
+            "TypeRef": "vss::vehicle::chassis::axle::row1::wheel::left::Speed"
+          }
+        ]
+      },
+      {
+        "Name": "Left",
+        "Namespace": "vss::vehicle::chassis::axle::row2::wheel",
+        "SubElements": [
+          {
+            "Name": "Speed",
+            "TypeRef": "vss::vehicle::chassis::axle::row2::wheel::left::Speed"
+          }
+        ]
+      },
+      {
+        "Name": "Right",
+        "Namespace": "vss::vehicle::chassis::axle::row2::wheel",
+        "SubElements": [
+          {
+            "Name": "Speed",
+            "TypeRef": "vss::vehicle::chassis::axle::row2::wheel::right::Speed"
+          }
+        ]
+      },
+      {
+        "Name": "Transmission",
+        "Namespace": "vss::vehicle::powertrain",
+        "SubElements": [
+          {
+            "Name": "DriveType",
+            "TypeRef": "vss::vehicle::powertrain::transmission::DriveType"
+          }
+        ]
+      },
+      {
+        "Name": "Vehicle",
+        "Namespace": "vss",
+        "SubElements": [
+          {
+            "Name": "DriveDirection",
+            "TypeRef": "vss::vehicle::DriveDirection"
+          },
+          {
+            "Name": "Speed",
+            "TypeRef": "vss::vehicle::Speed"
+          }
+        ]
+      },
+      {
+        "Name": "Chassis",
+        "Namespace": "vss::vehicle",
+        "SubElements": [
+          {
+            "Name": "SpeedHazardForward",
+            "TypeRef": "vss::vehicle::chassis::SpeedHazardForward"
+          },
+          {
+            "Name": "SpeedHazardReverse",
+            "TypeRef": "vss::vehicle::chassis::SpeedHazardReverse"
+          }
+        ]
+      },
+      {
+        "Name": "Hazard",
+        "Namespace": "vss::vehicle::body::lights",
+        "SubElements": [
+          {
+            "Name": "IsSignaling",
+            "TypeRef": "vss::vehicle::body::lights::hazard::IsSignaling"
+          },
+          {
+            "Name": "Request",
+            "TypeRef": "vss::vehicle::body::lights::hazard::Request"
+          }
+        ]
+      }
+    ]
+  },
+  "ModuleInterfaces": [
+    {
+      "Name": "SpeedIf",
+      "Namespace": "demo",
+      "DataElements": [
+        {
+          "Name": "Longitudinal",
+          "TypeRef": "vss::vehicle::acceleration::Longitudinal"
+        },
+        {
+          "Name": "SpeedRow1WheelLeft",
+          "TypeRef": "vss::vehicle::chassis::axle::row1::wheel::left::Speed"
+        },
+        {
+          "Name": "SpeedRow1WheelRight",
+          "TypeRef": "vss::vehicle::chassis::axle::row1::wheel::right::Speed"
+        },
+        {
+          "Name": "SpeedRow2WheelLeft",
+          "TypeRef": "vss::vehicle::chassis::axle::row2::wheel::left::Speed"
+        },
+        {
+          "Name": "SpeedRow2WheelRight",
+          "TypeRef": "vss::vehicle::chassis::axle::row2::wheel::right::Speed"
+        },
+        {
+          "Name": "DriveType",
+          "TypeRef": "vss::vehicle::powertrain::transmission::DriveType"
+        }
+      ]
+    },
+    {
+      "Name": "SpeedCalculationIf",
+      "Namespace": "demo",
+      "DataElements": [
+        {
+          "Name": "DriveDirection",
+          "TypeRef": "vss::vehicle::DriveDirection"
+        },
+        {
+          "Name": "Speed",
+          "TypeRef": "vss::vehicle::Speed"
+        }
+      ]
+    },
+    {
+      "Name": "HazardIf",
+      "Namespace": "demo",
+      "DataElements": [
+        {
+          "Name": "IsSignaling",
+          "TypeRef": "vss::vehicle::body::lights::hazard::IsSignaling"
+        },
+        {
+          "Name": "SpeedHazardForward",
+          "TypeRef": "vss::vehicle::chassis::SpeedHazardForward"
+        },
+        {
+          "Name": "SpeedHazardReverse",
+          "TypeRef": "vss::vehicle::chassis::SpeedHazardReverse"
+        }
+      ]
+    },
+    {
+      "Name": "HazardDetectionIf",
+      "Namespace": "demo",
+      "DataElements": [
+        {
+          "Name": "Request",
+          "TypeRef": "vss::vehicle::body::lights::hazard::Request"
+        }
+      ]
+    }
+  ],
+  "ApplicationModules": [
+    {
+      "Name": "VehicleSpeedCalculation",
+      "Namespace": "demo",
+      "ConsumedInterfaces": [
+        {
+          "InstanceName": "SpeedIfConsumer",
+          "ModuleInterfaceRef": "demo::SpeedIf"
+        }
+      ],
+      "ProvidedInterfaces": [
+        {
+          "InstanceName": "SpeedCalculationIfProvider",
+          "ModuleInterfaceRef": "demo::SpeedCalculationIf"
+        }
+      ],
+      "PersistencyFiles": [],
+      "ImplementationProperties": {
+        "GenerateUnitTestStubs": true,
+        "InstallationPath": "vehicle_speed_calculation"
+      },
+      "Tasks": [
+        {
+          "Name": "SpeedCalculation10",
+          "Period": "10ms"
+        },
+        {
+          "Name": "DriveDirectionCalculation100",
+          "Period": "100ms"
+        }
+      ]
+    },
+    {
+      "Name": "SpeedHazardDetection",
+      "Namespace": "demo",
+      "ConsumedInterfaces": [
+        {
+          "InstanceName": "SpeedCalculationIfConsumer",
+          "ModuleInterfaceRef": "demo::SpeedCalculationIf"
+        },
+        {
+          "InstanceName": "HazardIfConsumer",
+          "ModuleInterfaceRef": "demo::HazardIf"
+        }
+      ],
+      "ProvidedInterfaces": [
+        {
+          "InstanceName": "HazardDetectionIfProvider",
+          "ModuleInterfaceRef": "demo::HazardDetectionIf"
+        }
+      ],
+      "PersistencyFiles": [],
+      "ImplementationProperties": {
+        "GenerateUnitTestStubs": true,
+        "InstallationPath": "speed_hazard_detection"
+      },
+      "Tasks": [
+        {
+          "Name": "HazardCalculation10",
+          "Period": "10ms"
+        }
+      ]
+    },
+    {
+      "Name": "TestModule",
+      "Namespace": "demo",
+      "ConsumedInterfaces": [
+        {
+          "InstanceName": "HazardDetectionIfConsumer",
+          "ModuleInterfaceRef": "demo::HazardDetectionIf"
+        }
+      ],
+      "ProvidedInterfaces": [
+        {
+          "InstanceName": "SpeedIfProvider",
+          "ModuleInterfaceRef": "demo::SpeedIf"
+        },
+        {
+          "InstanceName": "HazardIfProvider",
+          "ModuleInterfaceRef": "demo::HazardIf"
+        }
+      ],
+      "PersistencyFiles": [],
+      "ImplementationProperties": {
+        "GenerateUnitTestStubs": true,
+        "InstallationPath": "test_module"
+      },
+      "Tasks": [
+        {
+          "Name": "PeriodicTask200",
+          "Period": "200ms"
+        },
+        {
+          "Name": "PeriodicTask2000",
+          "Period": "2000ms"
+        }
+      ]
+    }
+  ],
+  "Executables": [
+    {
+      "Name": "DemoExecutable",
+      "ExecutorPeriod": "10ms",
+      "InternalCommunicationModules": [
+        {
+          "Name": "SpeedIfTestModuleSpeedIfProviderToVehicleSpeedCalculationSpeedIfConsumerModule",
+          "Namespace": "application_communication",
+          "ModuleInterfaceRef": "demo::SpeedIf"
+        },
+        {
+          "Name": "SpeedCalculationIfVehicleSpeedCalculationSpeedCalculationIfProviderToSpeedHazardDetectionSpeedCalculationIfConsumerModule",
+          "Namespace": "application_communication",
+          "ModuleInterfaceRef": "demo::SpeedCalculationIf"
+        },
+        {
+          "Name": "HazardIfTestModuleHazardIfProviderToSpeedHazardDetectionHazardIfConsumerModule",
+          "Namespace": "application_communication",
+          "ModuleInterfaceRef": "demo::HazardIf"
+        },
+        {
+          "Name": "HazardDetectionIfSpeedHazardDetectionHazardDetectionIfProviderToTestModuleHazardDetectionIfConsumerModule",
+          "Namespace": "application_communication",
+          "ModuleInterfaceRef": "demo::HazardDetectionIf"
+        }
+      ],
+      "ApplicationModules": [
+        {
+          "ApplicationModuleRef": "demo::VehicleSpeedCalculation",
+          "InterfaceInstanceToModuleMappings": [
+            {
+              "InstanceName": "SpeedIfConsumer",
+              "ModuleRef": "application_communication::SpeedIfTestModuleSpeedIfProviderToVehicleSpeedCalculationSpeedIfConsumerModule"
+            },
+            {
+              "InstanceName": "SpeedCalculationIfProvider",
+              "ModuleRef": "application_communication::SpeedCalculationIfVehicleSpeedCalculationSpeedCalculationIfProviderToSpeedHazardDetectionSpeedCalculationIfConsumerModule"
+            }
+          ]
+        },
+        {
+          "ApplicationModuleRef": "demo::SpeedHazardDetection",
+          "InterfaceInstanceToModuleMappings": [
+            {
+              "InstanceName": "SpeedCalculationIfConsumer",
+              "ModuleRef": "application_communication::SpeedCalculationIfVehicleSpeedCalculationSpeedCalculationIfProviderToSpeedHazardDetectionSpeedCalculationIfConsumerModule"
+            },
+            {
+              "InstanceName": "HazardIfConsumer",
+              "ModuleRef": "application_communication::HazardIfTestModuleHazardIfProviderToSpeedHazardDetectionHazardIfConsumerModule"
+            },
+            {
+              "InstanceName": "HazardDetectionIfProvider",
+              "ModuleRef": "application_communication::HazardDetectionIfSpeedHazardDetectionHazardDetectionIfProviderToTestModuleHazardDetectionIfConsumerModule"
+            }
+          ]
+        },
+        {
+          "ApplicationModuleRef": "demo::TestModule",
+          "InterfaceInstanceToModuleMappings": [
+            {
+              "InstanceName": "SpeedIfProvider",
+              "ModuleRef": "application_communication::SpeedIfTestModuleSpeedIfProviderToVehicleSpeedCalculationSpeedIfConsumerModule"
+            },
+            {
+              "InstanceName": "HazardIfProvider",
+              "ModuleRef": "application_communication::HazardIfTestModuleHazardIfProviderToSpeedHazardDetectionHazardIfConsumerModule"
+            },
+            {
+              "InstanceName": "HazardDetectionIfConsumer",
+              "ModuleRef": "application_communication::HazardDetectionIfSpeedHazardDetectionHazardDetectionIfProviderToTestModuleHazardDetectionIfConsumerModule"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

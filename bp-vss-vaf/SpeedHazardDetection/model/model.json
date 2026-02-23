@@ -1,0 +1,177 @@
+{
+  "version": "0.7.0",
+  "DataTypeDefinitions": {
+    "Enums": [
+      {
+        "Name": "DriveDirection",
+        "Namespace": "vss::vehicle",
+        "BaseType": "uint8_t",
+        "Literals": [
+          {
+            "Item": "STANDSTILL",
+            "Value": 1
+          },
+          {
+            "Item": "FORWARD",
+            "Value": 2
+          },
+          {
+            "Item": "REVERSE",
+            "Value": 3
+          }
+        ]
+      }
+    ],
+    "TypeRefs": [
+      {
+        "Name": "Speed",
+        "Namespace": "vss::vehicle",
+        "TypeRef": "float"
+      },
+      {
+        "Name": "SpeedHazardReverse",
+        "Namespace": "vss::vehicle::chassis",
+        "TypeRef": "float",
+        "Min": 0.0,
+        "Max": 100.0
+      },
+      {
+        "Name": "SpeedHazardForward",
+        "Namespace": "vss::vehicle::chassis",
+        "TypeRef": "float",
+        "Min": 0.0,
+        "Max": 100.0
+      },
+      {
+        "Name": "IsSignaling",
+        "Namespace": "vss::vehicle::body::lights::hazard",
+        "TypeRef": "bool"
+      },
+      {
+        "Name": "Request",
+        "Namespace": "vss::vehicle::body::lights::hazard",
+        "TypeRef": "bool"
+      }
+    ],
+    "Structs": [
+      {
+        "Name": "Chassis",
+        "Namespace": "vss::vehicle",
+        "SubElements": [
+          {
+            "Name": "SpeedHazardForward",
+            "TypeRef": "vss::vehicle::chassis::SpeedHazardForward"
+          },
+          {
+            "Name": "SpeedHazardReverse",
+            "TypeRef": "vss::vehicle::chassis::SpeedHazardReverse"
+          }
+        ]
+      },
+      {
+        "Name": "Hazard",
+        "Namespace": "vss::vehicle::body::lights",
+        "SubElements": [
+          {
+            "Name": "IsSignaling",
+            "TypeRef": "vss::vehicle::body::lights::hazard::IsSignaling"
+          },
+          {
+            "Name": "Request",
+            "TypeRef": "vss::vehicle::body::lights::hazard::Request"
+          }
+        ]
+      },
+      {
+        "Name": "Vehicle",
+        "Namespace": "vss",
+        "SubElements": [
+          {
+            "Name": "DriveDirection",
+            "TypeRef": "vss::vehicle::DriveDirection"
+          },
+          {
+            "Name": "Speed",
+            "TypeRef": "vss::vehicle::Speed"
+          }
+        ]
+      }
+    ]
+  },
+  "ModuleInterfaces": [
+    {
+      "Name": "SpeedCalculationIf",
+      "Namespace": "demo",
+      "DataElements": [
+        {
+          "Name": "DriveDirection",
+          "TypeRef": "vss::vehicle::DriveDirection"
+        },
+        {
+          "Name": "Speed",
+          "TypeRef": "vss::vehicle::Speed"
+        }
+      ]
+    },
+    {
+      "Name": "HazardIf",
+      "Namespace": "demo",
+      "DataElements": [
+        {
+          "Name": "IsSignaling",
+          "TypeRef": "vss::vehicle::body::lights::hazard::IsSignaling"
+        },
+        {
+          "Name": "SpeedHazardForward",
+          "TypeRef": "vss::vehicle::chassis::SpeedHazardForward"
+        },
+        {
+          "Name": "SpeedHazardReverse",
+          "TypeRef": "vss::vehicle::chassis::SpeedHazardReverse"
+        }
+      ]
+    },
+    {
+      "Name": "HazardDetectionIf",
+      "Namespace": "demo",
+      "DataElements": [
+        {
+          "Name": "Request",
+          "TypeRef": "vss::vehicle::body::lights::hazard::Request"
+        }
+      ]
+    }
+  ],
+  "ApplicationModules": [
+    {
+      "Name": "SpeedHazardDetection",
+      "Namespace": "demo",
+      "ConsumedInterfaces": [
+        {
+          "InstanceName": "SpeedCalculationIfConsumer",
+          "ModuleInterfaceRef": "demo::SpeedCalculationIf"
+        },
+        {
+          "InstanceName": "HazardIfConsumer",
+          "ModuleInterfaceRef": "demo::HazardIf"
+        }
+      ],
+      "ProvidedInterfaces": [
+        {
+          "InstanceName": "HazardDetectionIfProvider",
+          "ModuleInterfaceRef": "demo::HazardDetectionIf"
+        }
+      ],
+      "PersistencyFiles": [],
+      "ImplementationProperties": {
+        "GenerateUnitTestStubs": true
+      },
+      "Tasks": [
+        {
+          "Name": "HazardCalculation10",
+          "Period": "10ms"
+        }
+      ]
+    }
+  ]
+}

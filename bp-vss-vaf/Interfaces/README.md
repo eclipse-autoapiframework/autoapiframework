@@ -1,0 +1,15 @@
+# Interfaces
+
+This is a VAF interface project: Interfaces
+An interface project can do the following:
+
+Import model artifacts from a catalogue according to the COVESA VSS:
+``` bash
+vaf model import vss
+```
+
+Configure the project in the interfaces.py file and generate the database in JSON format
+using VAF CaC (Configuration as Code) support:
+``` bash
+vaf model generate
+```
