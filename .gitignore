@@ -4,3 +4,6 @@
 build
 public
 **/__pycache__/
+_build/
+bazel-*
+.venv*/
