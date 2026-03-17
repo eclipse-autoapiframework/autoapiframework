@@ -1,0 +1,17 @@
+@startuml cac-cd_executable
+skinparam  class {
+    BackgroundColor  #FFFFFF
+}
+
+class Executable {
+    + executable: vafmodel.Executable
+    --  generic methods --
+    + Executable(name: str, executor_period: datetime.timedelta)
+    + set_executor_period(executor_period: timedelta)
+    + add_application_module(module: AbstractApplicationModule, task_mapping_info: list[tuple[str, timedelta, int]])
+    + connect_interfaces(module_a: AbstractApplicationModule, instance_name_a: str, module_b: AbstractApplicationModule, instance_name_b: str)
+    .. SilKit related methods ..
+    + connect_consumed_interface_to_silkit(app_module: AbstractApplicationModule, instance_name: str, silkit_address_instance_name: str)
+    + connect_provided_interface_to_silkit(app_module: AbstractApplicationModule, instance_name: str, silkit_address_instance_name: str)
+}
+@enduml

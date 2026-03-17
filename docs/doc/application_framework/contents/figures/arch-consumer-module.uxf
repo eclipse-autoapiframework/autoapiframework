@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>15</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1215</x>
+      <y>900</y>
+      <w>720</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>Concrete Platform (for example SIL Kit)
+bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>780</x>
+      <y>480</y>
+      <w>1800</w>
+      <h>345</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Generated&gt;&gt;
+{ProviderModuleNamespace}::{ProviderModuleName}
+--
+
+--
+Data Elements:
++/Allocate_{DataElementName}(): vaf::Result&lt;vaf::DataPtr&lt;{DataElementType}&gt; &gt;
++/SetAllocated_{DataElementName}(data: vaf::DataPtr&lt;{DataElementType}&gt;&amp;&amp;): vaf::Result&lt;void&gt;
++/Set_{DataElementName}(const {data: DataElementType}&amp;): vaf::Result&lt;void&gt;
+...
+
+Operations:
++/RegisterOperationHandler_{OperationName}(std::function&lt;namespace::{OperationName}::Output({ParameterName}: const {ParameterDataType}&amp;, ...)&gt;&amp;&amp; f)
+...
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2160</x>
+      <y>390</y>
+      <w>45</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1590</x>
+      <y>810</y>
+      <w>90</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+uses</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1170</x>
+      <y>390</y>
+      <w>45</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>705</x>
+      <y>285</y>
+      <w>960</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+vaf::ControlInterface
+--
+
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1695</x>
+      <y>285</y>
+      <w>960</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Generated&gt;&gt;
+{ModuleInterfaceNamespace}::{ModuleInterfaceName}Provider
+--
+
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

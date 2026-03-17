@@ -1,0 +1,14 @@
+@startuml cac-cd_app_module
+skinparam  class {
+    BackgroundColor  #FFFFFF
+}
+
+class ApplicationModule {
+    + app_module: vafmodel.ApplicationModule
+    + ApplicationModule(name: str, namespace: str)
+    + add_consumed_interface(instance_name: str, interface: ModuleInterface, is_optional: bool)
+    + add_provided_interface(instance_name: str, interface: ModuleInterface)
+    + add_task(task: Task)
+    + add_task_chain(tasks: list[Task], run_after: list[Task], increment_preferred_offset: bool)
+}
+@enduml

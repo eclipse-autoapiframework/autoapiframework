@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>11</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>715</x>
+      <y>396</y>
+      <w>1430</w>
+      <h>330</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Generated&gt;&gt;
+{InternalCommunicationModuleNamespace}::{InternalCommunicationModuleName}
+--
+
+--
+Data Elements:
++/Allocate_{DataElementName}(): vaf::Result&lt;vaf::DataPtr&lt;{DataElementType}&gt; &gt;
++/SetAllocated_{DataElementName}(data: vaf::DataPtr&lt;{DataElementType}&gt;&amp;&amp;): vaf::Result&lt;void&gt;
++/Set_{DataElementName}(const {data: DataElementType}&amp;): vaf::Result&lt;void&gt;
++/GetAllocated_{DataElementName}(): vaf::Result&lt;vaf::ConstDataPtr&lt;const {DataElementType}&gt; &gt;
++/Get_{DataElementName}(): {DataElementType}
++/RegisterDataElementHandler_{DataElementName}(owner: std::string, f: std::function&lt;void(const vaf::ConstDataPtr&lt;const {DataElementType}&gt;)&gt;&amp;&amp;)
+...
+
+Operations:
++/RegisterOperationHandler_{OperationName}(std::function&lt;namespace::{OperationName}::Output({ParameterName}: const {ParameterDataType}&amp;, ...)&gt;&amp;&amp; f)
++/{OperationName}({ParameterName}: const {ParameterDataType}&amp;, ...): ::vaf::Future&lt;namespace::{OperationName}::Output&gt;
+...
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1056</x>
+      <y>319</y>
+      <w>33</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1771</x>
+      <y>319</y>
+      <w>33</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1925</x>
+      <y>781</y>
+      <w>220</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>Stands for executable-internal communication
+bg=light_gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1991</x>
+      <y>715</y>
+      <w>66</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=-
+</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>715</x>
+      <y>242</y>
+      <w>682</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Generated&gt;&gt;
+{ModuleInterfaceNamespace}::{ModuleInterfaceName}Provider
+--
+
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1441</x>
+      <y>242</y>
+      <w>704</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Generated&gt;&gt;
+{ModuleInterfaceNamespace}::{ModuleInterfaceName}Consumer
+--
+
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1408</x>
+      <y>209</y>
+      <w>33</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1111</x>
+      <y>132</y>
+      <w>638</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+vaf::ControlInterface
+--
+
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

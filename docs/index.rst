@@ -10,44 +10,57 @@
    # https://www.apache.org/licenses/LICENSE-2.0
    #
    # SPDX-License-Identifier: Apache-2.0
+   #
+   # Contributors:
+   #   Thomas Pfleiderer - documentation
    # *******************************************************************************
 
+Welcome to Automotive API Framework Documentation
+=================================================
 
-Requirements Documentation
-==========================
+About Automotive API Framework:
+-------------------------------
 
-This section is dedicated to documenting the requirements for the project. Please include:
+.. toctree::
+   :maxdepth: 1
 
-- Functional requirements
-- Non-functional requirements
-- Use cases
-- Constraints
-- Acceptance criteria
+   doc/standardization/standardization
 
-Example structure:
+Requirements:
+-------------
 
-Functional Requirements
------------------------
-- NEEDS:FR-001: The system shall support importing requirements from external sources (e.g., CSV, Excel, JSON).
-- NEEDS:FR-002: The system shall allow requirements to be linked to test cases and design elements.
+.. toctree::
+   :maxdepth: 1
 
-Non-functional Requirements
----------------------------
-- NEEDS:NFR-001: The requirements management interface shall respond within 2 seconds for all user actions.
-- NEEDS:NFR-002: The system shall support at least 1000 requirements without performance degradation.
+   doc/requirements/requirements   
 
-Use Cases
+VSS GUI Tool:
+-------------
+
+.. toctree::
+   :maxdepth: 1
+
+   doc/vss_gui_tool/10_introduction
+   doc/vss_gui_tool/20_steps
+   doc/vss_gui_tool/30_openpoints
+
+Application Framework:
+----------------------
+
+The following documentation introduces to motivation and concept of this project, i.e., an Application Framework for automotive HPC projects. It further provides technical details of the building blocks it is made of. A glossary section finally lists terms and abbreviations that are used in this project.
+
+.. toctree::
+   :maxdepth: 1
+
+   doc/application_framework/contents/10_introduction
+   doc/application_framework/contents/20_building_blocks
+
+Examples:
 ---------
-- NEEDS:UC-001: As a user, I want to import requirements from a CSV file so that I can quickly populate the system.
-- NEEDS:UC-002: As a user, I want to trace requirements to test cases to ensure coverage.
 
-Constraints
------------
-- NEEDS:C-001: Only requirements in English are supported.
-- NEEDS:C-002: Imported files must not exceed 10MB.
+.. toctree::
+   :maxdepth: 1
 
-Acceptance Criteria
--------------------
-- NEEDS:AC-001: Requirements imported from CSV are visible in the requirements list.
-- NEEDS:AC-002: Each requirement can be linked to at least one test case.
+   doc/examples/bp-ifex-vaf/bp-ifex-vaf
+   doc/examples/bp-vss-vaf/bp-vss-vaf
 

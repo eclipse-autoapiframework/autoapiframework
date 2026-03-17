@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>6</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>744</x>
+      <y>510</y>
+      <w>594</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Generated&gt;&gt;
+{ApplicationModuleNamespace}::{ApplicationModuleName}Base
+--
+#executor_: vaf::ModuleExecutor&amp;
+#{ConsumerInstanceName}_: std::shared_ptr&lt;{ModuleInterfaceNamespace}::{ModuleInterfaceName}Consumer&gt;
+...
+#{ProviderInstanceName}_: std::shared_ptr&lt;{ModuleInterfaceNamespace}::{ModuleInterfaceName}Provider&gt;
+...  
+--
++/Init(): vaf::Result&lt;void&gt;
++/Start()
++/Stop()
++/DeInit()
++/OnError(error: const vaf::Error&amp;)
+/+{TaskName}_Task()/
+...
+
+
+
+
+
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>642</x>
+      <y>438</y>
+      <w>216</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;340.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1032</x>
+      <y>438</y>
+      <w>36</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+uses
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1236</x>
+      <y>438</y>
+      <w>222</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+uses
+</panel_attributes>
+    <additional_attributes>350.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>744</x>
+      <y>696</y>
+      <w>594</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Stubs Generated&gt;&gt;
+{ApplicationModuleNamespace}::{ApplicationModuleName}
+--
+
+--
++/{TaskName}_Task()
+...
+
+
+
+
+
+bg=red</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1038</x>
+      <y>666</y>
+      <w>18</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>456</x>
+      <y>396</y>
+      <w>384</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+vaf::ControlInterface
+--
+
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>852</x>
+      <y>396</y>
+      <w>384</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Generated&gt;&gt;
+{ModuleInterfaceNamespace}::{ModuleInterfaceName}Provider
+--
+
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1248</x>
+      <y>396</y>
+      <w>384</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Generated&gt;&gt;
+{ModuleInterfaceNamespace}::{ModuleInterfaceName}Consumer
+--
+
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

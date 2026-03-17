@@ -1,0 +1,63 @@
+@startuml cac-cd_datatypes
+skinparam Linetype ortho
+skinparam WrapWidth 500
+skinparam  class {
+    BackgroundColor  #FFFFFF
+}
+
+abstract class AbstractVafType {
+    + data_type: vafmodel.DataType
+}
+
+class Struct {
+    + Struct(name: str, namespace: str, sub_elements: list[vafmodel.SubElement])
+    + add_subelement(name: str, datatype: BaseTypesWrapper | AbstractVafType)
+    + internal_model: vafmodel.Struct
+}
+
+class Vector {
+    + Vector(namespace: str, datatype: BaseTypesWrapper | AbstractVafType, size: int, name: str)
+    + internal_model: vafmodel.Vector
+}
+
+class String {
+    + String(name: str, namespace: str)
+    + internal_model: vafmodel.String
+}
+
+class TypeRef {
+    + TypeRef(name: str, namespace: str, datatype: BaseTypesWrapper | AbstractVafType)
+    + internal_model: vafmodel.TypeRef
+}
+
+class Map {
+    + Map(name: str, namespace: str, key_type: BaseTypesWrapper | AbstractVafType, value_type: BaseTypesWrapper | AbstractVafType)
+    + internal_model: vafmodel.Map
+}
+
+class Array {
+    + Array(namespace: str, datatype: BaseTypesWrapper | AbstractVafType, size: int, name: str)
+    + internal_model: vafmodel.Array
+}
+
+class Enum {
+    + Enum(name: str, namespace: str, literals: list[vafmodel.EnumLiteral])
+    + add_entry(label: str, value: int)
+    + internal_model: vafmodel.VafEnum
+}
+
+AbstractVafType <|-- Struct
+AbstractVafType <|-- Vector
+AbstractVafType <|-- String
+AbstractVafType <|-- TypeRef
+AbstractVafType <|-- Map
+AbstractVafType <|-- Array
+AbstractVafType <|-- Enum
+
+Struct -[hidden]d- Vector
+Vector -[hidden]d- Array
+
+String -[hidden]d- TypeRef
+TypeRef -[hidden]d- Map
+Map -[hidden]d- Enum
+@enduml

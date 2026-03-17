@@ -1,0 +1,24 @@
+@startuml cac-overview
+skinparam MinClassWidth 150
+skinparam  class {
+    BackgroundColor  #FFFFFF
+}
+
+class Executable {
+    +application_modules: list[AbstractApplicationModule]
+}
+
+class ApplicationModule {
+    +consumed_interfaces: ModuleInterface
+    +provided_interfaces: ModuleInterface
+    +tasks: list[Task]
+}
+
+class Task
+
+class ModuleInterface
+
+Executable "1..*" o-- "0..*" ApplicationModule
+ApplicationModule "1..*" o-- "0..*" Task
+ApplicationModule "1..*" o-- "0..*" ModuleInterface
+@enduml

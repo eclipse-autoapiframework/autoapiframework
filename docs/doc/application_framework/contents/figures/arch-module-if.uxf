@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1359</x>
+      <y>360</y>
+      <w>234</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Generated&gt;&gt;DataTypes
+--
+Arrays
+Enums
+Maps
+Strings
+Structs
+Typerefs
+Vectors
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1584</x>
+      <y>396</y>
+      <w>180</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+uses</panel_attributes>
+    <additional_attributes>10.0;20.0;180.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1359</x>
+      <y>216</y>
+      <w>234</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>BaseDataTypes
+--
+bool
+double
+float
+int
+uint</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1584</x>
+      <y>270</y>
+      <w>180</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+uses</panel_attributes>
+    <additional_attributes>10.0;20.0;180.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1746</x>
+      <y>243</y>
+      <w>990</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Generated&gt;&gt;
+{ModuleInterfaceNamespace}::{ModuleInterfaceName}Consumer
+--
+
+--
+Data Elements:
+/+GetAllocated_{DataElementName}(): vaf::Result&lt;vaf::ConstDataPtr&lt;const {DataElementType}&gt; &gt;/
+/+Get_{DataElementName}(): {DataElementType}/
+/+RegisterDataElementHandler_{DataElementName}(owner: std::string, f: std::function&lt;void(const vaf::ConstDataPtr&lt;const {DataElementType}&gt;)&gt;&amp;&amp;)/
+...
+
+Operations:
+/+{OperationName}({ParameterName}: const {ParameterDataType}&amp;, ...): ::vaf::Future&lt;namespace::{OperationName}::Output&gt;/
+...
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>126</x>
+      <y>243</y>
+      <w>1080</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Generated&gt;&gt;
+{ModuleInterfaceNamespace}::{ModuleInterfaceName}Provider
+--
+
+--
+Data Elements:
+/+Allocate_{DataElementName}(): vaf::Result&lt;vaf::DataPtr&lt;{DataElementType}&gt; &gt;/
+/+SetAllocated_{DataElementName}(data: vaf::DataPtr&lt;{DataElementType}&gt;&amp;&amp;): vaf::Result&lt;void&gt;/
+/+Set_{DataElementName}(const {data: DataElementType}&amp;): vaf::Result&lt;void&gt;/
+...
+
+Operations:
+/+RegisterOperationHandler_{OperationName}(std::function&lt;namespace::{OperationName}::Output({ParameterName}: const {ParameterDataType}&amp;, ...)&gt;&amp;&amp; f)/
+...
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1197</x>
+      <y>396</y>
+      <w>180</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+uses</panel_attributes>
+    <additional_attributes>180.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1197</x>
+      <y>270</y>
+      <w>180</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+uses</panel_attributes>
+    <additional_attributes>180.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+</diagram>

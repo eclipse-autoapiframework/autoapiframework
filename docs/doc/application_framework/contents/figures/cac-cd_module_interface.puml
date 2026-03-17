@@ -1,0 +1,12 @@
+@startuml cac-cd_module_interface
+skinparam  class {
+    BackgroundColor  #FFFFFF
+}
+
+class ModuleInterface {
+    + mi: vafmodel.ModuleInterface
+    + ModuleInterface(name: str, namespace: str)
+    + add_data_element(name: str, datatype: BaseTypesWrapper | AbstractVafType)
+    + add_operation(name: str,\n\tin_parameter: dict[str, BaseTypesWrapper | AbstractVafType],\n\tout_parameter: dict[str, BaseTypesWrapper | AbstractVafType],\n\tinout_parameter: dict[str, BaseTypesWrapper | AbstractVafType])
+}
+@enduml

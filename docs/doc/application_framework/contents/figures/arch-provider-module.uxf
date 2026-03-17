@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>13</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>741</x>
+      <y>455</y>
+      <w>1443</w>
+      <h>299</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Generated&gt;&gt;
+{ConsumerModuleNamespace}::{ConsumerModuleName}
+--
+
+--
+DataElements:
++/GetAllocated_{DataElementName}(): vaf::Result&lt;vaf::ConstDataPtr&lt;const {DataElementType}&gt; &gt;
++/Get_{DataElementName}(): {DataElementType}
++/RegisterDataElementHandler_{DataElementName}(owner: std::string, f: std::function&lt;void(const vaf::ConstDataPtr&lt;const {DataElementType}&gt;)&gt;&amp;&amp;)
+...
+
+Operations:
++/{OperationName}({ParameterName}: const {ParameterDataType}&amp;, ...): ::vaf::Future&lt;namespace::{OperationName}::Output&gt;
+...
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1885</x>
+      <y>377</y>
+      <w>39</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1118</x>
+      <y>819</y>
+      <w>624</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>Concrete Platform (for example SIL Kit)
+bg=gray</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1391</x>
+      <y>741</y>
+      <w>78</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+uses</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1027</x>
+      <y>377</y>
+      <w>39</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1469</x>
+      <y>286</y>
+      <w>832</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Generated&gt;&gt;
+{ModuleInterfaceNamespace}::{ModuleInterfaceName}Consumer
+--
+
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>611</x>
+      <y>286</y>
+      <w>832</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+vaf::ControlInterface
+--
+
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

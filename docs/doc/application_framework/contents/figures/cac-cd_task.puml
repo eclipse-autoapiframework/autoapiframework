@@ -1,0 +1,11 @@
+@startuml cac-cd_task
+skinparam  class {
+    BackgroundColor  #FFFFFF
+}
+
+class Task {
+    + model: vafmodel.ApplicationModuleTasks
+    + Task(name: str, period: datetime.timedelta, preferred_offset: int, run_after: list[Task])
+    + add_run_after(task: Task)
+}
+@enduml
