@@ -59,46 +59,26 @@ slot exceed their budget, a warning is logged.
 
 **Example**
 
-.. code:: mermaid
+.. image:: figures/library_class_diagram.png
 
-   %%{init: { 'logLevel': 'debug', 'theme': 'neutral' } }%%
-   classDiagram
-     ApplicationModule1 --> CommunicationModule
-     CommunicationModule --> ApplicationModule2
-     CommunicationModule --> ApplicationModule3
-
-     ApplicationModule1: task1() @ 20ms
-     ApplicationModule2: task2() @ 40ms
-     ApplicationModule3: task3() @ 40ms
+.. raw:: html
+   
+    <br><br>   
 
 Consider the example with three application modules with one task each
 and an executor period of 20ms (see figure below).
 
-.. code:: mermaid
+.. image:: figures/library_time_line_01_white.png
 
-   %%{init: { 'logLevel': 'debug', 'theme': 'neutral' } }%%
-   timeline
-   20ms: task1
-   40ms: task1 & task2 & task3
-   60ms: task1
-   80ms: task1 & task2 & task3
-   100ms: task1
-   120ms: task1 & task2 & task3
+.. raw:: html
+   
+    <br><br>   
 
 Every second cycle, the executor has to execute all three tasks in one
 time slot. For a better load distribution, one can add an offset of 1
 (cycle) to task3 as depicted in the next figure.
 
-.. code:: mermaid
-
-   %%{init: { 'logLevel': 'debug', 'theme': 'neutral' } }%%
-   timeline
-   20ms: task1
-   40ms: task1 & task2 
-   60ms: task1 & task3
-   80ms: task1 & task2 
-   100ms: task1 & task3
-   120ms: task1 & task2
+.. image:: figures/library_time_line_02_white.png
 
 Future/Promise
 --------------
@@ -143,18 +123,11 @@ ExecutableController
 | The following state machine defines the *states and* state
   transitions\* of a module:
 
-.. code:: mermaid
+.. image:: figures/library_state_diagram.png
 
-   %%{init: { 'logLevel': 'debug', 'theme': 'neutral' } }%%
-   stateDiagram
-     [*] --> NotInitialized
-     NotOperational --> Shutdown: DeInit()
-     Shutdown --> [*]
-     NotInitialized --> NotOperational : Init()
-     NotOperational --> Starting: Start()
-     Starting --> Operational: ReportOperational()
-     Operational --> NotOperational: ReportError(..., "..." true) or Stop()
-     Starting --> NotOperational: ReportError(..., "..." true) or Stop()
+.. raw:: html
+   
+    <br><br>   
 
 The following methods trigger a **state transition**: - Init() - Called
 at startup. - DeInit() - Called at shutdown. - Start() - Called when all
@@ -170,62 +143,26 @@ Will call OnError() on all modules that depend on the module.
 The following sequence diagram shows the **startup** of communication
 and application modules by the executable controller:
 
-.. code:: mermaid
+.. image:: figures/library_sequence_diagram_01.png
 
-   %%{init: { 'logLevel': 'debug', 'theme': 'neutral' } }%%
-   sequenceDiagram
-     Controller ->> PlatformModule: Init()
-     Controller ->> Controller: change state of MM to NotOperational
-     Controller ->> ApplicationModule: Init()
-     Controller ->> Controller: change state of AM to NotOperational
-     Controller ->> PlatformModule: Start()
-     Controller ->> Controller: change state of MM to Starting
-     PlatformModule ->> Controller: ReportOperational()
-     Controller ->> Controller: change state of MM to Operational
-     Controller ->> ApplicationModule: Start()
-     Controller ->> Controller: change state of AM to Starting
-     ApplicationModule ->> Controller: ReportOperational()
-     Controller ->> Controller: change state of AM to Operational
+.. raw:: html
+   
+    <br><br>   
 
 The following sequence diagram shows the **shutdown** of platform and
 application modules by the executable controller:
 
-.. code:: mermaid
+.. image:: figures/library_sequence_diagram_02.png
 
-   %%{init: { 'logLevel': 'debug', 'theme': 'neutral' } }%%
-   sequenceDiagram
-     Controller ->> ApplicationModule: Stop()
-     Controller ->> Controller: change state of AM to NotOperational
-     Controller ->> PlatformModule: Stop()
-     Controller ->> Controller: change state of MM to NotOperational
-     Controller ->> ApplicationModule: DeInit()
-     Controller ->> Controller: change state of AM to Shutdown
-     Controller ->> PlatformModule: DeInit()
-     Controller ->> Controller: change state of MM to Shutdown
+.. raw:: html
+   
+    <br><br>   
 
 The following sequence diagram shows the **normal operation** of
 platform and application modules in interaction with the executable
 controller:
 
-.. code:: mermaid
-
-   %%{init: { 'logLevel': 'debug', 'theme': 'neutral' } }%%
-   sequenceDiagram
-     PlatformModule ->> Controller: ReportError(kConnectionLost, true)
-     Controller ->> Controller: change state of MM to NotOperational
-     Controller ->> PlatformModule: Stop()
-     Controller ->> ApplicationModule: OnError(error)
-     opt is error critical
-     ApplicationModule ->> Controller: ReportError(kRequiredModuleNotOperational, true)
-     Controller ->> Controller: change state of AM to NotOperational
-     Controller ->> ApplicationModule: Stop()
-     end
-     Controller ->> PlatformModule: Start()
-     PlatformModule ->> Controller: ReportOperational()
-     Controller ->> Controller: change state of MM to Operational
-     opt is ApplicationModule not operational
-     Controller ->> ApplicationModule: Start()
-     end
+.. image:: figures/library_sequence_diagram_03.png
 
 Logging
 -------

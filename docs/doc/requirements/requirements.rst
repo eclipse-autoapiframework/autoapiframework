@@ -12,7 +12,7 @@
    # SPDX-License-Identifier: Apache-2.0
    #
    # Contributors:
-   #   TTorsten Rosenbauer - first documentation
+   #   Torsten Rosenbauer - first documentation
    # *******************************************************************************
 
 
