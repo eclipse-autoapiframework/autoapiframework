@@ -26,7 +26,7 @@ It is an industry relevant data standard developed as part of the Connected Vehi
 It is currently a global OEM-led joint development. 
 Though, the main aim of the VSS is to provide standard interfaces between vehicle and cloud, here VSS is extended to provide a standard definition of the data elements that are exchanged between software components (SWCs).
 
-Process overview
+Process Overview
 ================
 
 Process to be followed with respect to the input interfaces of an application. 

@@ -15,12 +15,12 @@
    #   Thomas Pfleiderer - first documentation
    # *******************************************************************************
 
-Steps to use the GUI tool
+Steps to Use the GUI Tool
 =========================
 
 Execute the Python ``vss_gui.py`` script.
 
-Signal selection
+Signal Selection
 ----------------
 
 1. Provide the path for .vspec files ``scripts\vss\vspec`` through the **Browse Folder** button. 
@@ -43,7 +43,7 @@ Signal selection
    
    |Generate CSV|
    
-Signal creation
+Signal Creation
 ---------------
 
 1. To create a new signal, select the **VSPEC_Update** button. 

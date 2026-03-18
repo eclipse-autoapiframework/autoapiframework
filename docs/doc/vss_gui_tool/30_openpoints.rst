@@ -15,7 +15,7 @@
    #   Thomas Pfleiderer - first documentation
    # *******************************************************************************
 
-Open points/Issues
+Open Points/Issues
 ==================
 
 While updating .vspec files in **VSPEC File Manager**:

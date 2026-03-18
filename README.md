@@ -1,6 +1,6 @@
 # Blueprint projects around the Eclipse Automotive API Framework
 
-This repository includes the following blueprint projects: 
+This repository includes the following blueprint projects in the examples folder: 
 
 | Folder | Project description | 
 | ------ | ------------------- | 
