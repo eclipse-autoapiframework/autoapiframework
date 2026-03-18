@@ -20,8 +20,8 @@ Vehicle Application Framework (VAF). It covers abstraction of required
 primitives such as future, promise, data pointer, error, and logging.
 Beyond that, it contains the basic framework for the execution of
 application and platform communication modules. The execution framework
-is mainly divided into an executor (see `executor.h <../../SwLibraries//vaf_core_library/lib/include/vaf/executor.h>`__)
-and an executable controller class (see `executable_controller_base.h <../../SwLibraries/vaf_core_library/lib/include/vaf/executable_controller_base.h>`__).
+is mainly divided into an executor (see `executor.h <../../../../docs/doc/application_framework/contents/code/executor.h>`__)
+and an executable controller class (see `executable_controller_base.h <../../../../docs/doc/application_framework/contents/code/executable_controller_base.h>`__).
 
 An instance of the executable controller class is created in the main
 function of every VAF executable, where it acts as entry point for
@@ -39,7 +39,7 @@ Executor
 --------
 
 The executor ensures periodic task execution (see
-`executor.h <../../SwLibraries/vaf_core_library/lib/include/vaf/executor.h>`__).
+`executor.h <../../../../docs/doc/application_framework/contents/code/executor.h>`__).
 The period can be configured with the *ExecutorPeriod* parameter in the
 executable configuration. Tasks are processed while considering module
 dependencies. That is, if an application module A depends from
@@ -85,7 +85,7 @@ Future/Promise
 
 The abstraction of *Future* and *Promise* primitives is encapsulated by
 the ``vaf::Future`` and ``vaf::Promise`` namespaces respectively. For
-details see `future.h <../../SwLibraries/vaf_core_library/lib/include/vaf/future.h>`__.
+details see `future.h <../../../../docs/doc/application_framework/contents/code/future.h>`__.
 
 Data pointer
 ------------
@@ -97,21 +97,21 @@ underlying type of a ``vaf::DataPtr`` or a ``vaf::ConstDataPtr`` is not
 fixed. For the ``vaf::DataPtr`` case the underlying type can be a
 platform-specific type, for example ``std::unique_ptr``. Same holds for
 the ``vaf::ConstDataPtr`` case, which also maps to ``std::unique_ptr``
-for example. See `data_ptr.h <../../SwLibraries/vaf_core_library/lib/include/vaf/data_ptr.h>`__
+for example. See `data_ptr.h <../../../../docs/doc/application_framework/contents/code/data_ptr.h>`__
 for the details.
 
 Error
 -----
 
 The abstraction of error codes, i.e., ``vaf::Error``, is implemented in
-`error_domain.h <../../SwLibraries/vaf_core_library/lib/include/vaf/error_domain.h>`__.
+`error_domain.h <../../../../docs/doc/application_framework/contents/code/error_domain.h>`__.
 
 Error reporting
 ~~~~~~~~~~~~~~~
 
 Modules can report errors via
 ``ReportError(ErrorCode error_code, std::string msg, bool critical = false)``.
-See `controller_interface.h <../../SwLibraries/vaf_core_library/lib/include/vaf/controller_interface.h>`__.
+See `controller_interface.h <../../../../docs/doc/application_framework/contents/code/controller_interface.h>`__.
 If ``critical`` is set to *true*, the state of the module changes to
 *not operational*. Errors are further propagated to other modules that
 depend on the module in question.
@@ -119,7 +119,7 @@ depend on the module in question.
 ExecutableController
 --------------------
 
-| The executable controller manages the states of the application and communication modules (see   `executable_controller_base.h <../../SwLibraries/vaf_core_library/lib/include/vaf/executable_controller_base.h>`__).
+| The executable controller manages the states of the application and communication modules (see `executable_controller_base.h <../../../../docs/doc/application_framework/contents/code/executable_controller_base.h>`__).
 | The following state machine defines the *states and* state
   transitions\* of a module:
 
@@ -168,4 +168,4 @@ Logging
 -------
 
 Logging functionality is encapsulated by the ``vaf::Logger`` namespace.
-For details see `logging.h <../../SwLibraries/vaf_core_library/lib/include/vaf/logging.h>`__.
+For details see `logging.h <../../../../docs/doc/application_framework/contents/code/logging.h>`__.
