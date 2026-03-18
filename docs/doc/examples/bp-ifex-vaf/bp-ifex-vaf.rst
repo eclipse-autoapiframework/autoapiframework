@@ -6,7 +6,7 @@ This blueprint extends the one with VSS as provided in `bp-vss-vaf <../bp-vss-va
 IFEX
 ----
 
-IFEX does not follow the signal-tree approach as realized by VSS. Instead, datatypes and complete interfaces can be defined in a layered way. The representation and editing format is YAML. Please find the corresponding IFEX file for the speed hazard detection sample 2application in the `ifex-sample-zf.yaml <../../../../examples/bp-ifex-vaf/model/ifex/ifex-sample-zf.yaml>`__.
+IFEX does not follow the signal-tree approach as realized by VSS. Instead, datatypes and complete interfaces can be defined in a layered way. The representation and editing format is YAML. Please find the corresponding IFEX file for the speed hazard detection sample application in the `ifex-sample-zf.yaml <../../../../examples/bp-ifex-vaf/model/ifex/ifex-sample-zf.yaml>`__.
 
 VAF interface project
 ---------------------
