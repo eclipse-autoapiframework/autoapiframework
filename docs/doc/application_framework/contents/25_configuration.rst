@@ -67,17 +67,11 @@ Consumed interfaces can be marked as optional, which allows the
 application module to start before the a corresponding provider is
 available.
 
-.. image:: figures/cac-cd_module_interface.svg
-
-.. raw:: html
-   
-    <br><br>
-
 Tasks are used to execute the business logic functionality. They can be
 added to the application module either individually or as a task chain.
 The latter ensures that the tasks are executed in a specific order.
 
-<img src="./figures/cac-cd_app_module.svg" alt="cac-cd_app_module" width="460"/><br>
+.. image:: figures/cac-cd_app_module.svg
 
 Module Interface
 ~~~~~~~~~~~~~~~~
