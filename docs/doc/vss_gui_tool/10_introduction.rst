@@ -12,7 +12,7 @@
    # SPDX-License-Identifier: Apache-2.0
    #
    # Contributors:
-   #   Thomas Pfleiderer - firstdocumentation
+   #   Thomas Pfleiderer - first documentation
    # *******************************************************************************
 
 Introduction
