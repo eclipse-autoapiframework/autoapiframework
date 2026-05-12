@@ -1,7 +1,24 @@
+..
+   # *******************************************************************************
+   # Copyright (c) 2024 Contributors to the Eclipse Foundation
+   #
+   # See the NOTICE file(s) distributed with this work for additional
+   # information regarding copyright ownership.
+   #
+   # This program and the accompanying materials are made available under the
+   # terms of the Apache License Version 2.0 which is available at
+   # https://www.apache.org/licenses/LICENSE-2.0
+   #
+   # SPDX-License-Identifier: Apache-2.0
+   #
+   # Contributors:
+   #   Thomas Pfleiderer - first documentation
+   # *******************************************************************************
+
 Blueprint project (IFEX + VAF)
 ==============================
 
-This blueprint extends the one with VSS as provided in `bp-vss-vaf <../bp-vss-vaf/>`__. Instead of VSS, Interface Exchange (IFEX) is used as decsription and input format.
+This blueprint extends the one with VSS as provided in `bp-vss-vaf <../bp-vss-vaf/>`__. Instead of VSS, Interface Exchange (IFEX) is used as description and input format.
 
 IFEX
 ----
@@ -23,4 +40,4 @@ Finally, the complete interface definition gets exported to the VAF model format
 Next steps
 ----------
 
-From here, the same steps apply as described for the VSS blueprint. See the corresponding `README <../../../../examples/bp-vss-vaf/README.md>`__ and `project folder <../../../../examples/bp-ifex-vaf/>`__ for details. Application module and integration can be re-used from there.
+From here, the same steps apply as described for the VSS blueprint. See the corresponding `README <../../../../examples/bp-vss-vaf/README.md>`__ and `project folder <../../../../examples/bp-ifex-vaf/>`__ for details. Application module and integration can be reused from there.
