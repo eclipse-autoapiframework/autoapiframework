@@ -1,0 +1,372 @@
+metamodel:
+  name: VSS-Extension-Metamodel
+  version: 1.0.0
+  scope: Core standardization baseline
+  intent: Core interface types and essential metadata required for standardized API definition and generation.
+  generationTargets:
+  - JSON-Schema
+  notes:
+  - 'ASIL is conditional for Data and Parameter: present whenever safety relevance exists.'
+  enums:
+    ASIL:
+    - QM
+    - A
+    - B
+    - C
+    - D
+    UpdatePolicy:
+    - on_change
+    - cyclic
+    - event
+    QualityCode:
+    - good
+    - uncertain
+    - bad
+    - substituted
+    - stale
+    ValueState:
+    - raw
+    - filtered
+    - fused
+    - predicted
+    - simulated
+    - substituted
+    - derived
+    TimestampSource:
+    - system_monotonic
+    - system_realtime
+    - gps
+    - network
+    - provider_local
+    SecurityLevel:
+    - public
+    - internal
+    - restricted
+    RunType:
+    - init
+    - cyclic
+    - event
+    - terminate
+    SchedulingPolicy:
+    - preemptive
+    - non_preemptive
+    - fifo
+    - round_robin
+    PermissionState:
+    - allowed
+    - inhibited
+    AvailabilityState:
+    - available
+    - degraded
+    - unavailable
+    AckState:
+    - accepted
+    - rejected
+    - partial
+    - expired
+    - clipped
+    EventClass:
+    - alarm
+    - warning
+    - info
+    - lifecycle
+    - diagnostic
+    - safety
+    PersistenceClass:
+    - volatile
+    - ignition_cycle
+    - permanent
+    - learned_nonvolatile
+  reusablePropertyGroups:
+    DataQualifierBundle:
+      description: Standard qualifier metadata for Data interfaces.
+      properties:
+        qualityCode:
+          type: enum
+          enumRef: QualityCode
+          mandatory: false
+          description: Current quality state of the value.
+        valueState:
+          type: enum
+          enumRef: ValueState
+          mandatory: false
+          description: Processing/origin state of the value.
+        timestampSource:
+          type: enum
+          enumRef: TimestampSource
+          mandatory: false
+          description: Clock/source used for timestamping.
+        freshnessThresholdMs:
+          type: integer
+          mandatory: false
+          description: Maximum acceptable age before value is treated as stale.
+        accuracy:
+          type: number
+          mandatory: false
+          description: Expected measurement or estimation accuracy.
+        confidenceLevelPct:
+          type: number
+          mandatory: false
+          description: Confidence level associated with the value.
+        availabilityCondition:
+          type: string
+          mandatory: false
+          description: Condition under which the value is considered available.
+        invalidValuePolicy:
+          type: string
+          mandatory: false
+          description: Expected handling rule when value is invalid.
+        stalenessReaction:
+          type: string
+          mandatory: false
+          description: Expected reaction when freshness threshold is violated.
+        validRange:
+          type: object
+          mandatory: false
+          description: Plausibility range distinct from engineering min/max.
+        sourceHealth:
+          type: string
+          mandatory: false
+          description: Provider/source health information.
+        degradationMode:
+          type: string
+          mandatory: false
+          description: Current degradation mode propagated from source or function.
+  interfaceTypes:
+    Data:
+      purpose: Runtime application-visible data signal.
+      namingOrPathConvention: VSS node path, e.g. Vehicle.<Domain>.<Signal>
+      mandatoryProperties:
+        name:
+          type: string
+          description: Unique interface/node name.
+        path:
+          type: string
+          description: Canonical VSS path.
+        datatype:
+          type: string
+          description: Data type of the value.
+        description:
+          type: string
+          description: Functional meaning of the signal.
+        unit:
+          type: string
+          conditional: mandatory for numeric data
+          description: Engineering unit.
+      conditionalProperties:
+        ASIL:
+          type: enum
+          enumRef: ASIL
+          condition: mandatory when safety-relevant
+      recommendedProperties:
+        min:
+          type: number
+        max:
+          type: number
+        defaultValue:
+          type: any
+        allowedValues:
+          type: array
+        resolution:
+          type: number
+        precision:
+          type: number
+        updatePolicy:
+          type: enum
+          enumRef: UpdatePolicy
+        minUpdatePeriodMs:
+          type: integer
+        requirementRefs:
+          type: array[string]
+        qualifiers:
+          type: groupRef
+          groupRef: DataQualifierBundle
+    Parameter:
+      purpose: Configurable or calibratable value distinguished from runtime data.
+      namingOrPathConvention: VSS node path, e.g. Vehicle.<Domain>.<Function>.<Parameter>
+      mandatoryProperties:
+        name:
+          type: string
+        datatype:
+          type: string
+        defaultValue:
+          type: any
+        description:
+          type: string
+        unit:
+          type: string
+          conditional: mandatory for numeric parameter
+      conditionalProperties:
+        ASIL:
+          type: enum
+          enumRef: ASIL
+          condition: mandatory when parameter influences safety
+      recommendedProperties:
+        min:
+          type: number
+        max:
+          type: number
+        allowedValues:
+          type: array
+        tunable:
+          type: boolean
+        parameterClass:
+          type: string
+        persistenceClass:
+          type: enum
+          enumRef: PersistenceClass
+        resetBehavior:
+          type: string
+        calibrationAccessLevel:
+          type: string
+        variantCondition:
+          type: string
+        writeConstraints:
+          type: string
+        auditRequired:
+          type: boolean
+    Error:
+      purpose: Standardized functional error reporting interface.
+      namingOrPathConvention: <FunctionName>.<ErrorName>.ErrorStatus
+      mandatoryProperties:
+        name:
+          type: string
+        datatype:
+          type: string
+        description:
+          type: string
+        severity:
+          type: string
+      recommendedProperties:
+        maturationTimeMs:
+          type: integer
+        resetTimeMs:
+          type: integer
+        resetCondition:
+          type: string
+        dependencyRefs:
+          type: array[string]
+        raisesSafetyReactionRefs:
+          type: array[string]
+        dtcRef:
+          type: string
+        fallbackBehavior:
+          type: string
+    Scheduling:
+      purpose: Lifecycle and execution contract for application runnables/functions.
+      namingOrPathConvention: <FunctionName>.Init / <FunctionName>.Step / <FunctionName>.Terminate
+      mandatoryProperties:
+        functionName:
+          type: string
+        runType:
+          type: enum
+          enumRef: RunType
+        description:
+          type: string
+      recommendedProperties:
+        cycleTimeMs:
+          type: integer
+        offsetMs:
+          type: integer
+        priority:
+          type: integer
+        schedulingPolicy:
+          type: enum
+          enumRef: SchedulingPolicy
+        debounceMs:
+          type: integer
+        wcetMs:
+          type: number
+        deadlineMs:
+          type: number
+        previousRunnableRef:
+          type: string
+        watchdogSupervision:
+          type: string
+        stackSizeBytes:
+          type: integer
+        ASIL:
+          type: enum
+          enumRef: ASIL
+          mandatory: false
+    SafetyReaction:
+      purpose: Standardized safety-oriented status visible to application.
+      namingOrPathConvention: <SafetyCondition>.SafetyConditionStatus
+      mandatoryProperties:
+        name:
+          type: string
+        datatype:
+          type: string
+        description:
+          type: string
+      recommendedProperties:
+        triggerErrors:
+          type: array[string]
+        ASIL:
+          type: enum
+          enumRef: ASIL
+        requiredReactionTimeMs:
+          type: integer
+        faultContainmentRegion:
+          type: string
+        safeStateHint:
+          type: string
+        degradationAction:
+          type: string
+        latchPolicy:
+          type: string
+        resetCondition:
+          type: string
+    Mode:
+      purpose: Operational mode input/output interface.
+      namingOrPathConvention: <FunctionName>.ModeIn / <FunctionName>.ModeOut
+      mandatoryProperties:
+        name:
+          type: string
+        datatype:
+          type: string
+        description:
+          type: string
+      recommendedProperties:
+        modeSet:
+          type: array[string]
+        defaultMode:
+          type: string
+        transitionRules:
+          type: string
+        modeOwner:
+          type: string
+        availabilityCondition:
+          type: string
+        preconditionRefs:
+          type: array[string]
+        inhibitRefs:
+          type: array[string]
+    Security:
+      purpose: Security interface/policy attached to application-visible interfaces.
+      namingOrPathConvention: Project-defined policy object or bound policy per interface
+      mandatoryProperties:
+        name:
+          type: string
+        securityLevel:
+          type: enum
+          enumRef: SecurityLevel
+        description:
+          type: string
+      recommendedProperties:
+        authPolicy:
+          type: string
+        accessType:
+          type: string
+        integrityRequired:
+          type: boolean
+        confidentialityRequired:
+          type: boolean
+        writeWhen:
+          type: string
+        auditRequired:
+          type: boolean
+        tamperReaction:
+          type: string
+        dualAuthorizationRequired:
+          type: boolean
