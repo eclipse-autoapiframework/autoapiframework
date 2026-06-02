@@ -159,7 +159,7 @@ Eclipse Open Vehicle API
 .. figure:: figures/Open_Vehicle_API_v1_white_cropped.jpg
    :alt: Open vehicle API
 
-As mentioned above only for demonstration purposes we will use the open-source project ``Eclipse Open Vehicle API`` as an example of middleware. It is not ment to become proction-ready.
+As mentioned above only for demonstration purposes we will use the open-source project ``Eclipse Open Vehicle API`` as an example of middleware. It is not meant to become proction-ready.
 It is a modular, component-based C++ framework that provides a scalable and platform-abstracted vehicle software architecture. The communication between the components uses interfaces, so its ideally for demonstrating the ``Eclipse Autoapiframework``.
 
 Right now, there is no code generator available. Later such code generator will be in the project itself rather than here in the ``Eclipse Autoapiframework``.
