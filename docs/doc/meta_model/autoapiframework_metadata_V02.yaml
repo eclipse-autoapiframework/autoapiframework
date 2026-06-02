@@ -1,0 +1,176 @@
+metamodel:
+  Name: Eclipse-autoapiframework-Metamodel
+  version: 0.2.0
+  scope: Core standardization baseline
+  intent: Core interface types and essential metadata required for standardized API definition and generation.
+
+  enums:
+
+    ASIL:
+      - QM
+      - A
+      - B
+      - C
+      - D
+
+    DataQuality:
+      - Uninitialized
+      - Invalid
+      - Valid
+
+    RunType:
+      - init
+      - cyclic
+      - event
+      - terminate
+
+
+  interfaceTypes:
+
+    Data:
+      description: Runtime data interfaces exchanged between applications or systems.
+
+      properties:
+
+        namePath:
+          mandatory: true
+          datatype: string
+          description: Unique interface or node name. Based on canonical VSS path of the data interface - Vehicle.<Domain/Subdomains>.<Signal>
+          example: Vehicle.Speed
+
+        datatype:
+          mandatory: true
+          datatype: string
+          description: Type of the value transported by the interface.
+          examples:
+            - float
+            - uint8
+            - boolean
+
+        description:
+          mandatory: true
+          datatype: string
+          description: Functional meaning of the signal.
+
+        unit:
+          mandatory: true
+          datatype: string
+          description: Engineering unit of the signal.
+          example: km/h
+
+        min:
+          mandatory: true
+          datatype: number
+          description: Minimum representable engineering value.
+
+        max:
+          mandatory: true
+          datatype: number
+          description: Maximum representable engineering value.
+
+        defaultValue:
+          mandatory: true
+          datatype: any
+          description: Default or initialization value.
+
+        resolution:
+          mandatory: true
+          datatype: number
+          description: Smallest measurable quantization value - meant for scaling etc.
+
+        precision:
+          mandatory: true
+          datatype: number
+          description: Number of meaningful digits.
+
+        ASIL:
+          mandatory: true
+          datatype: enum
+          enumRef: ASIL
+          description: Safety classification when the data is safety-relevant.
+
+        minUpdatePeriodMs:
+          mandatory: true
+          datatype: uint32
+          description: Minimum allowed update interval.
+
+        qualityCode:
+          mandatory: true
+          datatype: enum
+          enumRef: DataQuality
+          description: Runtime quality state.
+          note: It is not a static info and hence shall be transformed into a separate signal as it gets updated runtime. e.g., Vehicle.Speed.Value -> For signal value and Vehicle.Speed.Qualifier -> For quality code
+        
+        accuracy:
+          mandatory: true
+          datatype: string
+          description: Expected measurement or estimation accuracy.
+          example: ±0.2 km/h
+
+    Parameter:
+      description: Calibration and configuration interfaces.
+
+      properties:
+
+        namePath:
+          mandatory: true
+          datatype: string
+          description: Unique parameter name. Based on canonical VSS path of the parameter - Vehicle.<Domain/Subdomains>.<Parameter>
+          example: Vehicle.Brake.Gain
+
+        datatype:
+          mandatory: true
+          datatype: string
+          description: Datatype of parameter value.
+
+        defaultValue:
+          mandatory: true
+          datatype: any
+          description: Default parameter value.
+
+        description:
+          mandatory: true
+          datatype: string
+          description: Meaning and intended usage of the parameter.
+
+        unit:
+          mandatory: true
+          datatype: string
+          description: Engineering unit if numeric.
+
+    Scheduling:
+      description: Lifecycle and execution interfaces.
+
+      properties:
+
+        functionName:
+          mandatory: true
+          datatype: string
+          description: Runnable or callable function name.
+
+          namingConvention:
+            - "<FunctionName>.Init"
+            - "<FunctionName>.Step"
+            - "<FunctionName>.Terminate"
+
+        runType:
+          mandatory: true
+          datatype: enum
+          enumRef: RunType
+          description: Activation type of the runnable.
+
+        description:
+          mandatory: true
+          datatype: string
+          description: Purpose of the runnable.
+
+        cycleTimeMs:
+          mandatory: true
+          datatype: uint32
+          description: Runnable periodicity.
+
+        previousRunnableRef:
+          mandatory: true
+          datatype: string
+          description: Runnable that shall execute before this runnable.
+          example: SensorFusion.Step
