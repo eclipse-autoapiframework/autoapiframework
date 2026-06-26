@@ -1,3 +1,12 @@
+The Autoapiframework project is supported by Chips JU.
+
+<img src="CHIPS logo_RGB_full_colour.png" alt="arch-module-if" width="200"/>
+<img src="EN_Co-fundedbytheEU_RGB_POS.png" alt="arch-module-if" width="400"/><br>
+
+The Shift2SDV project (Grant Agreement No. 101194245) is supported by the Chips Joint Undertaking and its members, including top-up funding by the national authorities.
+
+<img src="Shift2sdv_logo_tagline_blue.svg" alt="arch-module-if" width="200"/><br>
+
 # Documentation Generation
 
 This repository supports documentation generation using the [Eclipse S-CORE Docs-As-Code](https://eclipse-score.github.io/docs-as-code) approach. For more information and guidance, visit the official docs-as-code site.
