@@ -1,11 +1,13 @@
-The Autoapiframework project is supported by Chips JU.
+The 'Eclipse Automotive API Framework' project is supported by Chips JU.
 
-<img src="CHIPS logo_RGB_full_colour.png" alt="arch-module-if" width="200"/>
-<img src="EN_Co-fundedbytheEU_RGB_POS.png" alt="arch-module-if" width="400"/><br>
+<img src="CHIPS_logo_RGB_full_colour.png" alt="arch-module-if" height="80"/>
+<img src="EN_Co-fundedbytheEU_RGB_POS.png" alt="arch-module-if" height="80"/>
 
 The Shift2SDV project (Grant Agreement No. 101194245) is supported by the Chips Joint Undertaking and its members, including top-up funding by the national authorities.
 
-<img src="Shift2sdv_logo_tagline_blue.svg" alt="arch-module-if" width="200"/><br>
+<img src="Shift2sdv_logo_tagline_blue.svg" alt="arch-module-if" height="80"/>
+
+<hr style="height:6px; background-color:#333;"></br></br>
 
 # Documentation Generation
 
