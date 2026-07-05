@@ -42,8 +42,9 @@ Meta Model:
 
    doc/meta_model/meta_model      
 
-Examples:
----------
+
+application-framework Examples:
+-------------------------------
 
 .. toctree::
    :maxdepth: 1
