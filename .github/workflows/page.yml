@@ -9,6 +9,11 @@ on:
 
 jobs:
   docs:
+    permissions:
+      contents: write
+      pull-requests: write
+      pages: write
+      id-token: write
     uses: eclipse-score/cicd-workflows/.github/workflows/docs.yml@main
     with:
       retention-days: 3
