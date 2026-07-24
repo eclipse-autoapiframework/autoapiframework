@@ -1,0 +1,14 @@
+name: Documentation CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - feature/build-gh-page
+
+jobs:
+  docs:
+    uses: eclipse-score/cicd-workflows/.github/workflows/docs.yml@main
+    with:
+      retention-days: 3
