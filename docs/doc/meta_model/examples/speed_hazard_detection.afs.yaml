@@ -1,0 +1,113 @@
+functionSpecification:
+  name: SpeedHazardDetection
+  version: 1.0.0
+  metaModelRef:
+    name: Eclipse-autoapiframework-Metamodel
+    version: 0.3.0
+
+  description: >-
+    Detects rapid acceleration and requests hazard warning lights if the
+    configured threshold is exceeded.
+
+  dataInterfaces:
+    - namePath: Vehicle.Speed
+      direction: input
+      dataType: float
+      description: Current vehicle speed value.
+      unit: km/h
+      min: 0.0
+      max: 300.0
+      defaultValue: 0.0
+      resolution: 0.1
+      precision: 1
+      ASIL: B
+      minUpdatePeriodMs: 10
+      qualityCode: valid
+      accuracy: "+/-0.2 km/h"
+      protection: complement
+
+    - namePath: Vehicle.Acceleration.Longitudinal
+      direction: input
+      dataType: float
+      description: Longitudinal acceleration used to detect strong acceleration events.
+      unit: m/s2
+      min: -20.0
+      max: 20.0
+      defaultValue: 0.0
+      resolution: 0.01
+      precision: 2
+      ASIL: B
+      minUpdatePeriodMs: 10
+      qualityCode: valid
+      accuracy: "+/-0.05 m/s2"
+      protection: complement
+
+    - namePath: Vehicle.Body.Lights.Hazard.Request
+      direction: output
+      dataType: boolean
+      description: True requests activation of hazard warning lights.
+      unit: boolean
+      min: 0
+      max: 1
+      defaultValue: false
+      resolution: 1
+      precision: 1
+      ASIL: B
+      minUpdatePeriodMs: 20
+      qualityCode: valid
+      accuracy: logical
+      protection: complement
+
+    # Quality signals can be modeled as separate interfaces at runtime.
+    - namePath: Vehicle.Speed.Qualifier
+      direction: input
+      dataType: uint8
+      description: Quality qualifier for Vehicle.Speed value.
+      unit: code
+      min: 0
+      max: 5
+      defaultValue: 0
+      resolution: 1
+      precision: 1
+      ASIL: QM
+      minUpdatePeriodMs: 10
+      qualityCode: valid
+      accuracy: enum-based
+      protection: none
+
+  parameters:
+    - namePath: Vehicle.Chassis.SpeedHazardForward
+      dataType: float
+      defaultValue: 10.0
+      description: >-
+        Relative speed increase threshold in percent for triggering
+        hazard request while driving forward.
+      unit: percent
+
+    - namePath: Vehicle.Chassis.HazardRequestDurationMs
+      dataType: uint32
+      defaultValue: 3000
+      description: Hold time for hazard request after trigger.
+      unit: ms
+
+  scheduling:
+    - functionName: SpeedHazardDetection.Init
+      runType: init
+      description: Initialize internal states and latched outputs.
+      cycleTimeMs: 0
+      ASIL: B
+      previousRunnableRef: System.Startup
+
+    - functionName: SpeedHazardDetection.Step
+      runType: cyclic
+      description: Evaluate inputs and calculate hazard request output.
+      cycleTimeMs: 20
+      ASIL: B
+      previousRunnableRef: SpeedHazardDetection.Init
+
+    - functionName: SpeedHazardDetection.Terminate
+      runType: terminate
+      description: Shutdown cleanup for deterministic deactivation.
+      cycleTimeMs: 0
+      ASIL: QM
+      previousRunnableRef: SpeedHazardDetection.Step
