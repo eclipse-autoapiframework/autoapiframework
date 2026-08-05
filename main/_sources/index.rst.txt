@@ -1,6 +1,6 @@
 ..
    # *******************************************************************************
-   # Copyright (c) 2026 Contributors to the Eclipse Foundation
+   # Copyright (c) 2024 Contributors to the Eclipse Foundation
    #
    # See the NOTICE file(s) distributed with this work for additional
    # information regarding copyright ownership.
@@ -40,11 +40,13 @@ Meta Model:
 .. toctree::
    :maxdepth: 1
 
-   doc/meta_model/meta_model      
+   doc/meta_model/meta_model_purpose
+   doc/meta_model/meta_model
+   doc/meta_model/meta_model_function_adapter
+   doc/meta_model/meta_model_examples  
 
-
-application-framework Examples:
--------------------------------
+Examples (for application-framework):
+-------------------------------------
 
 .. toctree::
    :maxdepth: 1

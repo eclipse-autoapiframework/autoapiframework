@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Standardized Application API &#8212; Eclipse Automotive API Framework  documentation</title>
+    <title>Function Adapter &#8212; Eclipse Automotive API Framework  documentation</title>
   
   
   
@@ -63,11 +63,11 @@
     <script src="../../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
     <script src="../../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
     <script src="../../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'doc/standardization/standardization';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'doc/meta_model/meta_model_function_adapter';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Requirements" href="../requirements/requirements.html" />
-    <link rel="prev" title="Welcome to Automotive API Framework Documentation" href="../../index.html" />
+    <link rel="next" title="Examples" href="meta_model_examples.html" />
+    <link rel="prev" title="Meta Model" href="meta_model.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.1" />
@@ -144,8 +144,8 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../standardization/standardization.html">
     Standardized Application API
   </a>
 </li>
@@ -159,21 +159,21 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../meta_model/meta_model_purpose.html">
+  <a class="nav-link nav-internal" href="meta_model_purpose.html">
     Purpose of the Meta Model
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../meta_model/meta_model.html">
+  <a class="nav-link nav-internal" href="meta_model.html">
     Meta Model
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../meta_model/meta_model_function_adapter.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
     Function Adapter
   </a>
 </li>
@@ -187,7 +187,7 @@
                 <ul id="pst-nav-more-links" class="dropdown-menu">
                     
 <li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../meta_model/meta_model_examples.html">
+  <a class="nav-link dropdown-item nav-internal" href="meta_model_examples.html">
     Examples
   </a>
 </li>
@@ -282,8 +282,8 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../standardization/standardization.html">
     Standardized Application API
   </a>
 </li>
@@ -297,28 +297,28 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../meta_model/meta_model_purpose.html">
+  <a class="nav-link nav-internal" href="meta_model_purpose.html">
     Purpose of the Meta Model
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../meta_model/meta_model.html">
+  <a class="nav-link nav-internal" href="meta_model.html">
     Meta Model
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../meta_model/meta_model_function_adapter.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
     Function Adapter
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../meta_model/meta_model_examples.html">
+  <a class="nav-link nav-internal" href="meta_model_examples.html">
     Examples
   </a>
 </li>
@@ -403,7 +403,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Standardized Application API</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Function Adapter</span></li>
   </ul>
 </nav>
 </div>
@@ -420,135 +420,85 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <figure class="align-default">
-<img alt="function integration workflow" src="../../_images/function_integration_workflow.png" />
-</figure>
-<p><strong>Background</strong></p>
-<p>Developing automotive applications for microprocessor-based HPCs is challenging because application code from conventional systems is often tightly coupled to the middleware and operating system. Low‑level middleware APIs add complexity, requiring developers to write and maintain extensive boilerplate for integration and testing, while also demanding deep automotive-specific knowledge of the HPC software stack.</p>
-<p><strong>Scope</strong></p>
-<p>The Eclipse Automotive API Framework decouples application logic from the middleware stack and operating system in automotive HPC systems by providing an application-facing interface and defining the accompanying workflow.</p>
-<section id="standardized-application-api">
-<h1>Standardized Application API<a class="headerlink" href="#standardized-application-api" title="Link to this heading">#</a></h1>
-<p><strong>How the Application Software Developer Meets the Middleware Integrator: Through a Standardized API</strong></p>
-<figure class="align-default">
-<img alt="mapping asw function" src="../../_images/mapping_asw_function.png" />
-</figure>
-<p>We aim to introduce a standardized application API that also incorporates safety-relevant aspects. Such an API enables a clear separation between the vehicle-function developer (or vehicle-function integrator) and the underlying middleware.
-This approach creates platform independence while maintaining safety guarantees.</p>
-<p>With a standardized application API, application code remains stable. Only the generated middleware glue code changes per platform.</p>
-<p>This separation ensures:</p>
-<ul class="simple">
-<li><p>the application remains untouched and re-certifiable</p></li>
-<li><p>platform-specific safety mechanisms are handled reliably by the generator</p></li>
-</ul>
-<p>For testing and demonstration purposes, the vehicle function could, for example, run on top of the open-source project <code class="docutils literal notranslate"><span class="pre">Eclipse</span> <span class="pre">Open</span> <span class="pre">Vehicle</span> <span class="pre">API</span></code>, while later the same function would operate on the target middleware without requiring changes to the application logic.</p>
-</section>
-<section id="collaboration-wanted">
-<h1>Collaboration wanted<a class="headerlink" href="#collaboration-wanted" title="Link to this heading">#</a></h1>
-<p>We are currently working on defining a safety compliant C++ application interface intended for ASIL B (maybe even up to to ASIL D) capable vehicle functions.</p>
-<p>The goal is to create a middleware independent API that ensures deterministic behavior, robust error propagation and strict memory safety guarantees in line with ISO 26262.
-This includes defining safe state transitions, fault containment boundaries, end to end communication integrity, and standardized diagnostic reporting for safety critical services.</p>
-<p>The overarching objective is to enable developers to implement ASIL relevant vehicle logic without coupling it tightly to specific middleware frameworks or transport layers.</p>
-<p>We are seeking for collaboration partners interested in discussing architectural concepts, validating safety mechanisms and contributing to enhancements aligned with Covesa — especially around portable service definitions, API safety extensions, and cross platform execution models.</p>
-</section>
-<section id="production-readiness">
-<h1>Production Readiness<a class="headerlink" href="#production-readiness" title="Link to this heading">#</a></h1>
-<p>The target of <code class="docutils literal notranslate"><span class="pre">Automotive</span> <span class="pre">API</span> <span class="pre">Framework</span></code> is to integrate with S-CORE or Vector Adaptive Microsar to be production-ready, whereas <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Vehicle</span> <span class="pre">API</span></code> mentioned below is just for demonstration purposes.</p>
-<figure class="align-default">
-<img alt="target middleware" src="../../_images/target_middle_ware.png" />
-</figure>
-<br><br></section>
-<section id="workflow-auto-code-generation">
-<h1>Workflow &amp; Auto Code Generation<a class="headerlink" href="#workflow-auto-code-generation" title="Link to this heading">#</a></h1>
-<p>This project focuses on the standardization of application APIs and the separation of vehicle function implementations from the underlying middleware.
-The following illustration describes four processing steps, where steps 1 and 2 may be treated as a single combined step. These steps will be supported by tooling, including automatic code generation.
-Certain tools will be implemented within the <code class="docutils literal notranslate"><span class="pre">Automotive</span> <span class="pre">API</span> <span class="pre">Framework</span></code>, while others will be handled by the respective middleware.</p>
-<figure class="align-default">
-<img alt="auto code generation" src="../../_images/auto_code_generation_overview.png" />
-</figure>
-<p>The following figure presents an alternative representation of the <code class="docutils literal notranslate"><span class="pre">Eclipse</span> <span class="pre">Autoapiframework</span></code> concept already described in this document.</p>
-<figure class="align-default">
-<img alt="auto code generation" src="../../_images/auto_code_generation.png" />
-</figure>
-<p>With a standardized application API, code generation for the target middleware is possible, though only to a certain extent. These code generators are part of the target-middleware implementation and will not be included in the <code class="docutils literal notranslate"><span class="pre">Eclipse</span> <span class="pre">Autoapiframework</span></code>.</p>
-<p>Why are auto code generators important?</p>
-<p>1. Reduced Human Error
-2.
-Manually writing middleware-integration code is error-prone.
-A code generator creates the same logic consistently and deterministically, which eliminates:</p>
-<ul class="simple">
-<li><p>typos</p></li>
-<li><p>incorrect API usage</p></li>
-<li><p>inconsistent patterns</p></li>
-<li><p>forgotten safety checks</p></li>
-</ul>
-<p>Less manual coding → fewer systematic errors.</p>
-<ol class="arabic simple" start="2">
-<li><p>Enforced Safety Patterns</p></li>
-</ol>
-<p>Code generators can embed proven safety concepts, such as:</p>
-<ul class="simple">
-<li><p>safe state handling</p></li>
-<li><p>range checks and input validation</p></li>
-<li><p>timing and deadline monitoring hooks</p></li>
-<li><p>memory-access restrictions</p></li>
-<li><p>exception/path handling patterns required for ASIL levels</p></li>
-</ul>
-<p>This ensures every generated component has the same safety mechanisms built-in—no developer forgets to implement them.</p>
+  <section id="function-adapter">
+<h1>Function Adapter<a class="headerlink" href="#function-adapter" title="Link to this heading">#</a></h1>
+<section id="overview-and-purpose">
+<h2>Overview and Purpose<a class="headerlink" href="#overview-and-purpose" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Function</span> <span class="pre">Adapter</span></code> is a critical abstraction layer that bridges vehicle functions with underlying middleware platforms.
+It serves as a standardized wrapper that enables vehicle functions to be integrated and executed on any middleware without modification.</p>
+<p>Key Purposes of the <code class="docutils literal notranslate"><span class="pre">Function</span> <span class="pre">Adapter</span></code>:</p>
 <ol class="arabic simple">
-<li><p>Traceability and Compliance with ISO 26262</p></li>
+<li><p><strong>Middleware Abstraction</strong>: The <code class="docutils literal notranslate"><span class="pre">Function</span> <span class="pre">Adapter</span></code> decouples the vehicle function implementation from the specific middleware platform,
+allowing the same function logic to run on different runtimes and integration targets.</p></li>
+<li><p><strong>Static API Contract</strong>: It implements the stable, agreed-upon static API contract derived from the meta model.
+This contract ensures consistent interface definitions, data types, scheduling behavior, and safety semantics across different implementations.</p></li>
+<li><p><strong>Safety and Integrity</strong>: The <code class="docutils literal notranslate"><span class="pre">Function</span> <span class="pre">Adapter</span></code> manages safety-critical aspects including:</p></li>
+<li><p><strong>Portability</strong>: By using the <code class="docutils literal notranslate"><span class="pre">Function</span> <span class="pre">Adapter</span></code> pattern, vehicle functions become portable artifacts that can be:</p></li>
+<li><p><strong>Not a Full AUTOSAR Application</strong>: The <code class="docutils literal notranslate"><span class="pre">Function</span> <span class="pre">Adapter</span></code> is not intended to be a complete replacement for an AUTOSAR Application. It focuses on portable function logic and signal access, while platform-specific capabilities such as middleware integration, lifecycle management, diagnostics, persistence, security, and deployment remain the responsibility of the surrounding runtime environment.</p></li>
 </ol>
-<ul class="simple">
-<li><p>traceability from requirements → design → code</p></li>
-<li><p>reproducible builds</p></li>
-<li><p>evidence of systematic-error prevention</p></li>
-</ul>
-<p>A generator allows:</p>
-<ul class="simple">
-<li><p>automatic tracing from API model → generated code</p></li>
-<li><p>formally verified generation rules</p></li>
-<li><p>consistent output across versions</p></li>
-<li><p>compliance documentation for the generator itself</p></li>
-</ul>
-<p>This reduces certification effort for each project.</p>
-<ol class="arabic simple" start="4">
-<li><p>Faster, Safer Updates and Refactoring</p></li>
-</ol>
-<p>When middleware or safety requirements change, the generator can be updated once—and then regenerate safe conformant code for all applications. No risk of missing updates in manual code.</p>
-<ol class="arabic simple" start="5">
-<li><p>Improved Testability, generated code is:</p></li>
-</ol>
-<ul class="simple">
-<li><p>structurally predictable</p></li>
-<li><p>easier to analyze automatically</p></li>
-<li><p>easier to unit-test (same patterns everywhere)</p></li>
-<li><p>easier to integrate with static analysis tools</p></li>
-</ul>
-<p>Predictable structure = better tool support = fewer safety defects.</p>
-<p><code class="docutils literal notranslate"><span class="pre">Eclipse</span> <span class="pre">Autoapiframework</span></code> can play a major rule on this.</p>
-<br><br></section>
-<section id="eclipse-open-vehicle-api">
-<h1>Eclipse Open Vehicle API<a class="headerlink" href="#eclipse-open-vehicle-api" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Function</span> <span class="pre">Adapter</span></code> essentially transforms the abstract specifications defined in the meta model and YAML instances into concrete,
+executable implementations that maintain the agreed contract regardless of the underlying middleware platform.</p>
 <figure class="align-default">
-<img alt="Open vehicle API" src="../../_images/Open_Vehicle_API_v1_white_cropped.jpg" />
+<img alt="signal protection within the stack" src="../../_images/function_adapter.png" />
 </figure>
-<p>As mentioned above only for demonstration purposes we will use the open-source project <code class="docutils literal notranslate"><span class="pre">Eclipse</span> <span class="pre">Open</span> <span class="pre">Vehicle</span> <span class="pre">API</span></code> as an example of middleware. It is not meant to become proction-ready.
-It is a modular, component-based C++ framework that provides a scalable and platform-abstracted vehicle software architecture. The communication between the components uses interfaces, so its ideally for demonstrating the <code class="docutils literal notranslate"><span class="pre">Eclipse</span> <span class="pre">Autoapiframework</span></code>.</p>
-<p>Right now, there is no code generator available. Later such code generator will be in the project itself rather than here in the <code class="docutils literal notranslate"><span class="pre">Eclipse</span> <span class="pre">Autoapiframework</span></code>.</p>
-<p>The Eclipse Open Vehicle API contains tools and a runtime to create a vehicle abstraction interface for signal- and event-driven functions.</p>
-<ul class="simple">
-<li><p>Component-based</p></li>
-<li><p>Transfer existing signal-based ECUs to HPC</p></li>
-<li><p>Implement new signal- and event-based vehicle functions</p></li>
-<li><p>Vehicle independent implementation (vehicle abstraction)</p></li>
-<li><p>Multi-vendor - open for play-store approach</p></li>
-<li><p>Standardized interface for functions</p></li>
-<li><p>Automate as much as possible - reduce coding</p></li>
-<li><p>Allow HIL and SIL</p></li>
-<li><p>Safety aspects for use with chassis and ADAS functions</p></li>
-</ul>
-<p>Documentation: <a class="reference external" href="https://eclipse.dev/openvehicle-api/">Open Vehicle API</a></p>
-<p>On GitHub: <a class="reference external" href="https://github.com/eclipse-openvehicle-api">Eclipse Open Vehicle API</a></p>
+</section>
+<section id="thoughts-about-signal-protection">
+<h2>Thoughts About Signal Protection<a class="headerlink" href="#thoughts-about-signal-protection" title="Link to this heading">#</a></h2>
+<p>As shown in the following figure, E2E protection is handled by the middleware layer. Since communication between the application and the middleware is local and
+considered less critical, a lightweight supervision mechanism based on a complementary signal is used instead of full E2E protection in order to reduce performance impact.</p>
+<figure class="align-default">
+<img alt="signal protection within the stack" src="../../_images/signal_protection.png" />
+</figure>
+</section>
+<section id="e2e-protection-layer-explained">
+<h2>E2E Protection Layer Explained<a class="headerlink" href="#e2e-protection-layer-explained" title="Link to this heading">#</a></h2>
+<p>The following figures explain why the full E2E Protection is not part of the API.</p>
+<figure class="align-default">
+<img alt="example of a vehicle network" src="../../_images/vehicle_network.png" />
+</figure>
+<div class="pst-scrollable-table-container"><table class="table" id="id1">
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">Random / Typical Modules shown in the picture above:</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
+<tbody>
+<tr class="row-odd"><td><p>Abbreviation</p></td>
+<td><p>Meaning</p></td>
+<td><p>Function</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>ECM</strong></p></td>
+<td><p>Engine Control Module</p></td>
+<td><p>Controls engine operation, fuel injection, ignition</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>BCM</strong></p></td>
+<td><p>Body Control Module</p></td>
+<td><p>Controls doors, windows, lighting, central locking</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>ESP / ESC</strong></p></td>
+<td><p>Electronic Stability Program / Control</p></td>
+<td><p>Vehicle stability control</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>ECU</strong></p></td>
+<td><p>Electronic Control Unit</p></td>
+<td><p>Generic term for a vehicle controller</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>TCM</strong></p></td>
+<td><p>Transmission Control Module</p></td>
+<td><p>Controls gearbox and gear shifts</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>TCU</strong></p></td>
+<td><p>Telematics Control Unit</p></td>
+<td><p>Connectivity, eCall, OTA updates</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>ABS</strong></p></td>
+<td><p>Anti-lock Braking System</p></td>
+<td><p>Prevents wheel lock during braking</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The following figure shows an example of an E2E protection layer and its typical integrity checks.</p>
+<figure class="align-default">
+<img alt="E2E example" src="../../_images/E2E_protection.png" />
+</figure>
+</section>
 </section>
 
 
@@ -562,20 +512,20 @@ It is a modular, component-based C++ framework that provides a scalable and plat
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../../index.html"
+       href="meta_model.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Welcome to Automotive API Framework Documentation</p>
+        <p class="prev-next-title">Meta Model</p>
       </div>
     </a>
     <a class="right-next"
-       href="../requirements/requirements.html"
+       href="meta_model_examples.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Requirements</p>
+        <p class="prev-next-title">Examples</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -598,20 +548,17 @@ It is a modular, component-based C++ framework that provides a scalable and plat
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Standardized Application API</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#collaboration-wanted">Collaboration wanted</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#production-readiness">Production Readiness</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-auto-code-generation">Workflow &amp; Auto Code Generation</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#eclipse-open-vehicle-api">Eclipse Open Vehicle API</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-and-purpose">Overview and Purpose</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#thoughts-about-signal-protection">Thoughts About Signal Protection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e2e-protection-layer-explained">E2E Protection Layer Explained</a></li>
 </ul>
-
   </nav></div>
 
   <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/doc/standardization/standardization.rst.txt"
+      <li><a href="../../_sources/doc/meta_model/meta_model_function_adapter.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
