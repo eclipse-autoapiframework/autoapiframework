@@ -1,0 +1,120 @@
+functionSpecification:
+  name: VehicleSpeedFusion
+  version: 1.0.0
+  metaModelRef:
+    name: Eclipse-autoapiframework-Metamodel
+    version: 0.3.0
+
+  description: >-
+    Fuses wheel-speed and GNSS speed sources into one stable vehicle speed
+    output using a two-rate cyclic execution model.
+
+  dataInterfaces:
+    - namePath: Vehicle.WheelBasedSpeed
+      direction: input
+      dataType: float
+      description: Wheel-based vehicle speed estimate.
+      unit: km/h
+      min: 0.0
+      max: 320.0
+      defaultValue: 0.0
+      resolution: 0.1
+      precision: 1
+      ASIL: B
+      minUpdatePeriodMs: 10
+      qualityCode: valid
+      accuracy: "+/-0.3 km/h"
+      protection: complement
+
+    - namePath: Vehicle.GNSS.SpeedOverGround
+      direction: input
+      dataType: float
+      description: GNSS speed estimate used as a secondary source.
+      unit: km/h
+      min: 0.0
+      max: 320.0
+      defaultValue: 0.0
+      resolution: 0.1
+      precision: 1
+      ASIL: QM
+      minUpdatePeriodMs: 100
+      qualityCode: degraded
+      accuracy: "+/-1.0 km/h"
+      protection: none
+
+    - namePath: Vehicle.WheelBasedSpeed.Qualifier
+      direction: input
+      dataType: uint8
+      description: Quality qualifier for wheel-based speed.
+      unit: code
+      min: 0
+      max: 5
+      defaultValue: 0
+      resolution: 1
+      precision: 1
+      ASIL: QM
+      minUpdatePeriodMs: 10
+      qualityCode: valid
+      accuracy: enum-based
+      protection: none
+
+    - namePath: Vehicle.Speed
+      direction: output
+      dataType: float
+      description: Fused vehicle speed output for downstream consumers.
+      unit: km/h
+      min: 0.0
+      max: 320.0
+      defaultValue: 0.0
+      resolution: 0.1
+      precision: 1
+      ASIL: B
+      minUpdatePeriodMs: 20
+      qualityCode: valid
+      accuracy: "+/-0.5 km/h"
+      protection: complement
+
+  parameters:
+    - namePath: Vehicle.SpeedFusion.Alpha
+      dataType: float
+      defaultValue: 0.7
+      description: Weight of wheel-speed contribution in fusion.
+      unit: ratio
+
+    - namePath: Vehicle.SpeedFusion.MaxDeltaPerStep
+      dataType: float
+      defaultValue: 5.0
+      description: Maximum allowed output change per 20 ms cycle.
+      unit: km/h
+
+  scheduling:
+    - functionName: VehicleSpeedFusion.Init
+      runType: init
+      description: Initialize filter states and fallback defaults.
+      cycleTimeMs: 0
+      ASIL: B
+      previousRunnableRef: System.Startup
+
+    - functionName: VehicleSpeedFusion.PreProcess
+      runType: cyclic
+      description: >-
+        10 ms cyclic runnable that validates inputs, applies plausibility checks,
+        and updates intermediate state.
+      cycleTimeMs: 10
+      ASIL: B
+      previousRunnableRef: VehicleSpeedFusion.Init
+
+    - functionName: VehicleSpeedFusion.Step
+      runType: cyclic
+      description: >-
+        20 ms cyclic runnable that performs source fusion and publishes Vehicle.Speed.
+      cycleTimeMs: 20
+      ASIL: B
+      previousRunnableRef: VehicleSpeedFusion.PreProcess
+
+    - functionName: VehicleSpeedFusion.Terminate
+      runType: terminate
+      description: Release resources and set deterministic safe defaults.
+      cycleTimeMs: 0
+      ASIL: QM
+      previousRunnableRef: VehicleSpeedFusion.Step
