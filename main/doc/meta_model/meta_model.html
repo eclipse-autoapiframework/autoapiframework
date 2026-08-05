@@ -66,8 +66,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'doc/meta_model/meta_model';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Blueprint project (IFEX + VAF)" href="../examples/bp-ifex-vaf/bp-ifex-vaf.html" />
-    <link rel="prev" title="Requirements" href="../requirements/requirements.html" />
+    <link rel="next" title="Function Adapter" href="meta_model_function_adapter.html" />
+    <link rel="prev" title="Purpose of the Meta Model" href="meta_model_purpose.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.1" />
@@ -158,6 +158,13 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="meta_model_purpose.html">
+    Purpose of the Meta Model
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
     Meta Model
@@ -166,18 +173,42 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../examples/bp-ifex-vaf/bp-ifex-vaf.html">
+  <a class="nav-link nav-internal" href="meta_model_function_adapter.html">
+    Function Adapter
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="meta_model_examples.html">
+    Examples
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../examples/bp-ifex-vaf/bp-ifex-vaf.html">
     Blueprint project (IFEX + VAF)
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../examples/bp-vss-vaf/bp-vss-vaf.html">
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../examples/bp-vss-vaf/bp-vss-vaf.html">
     Blueprint project (VSS + VAF)
   </a>
 </li>
 
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -265,9 +296,30 @@
 </li>
 
 
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="meta_model_purpose.html">
+    Purpose of the Meta Model
+  </a>
+</li>
+
+
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
     Meta Model
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="meta_model_function_adapter.html">
+    Function Adapter
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="meta_model_examples.html">
+    Examples
   </a>
 </li>
 
@@ -368,8 +420,19 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="meta-model">
+  <p>Current status of the project</p>
+<figure class="align-default">
+<img alt="time line of the project" src="../../_images/time_line.png" />
+</figure>
+<section id="meta-model">
 <h1>Meta Model<a class="headerlink" href="#meta-model" title="Link to this heading">#</a></h1>
+<p>A signal definition is characterized by a set of attributes and parameters. Attributes describe the signal itself (e.g., its properties and characteristics),
+while parameters provide additional configuration and implementation-specific information. Together, they define all information required for API generation and integration.</p>
+<section id="enum-type-description">
+<h2>Enum Type Description<a class="headerlink" href="#enum-type-description" title="Link to this heading">#</a></h2>
+<p>The enum types are used for signal attributes and parameters and described there, except <strong>FunctionResult</strong>. <strong>FunctionResult</strong> is the return type of the trigger function of the vehicle function.
+Depending on the status the middleware can trigger the required actions.</p>
+</section>
 <section id="data-type-description">
 <h2>Data Type Description<a class="headerlink" href="#data-type-description" title="Link to this heading">#</a></h2>
 <p><strong>Standard Naming / Path Convention:</strong> <code class="docutils literal notranslate"><span class="pre">Vehicle.&lt;Domain&gt;.&lt;Signal&gt;</span></code></p>
@@ -400,7 +463,7 @@ COVESA VSS</strong></p></td>
 <td><p>Vehicle.Speed</p></td>
 <td><p>yes</p></td>
 </tr>
-<tr class="row-even"><td><p>datatype</p></td>
+<tr class="row-even"><td><p>dataType</p></td>
 <td><p>Yes</p></td>
 <td><p>Type of the value transported by the interface.</p></td>
 <td><p>Required for schema generation, validation, and language bindings.</p></td>
@@ -475,7 +538,7 @@ verification, and decomposition.</p></td>
 <td><p>Yes</p></td>
 <td><p>Runtime quality status of the value.  <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p></td>
 <td><p>Applications need qualifier information, not only the raw value.</p></td>
-<td><p>Uninitialized / Invalid / Valid</p></td>
+<td><p>Invalid / Valid  / &amp; more</p></td>
 <td><p>No</p></td>
 </tr>
 <tr class="row-odd"><td><p>accuracy</p></td>
@@ -524,7 +587,7 @@ COVESA VSS</strong></p></td>
 <td><p>Vehicle.Brake.Gain</p></td>
 <td><p>yes</p></td>
 </tr>
-<tr class="row-even"><td><p>datatype</p></td>
+<tr class="row-even"><td><p>dataType</p></td>
 <td><p>Yes</p></td>
 <td><p>Type of parameter value.</p></td>
 <td><p>Required for validation and calibration tooling.</p></td>
@@ -551,6 +614,24 @@ COVESA VSS</strong></p></td>
 <td><p>Required for safe interpretation of tunable values.</p></td>
 <td><p>bar</p></td>
 <td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p>protection</p></td>
+<td><p>Yes</p></td>
+<td><p>Type of the signal protection between
+application and function adapter.</p></td>
+<td><p>Protection defines the signal protection mechanism used between vehicle function
+and middleware. Either the value and its complement are transmitted together or
+the value and complement are transmitted through separate signals or API calls.</p></td>
+<td><p>none / complement</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>direction</p></td>
+<td><p>Yes</p></td>
+<td><p>Defines if the signal is either an
+input or an output signal.</p></td>
+<td><p>Required for the function descriüption</p></td>
+<td><p>input / output</p></td>
+<td><p>No</p></td>
 </tr>
 </tbody>
 </table>
@@ -606,6 +687,14 @@ COVESA VSS</strong></p></td>
 <td><p>SensorFusion.Step</p></td>
 <td><p>No <a class="footnote-reference brackets" href="#id8" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
 </tr>
+<tr class="row-odd"><td><p>ASIL</p></td>
+<td><p>Yes</p></td>
+<td><p>ASIL classification when the scheduler is safety-relevant.</p></td>
+<td><p>Safety-relevant data must preserve safety classification for
+downstream design, verification, and decomposition.</p></td>
+<td><p>QM / A / B / C / D</p></td>
+<td><p>No</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -619,9 +708,10 @@ COVESA VSS</strong></p></td>
 </section>
 <section id="meta-model-file">
 <h2>Meta Model File<a class="headerlink" href="#meta-model-file" title="Link to this heading">#</a></h2>
+<p>Version 0.3.0</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="nt">metamodel</span><span class="p">:</span>
-<span class="linenos">  2</span><span class="w">  </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Eclipse-autoapiframework-Metamodel</span>
-<span class="linenos">  3</span><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2.0</span>
+<span class="linenos">  2</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Eclipse-autoapiframework-Metamodel</span>
+<span class="linenos">  3</span><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3.0</span>
 <span class="linenos">  4</span><span class="w">  </span><span class="nt">scope</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Core standardization baseline</span>
 <span class="linenos">  5</span><span class="w">  </span><span class="nt">intent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Core interface types and essential metadata required for standardized API definition and generation.</span>
 <span class="linenos">  6</span>
@@ -639,164 +729,234 @@ COVESA VSS</strong></p></td>
 <span class="linenos"> 18</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Invalid</span>
 <span class="linenos"> 19</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Valid</span>
 <span class="linenos"> 20</span>
-<span class="linenos"> 21</span><span class="w">    </span><span class="nt">RunType</span><span class="p">:</span>
-<span class="linenos"> 22</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">init</span>
-<span class="linenos"> 23</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cyclic</span>
-<span class="linenos"> 24</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">event</span>
-<span class="linenos"> 25</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate</span>
-<span class="linenos"> 26</span>
-<span class="linenos"> 27</span>
-<span class="linenos"> 28</span><span class="w">  </span><span class="nt">interfaceTypes</span><span class="p">:</span>
-<span class="linenos"> 29</span>
-<span class="linenos"> 30</span><span class="w">    </span><span class="nt">Data</span><span class="p">:</span>
-<span class="linenos"> 31</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Runtime data interfaces exchanged between applications or systems.</span>
-<span class="linenos"> 32</span>
-<span class="linenos"> 33</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
+<span class="linenos"> 21</span><span class="w">    </span><span class="nt">Direction</span><span class="p">:</span>
+<span class="linenos"> 22</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">input</span>
+<span class="linenos"> 23</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output</span><span class="w">            </span>
+<span class="linenos"> 24</span>
+<span class="linenos"> 25</span><span class="w">    </span><span class="nt">RunType</span><span class="p">:</span>
+<span class="linenos"> 26</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">init</span>
+<span class="linenos"> 27</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cyclic</span>
+<span class="linenos"> 28</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">event</span>
+<span class="linenos"> 29</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate</span>
+<span class="linenos"> 30</span>
+<span class="linenos"> 31</span><span class="w">    </span><span class="nt">Protection</span><span class="p">:</span>
+<span class="linenos"> 32</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span>
+<span class="linenos"> 33</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complement</span><span class="w">    </span><span class="c1"># can be discussed if complement is sent in another call or together with the signal.      </span>
 <span class="linenos"> 34</span>
-<span class="linenos"> 35</span><span class="w">        </span><span class="nt">namePath</span><span class="p">:</span>
-<span class="linenos"> 36</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos"> 37</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="linenos"> 38</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unique interface or node name. Based on canonical VSS path of the data interface - Vehicle.&lt;Domain/Subdomains&gt;.&lt;Signal&gt;</span>
-<span class="linenos"> 39</span><span class="w">          </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Speed</span>
-<span class="linenos"> 40</span>
-<span class="linenos"> 41</span><span class="w">        </span><span class="nt">datatype</span><span class="p">:</span>
-<span class="linenos"> 42</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos"> 43</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="linenos"> 44</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Type of the value transported by the interface.</span>
-<span class="linenos"> 45</span><span class="w">          </span><span class="nt">examples</span><span class="p">:</span>
-<span class="linenos"> 46</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span>
-<span class="linenos"> 47</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uint8</span>
-<span class="linenos"> 48</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span>
+<span class="linenos"> 35</span><span class="w">    </span><span class="nt">FunctionResult</span><span class="p">:</span><span class="w">   </span><span class="c1"># only used by function adapter to return the result of the triggered vehicle function.</span>
+<span class="linenos"> 36</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ok</span>
+<span class="linenos"> 37</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notAvailable</span>
+<span class="linenos"> 38</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">invalidInput</span><span class="w">    </span>
+<span class="linenos"> 39</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complementError</span>
+<span class="linenos"> 40</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rangeError</span><span class="w">        </span>
+<span class="linenos"> 41</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">timeout</span><span class="w">          </span>
+<span class="linenos"> 42</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">calculationError</span><span class="w">                      </span>
+<span class="linenos"> 43</span><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">internalError</span><span class="w"> </span>
+<span class="linenos"> 44</span>
+<span class="linenos"> 45</span><span class="w">  </span><span class="nt">interfaceTypes</span><span class="p">:</span>
+<span class="linenos"> 46</span>
+<span class="linenos"> 47</span><span class="w">    </span><span class="nt">Data</span><span class="p">:</span>
+<span class="linenos"> 48</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Runtime data interfaces exchanged between applications or systems.</span>
 <span class="linenos"> 49</span>
-<span class="linenos"> 50</span><span class="w">        </span><span class="nt">description</span><span class="p">:</span>
-<span class="linenos"> 51</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos"> 52</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="linenos"> 53</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Functional meaning of the signal.</span>
-<span class="linenos"> 54</span>
-<span class="linenos"> 55</span><span class="w">        </span><span class="nt">unit</span><span class="p">:</span>
-<span class="linenos"> 56</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos"> 57</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="linenos"> 58</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Engineering unit of the signal.</span>
-<span class="linenos"> 59</span><span class="w">          </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">km/h</span>
-<span class="linenos"> 60</span>
-<span class="linenos"> 61</span><span class="w">        </span><span class="nt">min</span><span class="p">:</span>
-<span class="linenos"> 62</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos"> 63</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span>
-<span class="linenos"> 64</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Minimum representable engineering value.</span>
-<span class="linenos"> 65</span>
-<span class="linenos"> 66</span><span class="w">        </span><span class="nt">max</span><span class="p">:</span>
-<span class="linenos"> 67</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos"> 68</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span>
-<span class="linenos"> 69</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Maximum representable engineering value.</span>
-<span class="linenos"> 70</span>
-<span class="linenos"> 71</span><span class="w">        </span><span class="nt">defaultValue</span><span class="p">:</span>
-<span class="linenos"> 72</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos"> 73</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">any</span>
-<span class="linenos"> 74</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Default or initialization value.</span>
-<span class="linenos"> 75</span>
-<span class="linenos"> 76</span><span class="w">        </span><span class="nt">resolution</span><span class="p">:</span>
-<span class="linenos"> 77</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos"> 78</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span>
-<span class="linenos"> 79</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Smallest measurable quantization value - meant for scaling etc.</span>
-<span class="linenos"> 80</span>
-<span class="linenos"> 81</span><span class="w">        </span><span class="nt">precision</span><span class="p">:</span>
-<span class="linenos"> 82</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos"> 83</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span>
-<span class="linenos"> 84</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Number of meaningful digits.</span>
-<span class="linenos"> 85</span>
-<span class="linenos"> 86</span><span class="w">        </span><span class="nt">ASIL</span><span class="p">:</span>
-<span class="linenos"> 87</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos"> 88</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enum</span>
-<span class="linenos"> 89</span><span class="w">          </span><span class="nt">enumRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ASIL</span>
-<span class="linenos"> 90</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Safety classification when the data is safety-relevant.</span>
-<span class="linenos"> 91</span>
-<span class="linenos"> 92</span><span class="w">        </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span>
-<span class="linenos"> 93</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos"> 94</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uint32</span>
-<span class="linenos"> 95</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Minimum allowed update interval.</span>
-<span class="linenos"> 96</span>
-<span class="linenos"> 97</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
-<span class="linenos"> 98</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos"> 99</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enum</span>
-<span class="linenos">100</span><span class="w">          </span><span class="nt">enumRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DataQuality</span>
-<span class="linenos">101</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Runtime quality state.</span>
-<span class="linenos">102</span><span class="w">          </span><span class="nt">note</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">It is not a static info and hence shall be transformed into a separate signal as it gets updated runtime. e.g., Vehicle.Speed.Value -&gt; For signal value and Vehicle.Speed.Qualifier -&gt; For quality code</span>
-<span class="linenos">103</span><span class="w">        </span>
-<span class="linenos">104</span><span class="w">        </span><span class="nt">accuracy</span><span class="p">:</span>
-<span class="linenos">105</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos">106</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="linenos">107</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Expected measurement or estimation accuracy.</span>
-<span class="linenos">108</span><span class="w">          </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">±0.2 km/h</span>
-<span class="linenos">109</span>
-<span class="linenos">110</span><span class="w">    </span><span class="nt">Parameter</span><span class="p">:</span>
-<span class="linenos">111</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Calibration and configuration interfaces.</span>
-<span class="linenos">112</span>
-<span class="linenos">113</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
-<span class="linenos">114</span>
-<span class="linenos">115</span><span class="w">        </span><span class="nt">namePath</span><span class="p">:</span>
-<span class="linenos">116</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos">117</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="linenos">118</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unique parameter name. Based on canonical VSS path of the parameter - Vehicle.&lt;Domain/Subdomains&gt;.&lt;Parameter&gt;</span>
-<span class="linenos">119</span><span class="w">          </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Brake.Gain</span>
-<span class="linenos">120</span>
-<span class="linenos">121</span><span class="w">        </span><span class="nt">datatype</span><span class="p">:</span>
+<span class="linenos"> 50</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
+<span class="linenos"> 51</span>
+<span class="linenos"> 52</span><span class="w">        </span><span class="nt">namePath</span><span class="p">:</span>
+<span class="linenos"> 53</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos"> 54</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="linenos"> 55</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unique interface or node name. Based on canonical VSS path of the data interface - Vehicle.&lt;Domain/Subdomains&gt;.&lt;Signal&gt;</span>
+<span class="linenos"> 56</span><span class="w">          </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Speed</span>
+<span class="linenos"> 57</span>
+<span class="linenos"> 58</span><span class="w">        </span><span class="nt">dataType</span><span class="p">:</span>
+<span class="linenos"> 59</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos"> 60</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="linenos"> 61</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Type of the value transported by the interface.</span>
+<span class="linenos"> 62</span><span class="w">          </span><span class="nt">examples</span><span class="p">:</span>
+<span class="linenos"> 63</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span>
+<span class="linenos"> 64</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uint8</span>
+<span class="linenos"> 65</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span>
+<span class="linenos"> 66</span>
+<span class="linenos"> 67</span><span class="w">        </span><span class="nt">description</span><span class="p">:</span>
+<span class="linenos"> 68</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos"> 69</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="linenos"> 70</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Functional meaning of the signal.</span>
+<span class="linenos"> 71</span>
+<span class="linenos"> 72</span><span class="w">        </span><span class="nt">unit</span><span class="p">:</span>
+<span class="linenos"> 73</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos"> 74</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="linenos"> 75</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Engineering unit of the signal.</span>
+<span class="linenos"> 76</span><span class="w">          </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">km/h</span>
+<span class="linenos"> 77</span>
+<span class="linenos"> 78</span><span class="w">        </span><span class="nt">min</span><span class="p">:</span>
+<span class="linenos"> 79</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos"> 80</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span>
+<span class="linenos"> 81</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Minimum representable engineering value.</span>
+<span class="linenos"> 82</span>
+<span class="linenos"> 83</span><span class="w">        </span><span class="nt">max</span><span class="p">:</span>
+<span class="linenos"> 84</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos"> 85</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span>
+<span class="linenos"> 86</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Maximum representable engineering value.</span>
+<span class="linenos"> 87</span>
+<span class="linenos"> 88</span><span class="w">        </span><span class="nt">defaultValue</span><span class="p">:</span>
+<span class="linenos"> 89</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos"> 90</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">any</span>
+<span class="linenos"> 91</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Default or initialization value.</span>
+<span class="linenos"> 92</span>
+<span class="linenos"> 93</span><span class="w">        </span><span class="nt">resolution</span><span class="p">:</span>
+<span class="linenos"> 94</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos"> 95</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span>
+<span class="linenos"> 96</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Smallest measurable quantization value - meant for scaling etc.</span>
+<span class="linenos"> 97</span>
+<span class="linenos"> 98</span><span class="w">        </span><span class="nt">precision</span><span class="p">:</span>
+<span class="linenos"> 99</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">100</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span>
+<span class="linenos">101</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Number of meaningful digits.</span>
+<span class="linenos">102</span>
+<span class="linenos">103</span><span class="w">        </span><span class="nt">ASIL</span><span class="p">:</span>
+<span class="linenos">104</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">105</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enum</span>
+<span class="linenos">106</span><span class="w">          </span><span class="nt">enumRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ASIL</span>
+<span class="linenos">107</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Safety classification when the data is safety-relevant.</span>
+<span class="linenos">108</span>
+<span class="linenos">109</span><span class="w">        </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span>
+<span class="linenos">110</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">111</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uint32</span>
+<span class="linenos">112</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Minimum allowed update interval.</span>
+<span class="linenos">113</span>
+<span class="linenos">114</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
+<span class="linenos">115</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">116</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enum</span>
+<span class="linenos">117</span><span class="w">          </span><span class="nt">enumRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DataQuality</span>
+<span class="linenos">118</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Runtime quality state.</span>
+<span class="linenos">119</span><span class="w">          </span><span class="nt">note</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">It is not a static info and hence shall be transformed into a separate signal as it gets updated runtime. e.g., Vehicle.Speed.Value -&gt; For signal value and Vehicle.Speed.Qualifier -&gt; For quality code</span>
+<span class="linenos">120</span><span class="w">        </span>
+<span class="linenos">121</span><span class="w">        </span><span class="nt">accuracy</span><span class="p">:</span>
 <span class="linenos">122</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos">123</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="linenos">124</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Datatype of parameter value.</span>
-<span class="linenos">125</span>
-<span class="linenos">126</span><span class="w">        </span><span class="nt">defaultValue</span><span class="p">:</span>
-<span class="linenos">127</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos">128</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">any</span>
-<span class="linenos">129</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Default parameter value.</span>
-<span class="linenos">130</span>
-<span class="linenos">131</span><span class="w">        </span><span class="nt">description</span><span class="p">:</span>
-<span class="linenos">132</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos">133</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="linenos">134</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Meaning and intended usage of the parameter.</span>
-<span class="linenos">135</span>
-<span class="linenos">136</span><span class="w">        </span><span class="nt">unit</span><span class="p">:</span>
-<span class="linenos">137</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos">138</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="linenos">139</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Engineering unit if numeric.</span>
-<span class="linenos">140</span>
-<span class="linenos">141</span><span class="w">    </span><span class="nt">Scheduling</span><span class="p">:</span>
-<span class="linenos">142</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lifecycle and execution interfaces.</span>
-<span class="linenos">143</span>
-<span class="linenos">144</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
-<span class="linenos">145</span>
-<span class="linenos">146</span><span class="w">        </span><span class="nt">functionName</span><span class="p">:</span>
-<span class="linenos">147</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos">148</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="linenos">149</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Runnable or callable function name.</span>
-<span class="linenos">150</span>
-<span class="linenos">151</span><span class="w">          </span><span class="nt">namingConvention</span><span class="p">:</span>
-<span class="linenos">152</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&lt;FunctionName&gt;.Init&quot;</span>
-<span class="linenos">153</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&lt;FunctionName&gt;.Step&quot;</span>
-<span class="linenos">154</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&lt;FunctionName&gt;.Terminate&quot;</span>
-<span class="linenos">155</span>
-<span class="linenos">156</span><span class="w">        </span><span class="nt">runType</span><span class="p">:</span>
-<span class="linenos">157</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos">158</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enum</span>
-<span class="linenos">159</span><span class="w">          </span><span class="nt">enumRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RunType</span>
-<span class="linenos">160</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Activation type of the runnable.</span>
-<span class="linenos">161</span>
-<span class="linenos">162</span><span class="w">        </span><span class="nt">description</span><span class="p">:</span>
-<span class="linenos">163</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos">164</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="linenos">165</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Purpose of the runnable.</span>
-<span class="linenos">166</span>
-<span class="linenos">167</span><span class="w">        </span><span class="nt">cycleTimeMs</span><span class="p">:</span>
-<span class="linenos">168</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos">169</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uint32</span>
-<span class="linenos">170</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Runnable periodicity.</span>
+<span class="linenos">123</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="linenos">124</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Expected measurement or estimation accuracy.</span>
+<span class="linenos">125</span><span class="w">          </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">±0.2 km/h</span><span class="w">  </span>
+<span class="linenos">126</span>
+<span class="linenos">127</span><span class="w">    </span><span class="nt">Parameter</span><span class="p">:</span>
+<span class="linenos">128</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Calibration and configuration interfaces.</span>
+<span class="linenos">129</span>
+<span class="linenos">130</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
+<span class="linenos">131</span>
+<span class="linenos">132</span><span class="w">        </span><span class="nt">namePath</span><span class="p">:</span>
+<span class="linenos">133</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">134</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="linenos">135</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unique parameter name. Based on canonical VSS path of the parameter - Vehicle.&lt;Domain/Subdomains&gt;.&lt;Parameter&gt;</span>
+<span class="linenos">136</span><span class="w">          </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Brake.Gain</span>
+<span class="linenos">137</span>
+<span class="linenos">138</span><span class="w">        </span><span class="nt">dataType</span><span class="p">:</span>
+<span class="linenos">139</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">140</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="linenos">141</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Datatype of parameter value.</span>
+<span class="linenos">142</span>
+<span class="linenos">143</span><span class="w">        </span><span class="nt">defaultValue</span><span class="p">:</span>
+<span class="linenos">144</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">145</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">any</span>
+<span class="linenos">146</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Default parameter value.</span>
+<span class="linenos">147</span>
+<span class="linenos">148</span><span class="w">        </span><span class="nt">description</span><span class="p">:</span>
+<span class="linenos">149</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">150</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="linenos">151</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Meaning and intended usage of the parameter.</span>
+<span class="linenos">152</span>
+<span class="linenos">153</span><span class="w">        </span><span class="nt">unit</span><span class="p">:</span>
+<span class="linenos">154</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">155</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="linenos">156</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Engineering unit if numeric.</span>
+<span class="linenos">157</span>
+<span class="linenos">158</span><span class="w">        </span><span class="nt">protection</span><span class="p">:</span>
+<span class="linenos">159</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">160</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enum</span>
+<span class="linenos">161</span><span class="w">          </span><span class="nt">enumRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Protection</span><span class="w">          </span>
+<span class="linenos">162</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Defines the required signal protection.</span>
+<span class="linenos">163</span><span class="w">          </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complement</span><span class="w">                 </span>
+<span class="linenos">164</span><span class="w">          </span>
+<span class="linenos">165</span><span class="w">        </span><span class="nt">direction</span><span class="p">:</span>
+<span class="linenos">166</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">167</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enum</span>
+<span class="linenos">168</span><span class="w">          </span><span class="nt">enumRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Direction</span><span class="w">          </span>
+<span class="linenos">169</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Defines if the signal is either an input or output signal.</span>
+<span class="linenos">170</span><span class="w">          </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">input</span><span class="w">     </span>
 <span class="linenos">171</span>
-<span class="linenos">172</span><span class="w">        </span><span class="nt">previousRunnableRef</span><span class="p">:</span>
-<span class="linenos">173</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos">174</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="linenos">175</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Runnable that shall execute before this runnable.</span>
-<span class="linenos">176</span><span class="w">          </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SensorFusion.Step</span>
+<span class="linenos">172</span><span class="w">    </span><span class="nt">Scheduling</span><span class="p">:</span>
+<span class="linenos">173</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lifecycle and execution interfaces.</span>
+<span class="linenos">174</span>
+<span class="linenos">175</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span>
+<span class="linenos">176</span>
+<span class="linenos">177</span><span class="w">        </span><span class="nt">functionName</span><span class="p">:</span>
+<span class="linenos">178</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">179</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="linenos">180</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Runnable or callable function name.</span>
+<span class="linenos">181</span>
+<span class="linenos">182</span><span class="w">          </span><span class="nt">namingConvention</span><span class="p">:</span>
+<span class="linenos">183</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&lt;FunctionName&gt;.Init&quot;</span>
+<span class="linenos">184</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&lt;FunctionName&gt;.Step&quot;</span>
+<span class="linenos">185</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;&lt;FunctionName&gt;.Terminate&quot;</span>
+<span class="linenos">186</span>
+<span class="linenos">187</span><span class="w">        </span><span class="nt">runType</span><span class="p">:</span>
+<span class="linenos">188</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">189</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enum</span>
+<span class="linenos">190</span><span class="w">          </span><span class="nt">enumRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RunType</span>
+<span class="linenos">191</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Activation type of the runnable.</span>
+<span class="linenos">192</span>
+<span class="linenos">193</span><span class="w">        </span><span class="nt">description</span><span class="p">:</span>
+<span class="linenos">194</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">195</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="linenos">196</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Purpose of the runnable.</span>
+<span class="linenos">197</span>
+<span class="linenos">198</span><span class="w">        </span><span class="nt">cycleTimeMs</span><span class="p">:</span>
+<span class="linenos">199</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">200</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uint32</span>
+<span class="linenos">201</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Runnable periodicity.</span>
+<span class="linenos">202</span>
+<span class="linenos">203</span><span class="w">        </span><span class="nt">ASIL</span><span class="p">:</span>
+<span class="linenos">204</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">205</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enum</span>
+<span class="linenos">206</span><span class="w">          </span><span class="nt">enumRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ASIL</span>
+<span class="linenos">207</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Safety classification when the scheduler is safety-relevant.</span><span class="w">          </span>
+<span class="linenos">208</span>
+<span class="linenos">209</span><span class="w">        </span><span class="nt">previousRunnableRef</span><span class="p">:</span>
+<span class="linenos">210</span><span class="w">          </span><span class="nt">mandatory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos">211</span><span class="w">          </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="linenos">212</span><span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Runnable that shall execute before this runnable.</span>
+<span class="linenos">213</span><span class="w">          </span><span class="nt">example</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SensorFusion.Step</span>
+<span class="linenos">214</span><span class="w">    </span>
 </pre></div>
 </div>
+</section>
+<section id="history">
+<h2>History<a class="headerlink" href="#history" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table" id="id12">
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">Meta Model History:</span><a class="headerlink" href="#id12" title="Link to this table">#</a></caption>
+<tbody>
+<tr class="row-odd"><td><p><strong>Version</strong></p></td>
+<td><p><strong>Author</strong></p></td>
+<td><p><strong>Description of Changes</strong></p></td>
+<td><p><strong>Impact</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>0.2.0</p></td>
+<td><p>Gundlapalli Saran</p></td>
+<td><p>First release of Meta Model specification</p></td>
+<td><p>Baseline</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.3.0</p></td>
+<td><p>Thomas Pfleiderer</p></td>
+<td><p>Signal protection attribute, Function result enum, Typos</p></td>
+<td><p>Functional enhancement</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<p>Example function specifications based on this meta model:</p>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/d174f883c22d559c45170956dbb38470/speed_hazard_detection.afs.yaml"><code class="xref download docutils literal notranslate"><span class="pre">SpeedHazardDetection</span> <span class="pre">(single</span> <span class="pre">cyclic</span> <span class="pre">runnable)</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/9c2f512b97ec2e49f033f88ad079a6ea/vehicle_speed_fusion_multirate.afs.yaml"><code class="xref download docutils literal notranslate"><span class="pre">VehicleSpeedFusion</span> <span class="pre">(multi-rate</span> <span class="pre">cyclic</span> <span class="pre">runnables</span> <span class="pre">at</span> <span class="pre">10</span> <span class="pre">ms</span> <span class="pre">and</span> <span class="pre">20</span> <span class="pre">ms)</span></code></a></p></li>
+</ul>
 </section>
 </section>
 
@@ -811,20 +971,20 @@ COVESA VSS</strong></p></td>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../requirements/requirements.html"
+       href="meta_model_purpose.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Requirements</p>
+        <p class="prev-next-title">Purpose of the Meta Model</p>
       </div>
     </a>
     <a class="right-next"
-       href="../examples/bp-ifex-vaf/bp-ifex-vaf.html"
+       href="meta_model_function_adapter.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Blueprint project (IFEX + VAF)</p>
+        <p class="prev-next-title">Function Adapter</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -847,10 +1007,13 @@ COVESA VSS</strong></p></td>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enum-type-description">Enum Type Description</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-type-description">Data Type Description</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-type-description">Parameter Type Description</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scheduling-type-description">Scheduling Type Description</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meta-model-file">Meta Model File</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#history">History</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
 </ul>
   </nav></div>
 
