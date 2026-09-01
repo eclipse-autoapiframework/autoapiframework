@@ -1,0 +1,20 @@
+name: Documentation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  release:
+    types: [published]
+  merge_group:
+    types: [checks_requested]
+
+jobs:
+  docs:
+    uses: eclipse-score/cicd-workflows/.github/workflows/docs.yml@v0.0.3
+    with:
+      retention-days: 3
+      # bazel-target: "//:docs" # optional, default shown
