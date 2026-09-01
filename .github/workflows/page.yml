@@ -13,6 +13,6 @@ jobs:
       pull-requests: write
       pages: write
       id-token: write
-    uses: eclipse-score/cicd-workflows/.github/workflows/docs.yml@main
+    uses: eclipse-score/cicd-workflows/.github/workflows/docs.yml@886cdfc995ab212af6416bfbb663b5942ebb0391
     with:
       retention-days: 3
