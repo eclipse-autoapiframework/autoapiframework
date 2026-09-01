@@ -18,3 +18,17 @@ jobs:
     with:
       retention-days: 3
       # bazel-target: "//:docs" # optional, default shown
+
+  docs-publish:
+    needs: docs
+    uses: eclipse-score/cicd-workflows/.github/workflows/docs-publish.yml@v0.0.3
+    with:
+      # Omit for GitHub Actions Pages deployments. Set to "legacy" when
+      # GitHub Pages is configured to publish from the gh-pages branch.
+      deployment_type: workflow
+    permissions:
+      actions: read
+      contents: write
+      id-token: write
+      pages: write
+      pull-requests: write
