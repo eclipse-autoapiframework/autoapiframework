@@ -1,0 +1,35 @@
+name: Documentation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  release:
+    types: [published]
+  merge_group:
+    types: [checks_requested]
+
+jobs:
+  docs:
+    uses: eclipse-score/cicd-workflows/.github/workflows/docs.yml@v0.0.3
+    with:
+      retention-days: 3
+      # bazel-target: "//:docs" # optional, default shown
+
+  docs-publish:
+    needs: docs
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: eclipse-score/cicd-workflows/.github/workflows/docs-publish.yml@v0.0.3
+    with:
+      # Omit for GitHub Actions Pages deployments. Set to "legacy" when
+      # GitHub Pages is configured to publish from the gh-pages branch.
+      deployment_type: workflow
+    permissions:
+      actions: read
+      contents: write
+      id-token: write
+      pages: write
+      pull-requests: write
