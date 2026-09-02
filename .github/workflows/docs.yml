@@ -21,6 +21,7 @@ jobs:
 
   docs-publish:
     needs: docs
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     uses: eclipse-score/cicd-workflows/.github/workflows/docs-publish.yml@v0.0.3
     with:
       # Omit for GitHub Actions Pages deployments. Set to "legacy" when
@@ -32,5 +33,3 @@ jobs:
       id-token: write
       pages: write
       pull-requests: write
-    secrets:
-      GH_TOKEN: ${{ github.token }}
