@@ -33,4 +33,4 @@ jobs:
       pages: write
       pull-requests: write
       secrets:
-    GH_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ github.token }}
