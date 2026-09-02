@@ -32,3 +32,5 @@ jobs:
       id-token: write
       pages: write
       pull-requests: write
+      secrets:
+    GH_TOKEN: ${{ github.token }}
