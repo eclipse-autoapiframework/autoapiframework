@@ -49,8 +49,8 @@ numfig = True
 # Override S-CORE options for the theme
 def override_theme_options(app, config):
     config.html_theme_options = {
-        "logo": {"text": "Eclipse Automotive API Framework"},
-        "logo_link": "index.html",
+        "logo": {"text": "Eclipse Automotive API Framework"}
+
     }   
 
     config.html_static_path.append("_override_assets")
