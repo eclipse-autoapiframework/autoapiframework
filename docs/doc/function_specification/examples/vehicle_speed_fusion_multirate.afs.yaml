@@ -12,6 +12,7 @@
 #
 # Contributors:
 #   Thomas Pfleiderer - Function specification added
+#   Saran Gundlapalli - vehicle_speed_fusion_multirate.afs.yaml updated according to metamodel v0.4.0
 # *******************************************************************************
 
 functionSpecification:
@@ -21,86 +22,131 @@ functionSpecification:
     name: Eclipse-autoapiframework-Metamodel
     version: 0.4.0
 
-  description: >-
-    Fuses wheel-speed and GNSS speed sources into one stable vehicle speed
-    output using a two-rate cyclic execution model.
+    description: >-
+    Fuses standard VSS wheel-speed inputs into Vehicle.Speed. Input
+    preprocessing is modeled as a separate function/runnable and referenced
+    through the predecessor relationship.
 
   dataInterfaces:
-    - name: Vehicle.WheelBasedSpeed
+    - name: Vehicle.Chassis.Axle.Row1.Wheel.Left.Speed
       direction: input
       dataType: float
-      description: Wheel-based vehicle speed estimate.
+      description: Linear speed of the left wheel on axle row 1.
       unit: km/h
-      min: 0.0
-      max: 320.0
-      defaultValue: 0.0
-      resolution: 0.1
-      precision: 1
+      min: null
+      max: null
+      defaultValue: null
+      resolution: null
+      precision: null
       FuSa: true
       ASIL: B
       minUpdatePeriodMs: 10
-      accuracy: "+/-0.3 km/h"
+      accuracy: null
       protection: complement
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.Chassis.Axle.Row1.Wheel.Left.Speed.Qualifier
+          datatype: enum
+          enumRef: DataQuality
 
-    - name: Vehicle.GNSS.SpeedOverGround
+    - name: Vehicle.Chassis.Axle.Row1.Wheel.Right.Speed
       direction: input
       dataType: float
-      description: GNSS speed estimate used as a secondary source.
+      description: Linear speed of the right wheel on axle row 1.
       unit: km/h
-      min: 0.0
-      max: 320.0
-      defaultValue: 0.0
-      resolution: 0.1
-      precision: 1
-      FuSa: false
-      ASIL: QM
-      minUpdatePeriodMs: 100
-      accuracy: "+/-1.0 km/h"
-      protection: none
-
-    - name: Vehicle.WheelBasedSpeed.Qualifier
-      direction: input
-      dataType: uint8
-      description: Runtime quality qualifier for wheel-based speed.
-      unit: code
-      min: 0
-      max: 5
-      defaultValue: 0
-      resolution: 1
-      precision: 1
-      FuSa: false
-      ASIL: QM
+      min: null
+      max: null
+      defaultValue: null
+      resolution: null
+      precision: null
+      FuSa: true
+      ASIL: B
       minUpdatePeriodMs: 10
-      accuracy: enum-based
-      protection: none
+      accuracy: null
+      protection: complement
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.Chassis.Axle.Row1.Wheel.Right.Speed.Qualifier
+          datatype: enum
+          enumRef: DataQuality
+
+    - name: Vehicle.Chassis.Axle.Row2.Wheel.Left.Speed
+      direction: input
+      dataType: float
+      description: Linear speed of the left wheel on axle row 2.
+      unit: km/h
+      min: null
+      max: null
+      defaultValue: null
+      resolution: null
+      precision: null
+      FuSa: true
+      ASIL: B
+      minUpdatePeriodMs: 10
+      accuracy: null
+      protection: complement
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.Chassis.Axle.Row2.Wheel.Left.Speed.Qualifier
+          datatype: enum
+          enumRef: DataQuality
+
+    - name: Vehicle.Chassis.Axle.Row2.Wheel.Right.Speed
+      direction: input
+      dataType: float
+      description: Linear speed of the right wheel on axle row 2.
+      unit: km/h
+      min: null
+      max: null
+      defaultValue: null
+      resolution: null
+      precision: null
+      FuSa: true
+      ASIL: B
+      minUpdatePeriodMs: 10
+      accuracy: null
+      protection: complement
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.Chassis.Axle.Row2.Wheel.Right.Speed.Qualifier
+          datatype: enum
+          enumRef: DataQuality
 
     - name: Vehicle.Speed
       direction: output
       dataType: float
       description: Fused vehicle speed output for downstream consumers.
       unit: km/h
-      min: 0.0
-      max: 320.0
-      defaultValue: 0.0
-      resolution: 0.1
-      precision: 1
+      min: null
+      max: null
+      defaultValue: null
+      resolution: null
+      precision: null
       FuSa: true
       ASIL: B
       minUpdatePeriodMs: 20
-      accuracy: "+/-0.5 km/h"
+      accuracy: null
       protection: complement
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.Speed.Qualifier
+          datatype: enum
+          enumRef: DataQuality
+
+  # Runtime quality companions are shown explicitly for the Data interfaces.
+  # Each qualifier is an enum-based runtime interface with DataQuality semantics.
 
   parameters:
-    - name: Vehicle.SpeedFusion.Alpha
+    - name: Vehicle.Chassis.SpeedFusion.Alpha
       dataType: float
       defaultValue: 0.7
-      description: Weight of wheel-speed contribution in fusion.
+      description: Weight applied by the fusion algorithm.
       unit: ratio
       tunable: false
       min: 0.0
       max: 1.0
 
-    - name: Vehicle.SpeedFusion.MaxDeltaPerStep
+    - name: Vehicle.Chassis.SpeedFusion.MaxDeltaPerStep
       dataType: float
       defaultValue: 5.0
       description: Maximum allowed output change per 20 ms cycle.
@@ -113,20 +159,9 @@ functionSpecification:
     - functionName: VehicleSpeedFusion.Init
       runType: init
       description: Initialize filter states and fallback defaults.
-      cycleTimeMs: 0
       implementedASIL: B
-      previousRunnableRef: System.Startup
-      supervision:
-        required: false
-
-    - functionName: VehicleSpeedFusion.PreProcess
-      runType: cyclic
-      description: >-
-        10 ms cyclic runnable that validates inputs, applies plausibility checks,
-        and updates intermediate state.
-      cycleTimeMs: 10
-      implementedASIL: B
-      previousRunnableRef: VehicleSpeedFusion.Init
+      executionResult:
+        type: FunctionResult
       supervision:
         required: false
 
@@ -136,15 +171,18 @@ functionSpecification:
         20 ms cyclic runnable that performs source fusion and publishes Vehicle.Speed.
       cycleTimeMs: 20
       implementedASIL: B
-      previousRunnableRef: VehicleSpeedFusion.PreProcess
+      previousRunnableRef: VehicleSpeedPreProcessor.Step
+      executionResult:
+        type: FunctionResult
       supervision:
         required: false
 
     - functionName: VehicleSpeedFusion.Terminate
       runType: terminate
       description: Release resources and set deterministic safe defaults.
-      cycleTimeMs: 0
       implementedASIL: QM
       previousRunnableRef: VehicleSpeedFusion.Step
+      executionResult:
+        type: FunctionResult
       supervision:
         required: false
