@@ -1,3 +1,20 @@
+/********************************************************************************
+* Copyright (c) 2026 ZF Friedrichshafen AG
+*
+* See the NOTICE file(s) distributed with this work for additional
+* information regarding copyright ownership.
+*
+* This program and the accompanying materials are made available under the
+* terms of the Apache License Version 2.0 which is available at
+* https://www.apache.org/licenses/LICENSE-2.0
+*
+* SPDX-License-Identifier: Apache-2.0
+*
+* Contributors:
+*   Thomas Pfleiderer - documentation
+* *******************************************************************************
+*/
+ 
 #include "speed_hazard_detection.hpp"
 #include <algorithm>
 
@@ -44,11 +61,11 @@ FunctionResult SpeedHazardDetection::init(
     
     // Validate parameters
     if (parameters.speedHazardForwardThresholdPercent < 0.0f) {
-        return FunctionResult::INVALID_INPUT;
+        return FunctionResult::FAILURE;
     }
     
     if (parameters.hazardRequestDurationMs == 0) {
-        return FunctionResult::INVALID_INPUT;
+        return FunctionResult::FAILURE;
     }
     
     // Reset context state
@@ -64,7 +81,7 @@ FunctionResult SpeedHazardDetection::init(
     // Mark as initialized
     context.isInitialized = true;
     
-    return FunctionResult::OK;
+    return FunctionResult::SUCCESS;
 }
 
 FunctionResult SpeedHazardDetection::step(
@@ -91,32 +108,32 @@ FunctionResult SpeedHazardDetection::step(
     // Check vehicle speed data quality
     if (inputs.vehicleSpeed.quality == DataQuality::INVALID ||
         inputs.vehicleSpeed.quality == DataQuality::UNINITIALIZED) {
-        outputs.functionStatus = FunctionResult::INVALID_INPUT;
+        outputs.functionStatus = FunctionResult::FAILURE;
         outputs.hazardRequest.quality = DataQuality::INVALID;
-        return FunctionResult::INVALID_INPUT;
+        return FunctionResult::FAILURE;
     }
     
     // Check acceleration data quality
     if (inputs.accelerationLongitudinal.quality == DataQuality::INVALID ||
         inputs.accelerationLongitudinal.quality == DataQuality::UNINITIALIZED) {
-        outputs.functionStatus = FunctionResult::INVALID_INPUT;
+        outputs.functionStatus = FunctionResult::FAILURE;
         outputs.hazardRequest.quality = DataQuality::INVALID;
-        return FunctionResult::INVALID_INPUT;
+        return FunctionResult::FAILURE;
     }
     
     // Validate speed range
     if (inputs.vehicleSpeed.value < 0.0f || inputs.vehicleSpeed.value > 300.0f) {
-        outputs.functionStatus = FunctionResult::RANGE_ERROR;
+        outputs.functionStatus = FunctionResult::FAILURE;
         outputs.hazardRequest.quality = DataQuality::INVALID;
-        return FunctionResult::RANGE_ERROR;
+        return FunctionResult::FAILURE;
     }
     
     // Validate acceleration range
     if (inputs.accelerationLongitudinal.value < -20.0f ||
         inputs.accelerationLongitudinal.value > 20.0f) {
-        outputs.functionStatus = FunctionResult::RANGE_ERROR;
+        outputs.functionStatus = FunctionResult::FAILURE;
         outputs.hazardRequest.quality = DataQuality::INVALID;
-        return FunctionResult::RANGE_ERROR;
+        return FunctionResult::FAILURE;
     }
     
     // ========================================================================
@@ -186,7 +203,7 @@ FunctionResult SpeedHazardDetection::step(
     outputs.hazardRequest.value = context.hazardRequestActive;
     outputs.hazardRequest.quality = DataQuality::VALID;
     outputs.hazardRequest.updateTimestampMs = inputs.vehicleSpeed.updateTimestampMs;
-    outputs.functionStatus = FunctionResult::OK;
+    outputs.functionStatus = FunctionResult::SUCCESS;
     
     // ========================================================================
     // STATE UPDATE FOR NEXT CYCLE
@@ -195,7 +212,7 @@ FunctionResult SpeedHazardDetection::step(
     context.previousSpeed = currentSpeed;
     context.previousSpeedTimestamp = inputs.vehicleSpeed.updateTimestampMs;
     
-    return FunctionResult::OK;
+    return FunctionResult::SUCCESS;
 }
 
 FunctionResult SpeedHazardDetection::terminate(
@@ -206,12 +223,12 @@ FunctionResult SpeedHazardDetection::terminate(
     outputs.hazardRequest.value = false;
     outputs.hazardRequest.quality = DataQuality::VALID;
     outputs.hazardRequest.updateTimestampMs = 0;
-    outputs.functionStatus = FunctionResult::OK;
+    outputs.functionStatus = FunctionResult::SUCCESS;
     
     // Reset internal state
     context.reset();
     
-    return FunctionResult::OK;
+    return FunctionResult::SUCCESS;
 }
 
 } // namespace speedHazardDetection

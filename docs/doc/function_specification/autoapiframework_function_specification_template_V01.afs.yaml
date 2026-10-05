@@ -1,0 +1,198 @@
+# *******************************************************************************
+# Copyright (c) 2026 ZF Friedrichshafen AG
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Contributors:
+#   Thomas Pfleiderer - Function specification added
+#   Saran Gundlapalli - autoapiframework_function_specification_template_V01.afs.yaml updated according to metamodel v0.4.0
+# *******************************************************************************
+#
+# TEMPLATE - Function specification File (*.acs)
+#
+# Copy this file, rename it to <YourFunctionName>.acs and fill it in.
+# Every "row" below is one signal/parameter/runnable and MUST provide exactly
+# one value per entry listed under "columns", in the same order.
+# Remove this header and all "# <-- ..." hints once the file is filled in.
+# Unknown metadata shall remain null/omitted as allowed by the consuming schema;
+# do not invent plausible values only to complete an example.
+
+functionSpecification:
+  name: <YourFunctionName>              # e.g. SpeedHazardDetection
+  version: 1.0.0                        # semantic version of this function specification
+  metaModelRef:
+    name: Eclipse-autoapiframework-Metamodel
+    version: 0.4.0                      # meta model version this file was written against
+
+  description: >-
+    <One or two sentences describing what this function does.>
+
+# -----------------------------------------------------------------------
+  # 1) DATA INTERFACES
+  #    Reuse canonical VSS paths whenever equivalent semantics already exist.
+  #    New Vehicle.* paths shall only be introduced as explicitly approved
+  #    extensions when no suitable standard VSS node exists.
+  #
+  #    Function-specific properties:
+  #      direction: input | output
+  #      protection: none | complement | other
+  #
+  #    FuSa: true | false
+  #    ASIL is optional and should be provided when the data interface is
+  #    safety-relevant. Do not populate ASIL mechanically for FuSa: false.
+  #
+  #    qualityCode is runtime companion information associated with the Data
+  #    interface. The qualifier shall be indicated explicitly as a runtime
+  #    enum interface, but shall not repeat normal Data metadata such as
+  #    min/max/default/resolution/precision.
+  # -----------------------------------------------------------------------
+  dataInterfaces:
+    - name: Vehicle.<Domain>.<Signal>
+      direction: input
+      dataType: float
+      description: <Functional meaning of the signal.>
+      unit: <unit>
+      min: <min>
+      max: <max>
+      defaultValue: <defaultValue>
+      resolution: <resolution>
+      precision: <precision>
+      FuSa: true
+      ASIL: <QM|A|B|C|D>
+      minUpdatePeriodMs: <minUpdatePeriodMs>
+      accuracy: <expected accuracy>
+      protection: none
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.<Domain>.<Signal>.Qualifier
+          datatype: enum
+          enumRef: DataQuality
+
+    # - name: Vehicle.<Domain>.<OutputSignal>
+    #   direction: output
+    #   dataType: float
+    #   description: <Functional meaning of the output signal.>
+    #   unit: <unit>
+    #   min: <min>
+    #   max: <max>
+    #   defaultValue: <defaultValue>
+    #   resolution: <resolution>
+    #   precision: <precision>
+    #   FuSa: false
+    #   minUpdatePeriodMs: <minUpdatePeriodMs>
+    #   accuracy: <expected accuracy>
+    #   protection: none
+
+  # -----------------------------------------------------------------------
+  # 2) PARAMETERS:
+  #    Parameter identifiers shall also follow the VSS-style hierarchical
+  #    Vehicle.<Domain>.<Subdomain>.<Parameter> naming approach. Reuse an
+  #    existing catalogue entry where available; otherwise use an explicitly
+  #    approved extension under the relevant semantic branch.
+  #    dimensions is optional and only needed for array/map parameters,
+  #    e.g. [10] for a vector or [7, 10] for a 7x10 map.
+  # -----------------------------------------------------------------------
+  parameters:
+    - name: Vehicle.<Domain>.<Parameter>
+      dataType: float
+      defaultValue: <defaultValue>
+      description: <Meaning and intended usage of the parameter.>
+      unit: <unit>
+      tunable: false
+      min: <min>
+      max: <max>
+      dimensions: [<size>]
+
+  # -----------------------------------------------------------------------
+  # 3) ERROR INTERFACES:  - CANDIDATE / PROVISIONAL
+  #    Function-specific diagnostic interfaces, separate from FunctionResult.
+  #    This concept is still subject to partner alignment/review.
+  #    - Naming convention: <FunctionName>.<ErrorName>.ErrorStatus
+  # -----------------------------------------------------------------------
+  # errorInterfaces:
+  #   - name: <YourFunctionName>.<ErrorName>.ErrorStatus
+  #     dataType: boolean
+  #     description: <Meaning of the error and its trigger scenario.>
+  #     severity: degraded
+  #     maturationTimeMs: <maturationTimeMs>
+  #     resetTimeMs: <resetTimeMs>
+  #     resetCondition: <Condition that clears the error.>
+  #     dependencyRefs: []
+  #     fallbackBehavior: <Function-level fallback/degradation behavior.>
+  #     raisesSafetyReactionRefs: []
+
+  # -----------------------------------------------------------------------
+  # 4) SCHEDULING:
+  #    - runType: init | cyclic | event | terminate
+  #    - Naming convention: <FunctionName>.Init / .Step / .Terminate
+  #    - previousRunnableRef: name of the runnable that must run right before
+  #      this one (use System.Startup for the very first runnable).
+  #    - executionResult: success | failure | notAvailable
+  #    - supervision.required: false, or true with one or more of the
+  #      supervision.type values below (alive | deadline | logical), each
+  #      configured via its matching alive/deadline/logical object.
+  #    - schedulingPolicy and stackSizeBytes are optional.
+  #
+  #    cycleTimeMs is present only for runType: cyclic.
+  #    previousRunnableRef is optional and is used only when an explicit
+  #    predecessor/order dependency exists. It does not mean "immediately
+  #    before".
+  #
+  #    executionResult describes the runtime result contract. The static
+  #    specification shall not hard-code success/failure/notAvailable.
+  # -----------------------------------------------------------------------
+  scheduling:
+    - functionName: <YourFunctionName>.Init
+      runType: init
+      description: <Initialize internal states.>
+      implementedASIL: QM
+      executionResult:
+        type: FunctionResult
+      supervision:
+        required: false
+
+    - functionName: <YourFunctionName>.Step
+      runType: cyclic
+      description: <Evaluate inputs and calculate outputs.>
+      cycleTimeMs: <cycleTimeMs>
+      implementedASIL: QM
+      # previousRunnableRef: <OtherFunction>.Step
+      executionResult:
+        type: FunctionResult
+      supervision:
+        required: false
+      # supervision:
+      #   required: true
+      #   type:
+      #     - alive
+      #     - deadline
+      #     - logical
+      #   alive:
+      #     minIndications: <minIndications>
+      #     maxIndications: <maxIndications>
+      #     referenceCycleMs: <referenceCycleMs>
+      #   deadline:
+      #     minExecutionTimeMs: <minExecutionTimeMs>
+      #     maxExecutionTimeMs: <maxExecutionTimeMs>
+      #   logical:
+      #     predecessorRefs: []
+      #     successorRefs: []
+      # schedulingPolicy: <e.g. preemptive/non-preemptive>
+      # stackSizeBytes: <stackSizeBytes>
+
+    - functionName: <YourFunctionName>.Terminate
+      runType: terminate
+      description: <Shutdown cleanup.>
+      implementedASIL: QM
+      previousRunnableRef: <YourFunctionName>.Step
+      executionResult:
+        type: FunctionResult
+      supervision:
+        required: false

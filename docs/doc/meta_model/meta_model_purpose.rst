@@ -1,7 +1,7 @@
 
 ..
    # *******************************************************************************
-   # Copyright (c) 2026 Contributors to the Eclipse Foundation
+   # Copyright (c) 2026 ZF Friedrichshafen AG
    #
    # See the NOTICE file(s) distributed with this work for additional
    # information regarding copyright ownership.
@@ -89,7 +89,7 @@ These YAML files capture function-specific content such as:
 
 Because all YAML instances follow one shared structure, they can be exchanged, reviewed, versioned, and validated early before implementation details are introduced.
 
-The file extension of these files will be ``*.afs`` (Auto API Framework Specification).
+The file extension of these files will be ``*.afs`` (AutoAPI Function Specification).
 
 
 Role of Code Generators
@@ -124,8 +124,8 @@ Status Of The Current Project
 
 Currently we have a Meta Model in place with additional parameters and attributes compared to existing vss definition of COVESA. There are discussions and feedback rounds about additional useful safety aspects to finalize the meta model.
 
-.. figure:: figures/function_specification.png
+.. figure:: figures/specification_sequence.png
    :alt: status of the current project
 
-An ``*.afs`` file does not use the VSPEC format. Instead, it is defined in YAML format. It is not specified yet.
+An ``*.afs`` file does not use the VSPEC format. Instead, it is defined in YAML format.
 

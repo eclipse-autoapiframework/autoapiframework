@@ -1,0 +1,185 @@
+# *******************************************************************************
+# Copyright (c) 2026 ZF Friedrichshafen AG
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Contributors:
+#   Thomas Pfleiderer - Function specification added
+#   Saran Gundlapalli - vehicle_speed_fusion_multirate.afs.yaml updated according to metamodel v0.4.0
+# *******************************************************************************
+
+functionSpecification:
+  name: VehicleSpeedFusion
+  version: 1.0.0
+  metaModelRef:
+    name: Eclipse-autoapiframework-Metamodel
+    version: 0.4.0
+
+    description: Fuses standard VSS wheel-speed inputs into Vehicle.Speed. Input preprocessing is modeled as a separate function/runnable and referenced through the predecessor relationship.
+
+  dataInterfaces:
+    - name: Vehicle.Chassis.Axle.Row1.Wheel.Left.Speed
+      direction: input
+      dataType: float
+      description: Linear speed of the left wheel on axle row 1.
+      unit: km/h
+      min: null
+      max: null
+      defaultValue: null
+      resolution: null
+      precision: null
+      FuSa: true
+      ASIL: B
+      minUpdatePeriodMs: 10
+      accuracy: null
+      protection: complement
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.Chassis.Axle.Row1.Wheel.Left.Speed.Qualifier
+          datatype: enum
+          enumRef: DataQuality
+
+    - name: Vehicle.Chassis.Axle.Row1.Wheel.Right.Speed
+      direction: input
+      dataType: float
+      description: Linear speed of the right wheel on axle row 1.
+      unit: km/h
+      min: null
+      max: null
+      defaultValue: null
+      resolution: null
+      precision: null
+      FuSa: true
+      ASIL: B
+      minUpdatePeriodMs: 10
+      accuracy: null
+      protection: complement
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.Chassis.Axle.Row1.Wheel.Right.Speed.Qualifier
+          datatype: enum
+          enumRef: DataQuality
+
+    - name: Vehicle.Chassis.Axle.Row2.Wheel.Left.Speed
+      direction: input
+      dataType: float
+      description: Linear speed of the left wheel on axle row 2.
+      unit: km/h
+      min: null
+      max: null
+      defaultValue: null
+      resolution: null
+      precision: null
+      FuSa: true
+      ASIL: B
+      minUpdatePeriodMs: 10
+      accuracy: null
+      protection: complement
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.Chassis.Axle.Row2.Wheel.Left.Speed.Qualifier
+          datatype: enum
+          enumRef: DataQuality
+
+    - name: Vehicle.Chassis.Axle.Row2.Wheel.Right.Speed
+      direction: input
+      dataType: float
+      description: Linear speed of the right wheel on axle row 2.
+      unit: km/h
+      min: null
+      max: null
+      defaultValue: null
+      resolution: null
+      precision: null
+      FuSa: true
+      ASIL: B
+      minUpdatePeriodMs: 10
+      accuracy: null
+      protection: complement
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.Chassis.Axle.Row2.Wheel.Right.Speed.Qualifier
+          datatype: enum
+          enumRef: DataQuality
+
+    - name: Vehicle.Speed
+      direction: output
+      dataType: float
+      description: Fused vehicle speed output for downstream consumers.
+      unit: km/h
+      min: null
+      max: null
+      defaultValue: null
+      resolution: null
+      precision: null
+      FuSa: true
+      ASIL: B
+      minUpdatePeriodMs: 20
+      accuracy: null
+      protection: complement
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.Speed.Qualifier
+          datatype: enum
+          enumRef: DataQuality
+
+  # Runtime quality companions are shown explicitly for the Data interfaces.
+  # Each qualifier is an enum-based runtime interface with DataQuality semantics.
+
+  parameters:
+    - name: Vehicle.Chassis.SpeedFusion.Alpha
+      dataType: float
+      defaultValue: 0.7
+      description: Weight applied by the fusion algorithm.
+      unit: ratio
+      tunable: false
+      min: 0.0
+      max: 1.0
+
+    - name: Vehicle.Chassis.SpeedFusion.MaxDeltaPerStep
+      dataType: float
+      defaultValue: 5.0
+      description: Maximum allowed output change per 20 ms cycle.
+      unit: km/h
+      tunable: false
+      min: 0.0
+      max: 100.0
+
+  scheduling:
+    - functionName: VehicleSpeedFusion.Init
+      runType: init
+      description: Initialize filter states and fallback defaults.
+      implementedASIL: B
+      executionResult:
+        type: FunctionResult
+      supervision:
+        required: false
+
+    - functionName: VehicleSpeedFusion.Step
+      runType: cyclic
+      description: >-
+        20 ms cyclic runnable that performs source fusion and publishes Vehicle.Speed.
+      cycleTimeMs: 20
+      implementedASIL: B
+      previousRunnableRef: VehicleSpeedPreProcessor.Step
+      executionResult:
+        type: FunctionResult
+      supervision:
+        required: false
+
+    - functionName: VehicleSpeedFusion.Terminate
+      runType: terminate
+      description: Release resources and set deterministic safe defaults.
+      implementedASIL: QM
+      previousRunnableRef: VehicleSpeedFusion.Step
+      executionResult:
+        type: FunctionResult
+      supervision:
+        required: false

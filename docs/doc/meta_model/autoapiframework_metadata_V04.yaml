@@ -1,0 +1,423 @@
+# *******************************************************************************
+# Copyright (c) 2026 ZF Friedrichshafen AG
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Contributors:
+#   Saran Gundlapalli - Error handling added
+# *******************************************************************************
+
+metamodel:
+  name: Eclipse-autoapiframework-Metamodel
+  version: 0.4.0
+  scope: Middleware-independent metadata for definition and generation of standardized function APIs. Catalogue/interface metadata (fro e.g., from VSS) is separated from function-specific configuration and runtime state where applicable.
+  intent: Core interface types and essential metadata are required for standardized API definition and generation.
+
+  enums:
+
+    ASIL:
+      - QM
+      - A
+      - B
+      - C
+      - D
+    
+    DataQuality:
+      description: Runtime qualifier values. DataQuality is defined by the metamodel and the attribute qualityCode is not static metadata of a data interface instance.
+      values:
+        - uninitialized
+        - invalid
+        - valid
+
+
+    Direction:
+      - input
+      - output
+
+    RunType:
+      - init
+      - cyclic
+      - event
+      - terminate
+    
+    ProtectionType:
+      description: Abstract protection requirement. Concrete middleware protection profile and binding details may be defined during platform/deployment configuration.
+      values:
+        - none
+        - complement
+        - other
+
+    FunctionResult:
+      description: Generic execution result only. It shall not encode function-specific diagnostic causes. Detailed errors are exposed through "Error interfaces".
+      values:
+        - success
+        - failure
+        - notAvailable
+      
+    ErrorSeverity:
+      - information
+      - warning
+      - degraded
+      - shutdown
+
+    SupervisionType:
+      - none
+      - alive
+      - deadline
+      - logical
+      - combined
+
+  interfaceTypes:
+
+    Data:
+      description: Runtime data interfaces exchanged between applications or systems. Semantic properties may originate from VSS or an extended catalogue. Direction and protection are resolved for the function usage/configuration and are not intrinsic properties of the canonical VSS node.
+
+      properties:
+        name:
+          mandatory: true
+          datatype: string
+          description: Unique interface or node name. Based on canonical VSS path of the data interface - Vehicle.<Domain/Subdomains>.<Signal>
+          example: Vehicle.Speed
+
+        dataType:
+          mandatory: true
+          datatype: string
+          description: Type of value transported by the interface.
+          examples: 
+            - float
+            - uint8
+            - uint16
+            - boolean
+
+        description:
+          mandatory: true
+          datatype: string
+          description: Functional meaning of the data interface.
+
+        unit:
+          mandatory: true
+          datatype: string
+          description: Engineering unit of the data interface.
+          example: km/h
+
+        min:
+          mandatory: true
+          datatype: number
+          description: Engineering minimum representable value. Null if not yet defined or not applicable.
+
+        max:
+          mandatory: true
+          datatype: number
+          description: Engineering maximum representable value. Null if not yet defined or not applicable.
+
+        defaultValue:
+          mandatory: true
+          datatype: any
+          description: Default or initialization value, where defined. Null if not yet defined or not applicable.
+
+        resolution:
+          mandatory: true
+          datatype: number
+          description: Smallest measurable quantization value - meant for scaling etc.
+
+        precision:
+          mandatory: true
+          datatype: number
+          description: Required numeric precision/number of meaningful digits.
+
+        FuSa:
+          mandatory: true
+          datatype: boolean
+          description: Indicates if the data interface is safety relevant or not.
+
+        ASIL:
+          mandatory: false
+          datatype: enum
+          enumRef: ASIL
+          description: Safety classification associated with the data interface when it is safety-relevant.
+
+        minUpdatePeriodMs:
+          mandatory: true
+          datatype: uint16
+          description: Minimum interval between data updates in milliseconds.
+
+        accuracy:
+          mandatory: true
+          datatype: string
+          description: Expected measurement or estimation accuracy.
+          example: ±0.2 km/h  
+
+        direction:
+          mandatory: true
+          datatype: enum
+          enumRef: Direction
+          description: Input/output relationship relative to the function using the interface. This shall not be inferred from the VSS sensor/actuator type.
+          example: input
+
+        protection:
+          mandatory: true
+          datatype: enum
+          enumRef: ProtectionType
+          description: Protection requirement for transfer of the data between the function and its adapter/platform. Detailed realization is binding-specific.
+          example: complement
+
+      runtimeCompanion:
+        qualityCode:
+          generatedAsSeparateRuntimeInformation: true
+          recommendedNaming: "<DataPath>.Qualifier"
+          datatype: enum
+          enumRef: DataQuality
+          description: Runtime quality/validity information accompanying the value. It is not a static metadata value such as min,max etc. 
+          example: Vehicle.Speed.Qualifier
+
+    Parameter:
+      description: Calibration and configuration interface.
+
+      properties:
+        name:
+          mandatory: true
+          datatype: string
+          description: Unique parameter name. Based on canonical VSS path of the parameter - Vehicle.<Domain/Subdomains>.<Parameter>
+          example: Vehicle.Brake.Gain
+
+        dataType:
+          mandatory: true
+          datatype: string
+          description: Datatype of the parameter value.
+          examples: 
+            - float
+            - float[]
+            - uint8
+            - boolean
+
+        defaultValue:
+          mandatory: true
+          datatype: any
+          description: Default parameter value.
+
+        description:
+          mandatory: true
+          datatype: string
+          description: Meaning and intended usage of the parameter.
+
+        unit:
+          mandatory: true
+          datatype: string
+          description: Engineering unit where applicable.
+
+        tunable:
+          mandatory: true
+          datatype: boolean
+          description: Indicates whether the parameter may be tuned/configured after definition.
+
+        min:
+          mandatory: true
+          datatype: number
+          description: Minimum permitted parameter value, if defined/applicable.
+
+        max:
+          mandatory: true
+          datatype: number
+          description: Maximum permitted parameter value, if defined/applicable.
+
+        dimensions:
+          mandatory: false
+          datatype: any with array indicated via []
+          description: Shape of an array/map parameter. Omitted for scalars; e.g. [10] for a one-dimensional breakpoint vector and [7, 10] for a 7x10 map.
+          example: Vehicle.Brake.GainMap[10]
+
+    Scheduling:
+      description: Lifecycle, activation, timing and execution-supervision contract of a runnable.
+
+      properties:
+        functionName:
+          mandatory: true
+          datatype: string
+          description: Runnable or callable function name.
+          namingConvention:
+            - "<FunctionName>.Init"
+            - "<FunctionName>.Step"
+            - "<FunctionName>.Terminate"
+
+        runType:
+          mandatory: true
+          datatype: enum
+          enumRef: RunType
+          description: Activation type of the runnable.
+
+        description:
+          mandatory: true
+          datatype: string
+          description: Purpose and execution intent of the runnable.
+
+        cycleTimeMs:
+          mandatory: conditional
+          condition: "runType == cyclic"
+          datatype: number
+          description: Periodicity of cyclic execution in milliseconds.
+
+        implementedASIL:
+          mandatory: true
+          datatype: enum
+          enumRef: ASIL
+          description: ASIL level for which this runnable/execution is implemented.
+
+        previousRunnableRef:
+          mandatory: false
+          datatype: string
+          description: Runnable that must precede this runnable when an ordering constraint exists.
+
+        schedulingPolicy:
+          mandatory: false
+          datatype: string
+          description: Scheduling mechanism or constraint, e.g. preemptive/non-preemptive.
+
+        supervision:
+          mandatory: true
+          datatype: object
+
+          properties:
+
+            required:
+              mandatory: true
+              datatype: boolean
+
+            type:
+              mandatory: conditional
+              condition: required == true
+              datatype: enum[]
+              values:
+                - alive
+                - deadline
+                - logical
+
+              alive:
+                mandatory: conditional
+                condition: type contains alive
+                datatype: object
+                properties:
+                minIndications: {datatype: uint32, mandatory: false}
+                maxIndications: {datatype: uint32, mandatory: false}
+                referenceCycleMs: {datatype: number, mandatory: false}
+                
+              deadline:
+                mandatory: conditional
+                condition: type contains deadline
+                datatype: object
+                properties:
+                  minExecutionTimeMs: {datatype: number, mandatory: false}
+                  maxExecutionTimeMs: {datatype: number, mandatory: true}
+
+              logical:
+                mandatory: conditional
+                condition: type contains logical
+                datatype: object
+                properties:
+                  predecessorRefs: {datatype: "string[]", mandatory: false}
+                  successorRefs: {datatype: "string[]", mandatory: false}
+
+        stackSizeBytes:
+          mandatory: false
+          datatype: uint32
+          description: Required stack size when relevant for deployment/integration.
+
+        executionResult:
+          mandatory: true
+          datatype: enum
+          enumRef: FunctionResult
+          description: Generic result returned/reported for function execution. The adapter may report a failure indication it can observe (e.g. due to invocation/transport/timeout). It shall not synthesize detailed function-internal diagnostic causes nor reports any errors for fault logging.
+
+    Error:
+      status: candidate
+      description: Function-specific diagnostic/error interface, separated from the generic FunctionResult. This model is a candidate for later standardization and shall not be confused with ECU-specific DTC/event-memory configuration.
+
+      properties:
+        name:
+          mandatory: true
+          datatype: string
+          description: Function-specific error interface name. Standard canonical form - <FunctionName>.<ErrorName>.ErrorStatus
+          example: WheelSpeedCalc.RangeError.ErrorStatus
+
+        dataType:
+          mandatory: true
+          datatype: string
+          description: Datatype of the exposed error interface.
+          examples:
+           - boolean
+           - enum
+
+        description:
+          mandatory: true
+          datatype: string
+          description: Meaning of the error and its trigger scenario.
+
+        severity:
+          mandatory: true
+          datatype: enum
+          enumRef: ErrorSeverity
+          description: Functional impact/severity associated with the error.
+
+        maturationTimeMs:
+          mandatory: true
+          datatype: number in milliseconds
+          description: Time the error condition must persist before the error is asserted/logged by the underlying middleware.
+
+        resetTimeMs:
+          mandatory: false
+          recommendation: recommended
+          datatype: number
+          description: De-maturation/reset time before clearing the error.
+
+        resetCondition:
+          mandatory: false
+          recommendation: recommended
+          datatype: string
+          description: Condition that clears the error.
+
+        dependencyRefs:
+          mandatory: false
+          datatype: "string[]"
+          description: Related upstream error interfaces that may propagate/trigger this error.
+
+        fallbackBehavior:
+          mandatory: false
+          datatype: string
+          description: Function-level fallback/degradation behavior associated with the error.
+
+        raisesSafetyReactionRefs:
+          mandatory: false
+          datatype: "string[]"
+          description: References to safety reactions associated with this error - <SafetyCondition>.SafetyConditionStatus.
+
+  modelingRules:
+    - id: MR-001
+      rule: >-
+        VSS sensor/actuator type and function input/output direction are different
+        concepts. Direction shall be assigned per function-interface usage.
+
+    - id: MR-002
+      rule: >-
+        Runtime quality shall not be populated as a static constant in a function
+        specification. Quality information shall be transported/represented at runtime.
+
+    - id: MR-003
+      rule: >-
+        Generic FunctionResult shall be limited to execution outcome and shall not
+        replace function-specific diagnostic/error interfaces.
+
+    - id: MR-004
+      rule: >-
+        Protection indicates a requirement at function configuration level; concrete
+        middleware specific protection realization belongs to platform/deployment binding.
+
+    - id: MR-005
+      rule: >-
+        Unknown metadata shall remain null according to the consuming schema/tool
+        and shall not be replaced with invented plausible values.
