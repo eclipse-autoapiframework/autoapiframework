@@ -14,8 +14,7 @@
    #
    # Contributors:
    #   Thomas Pfleiderer - Meta model added
-  #   Saran Gundlapalli - function_specification_file.rst updated according to metamodel v0.4.0
-
+   #   Saran Gundlapalli - function_specification_file.rst updated according to metamodel v0.4.0
    # *******************************************************************************
 
 Current status of the project:
@@ -27,24 +26,24 @@ Function Specification File
 ===========================  
 
 
-A Function Specification File describes one function and how that function uses the interface concepts defined by the metamodel. It contains function-specific configuration such as interface direction, protection requirements, parameters, scheduling and supervision. It should not become a second semantic catalogue.
+A Function Specification File describes a single function and how that function uses the interface concepts defined by the metamodel. It contains function-specific configuration information, such as interface direction, protection requirements, parameters, scheduling, and supervision. It should not evolve into a second semantic catalogue.
 
-Catalogue/interface metadata, function-specific configuration and runtime information shall remain clearly separated:
+Catalogue/interface metadata, function-specific configuration, and runtime information shall remain clearly separated:
 
-- **Catalogue/interface semantics:** canonical VSS signals and parameters or approved extensions that describe what the data/parameter means.
-- **Function-specific configuration:** how a specific function uses those interfaces, including input/output direction, protection requirements, scheduling and selected supervision mechanisms.
-- **Runtime information:** actual runtime values and status information, such as data quality, ``FunctionResult``, transport/runtime failures and function-specific diagnostic status.
+- **Catalogue/interface semantics:** canonical VSS signals and parameters, or approved extensions, that define the meaning of data and parameters.
+- **Function-specific configuration:** how a specific function uses those interfaces, including input/output direction, protection requirements, scheduling, and the selected supervision mechanisms.
+- **Runtime information:** actual runtime values and status information, such as data quality, ``FunctionResult``, transport or runtime failures, and function-specific diagnostic status.
 
-The Function Specification should primarily reference and reuse catalogue-defined semantics rather than redefining the same metadata independently. If metadata must be carried directly in the Function Specification for code generation or tooling, it should remain clear which information originates from the catalogue and which information belongs to function-specific configuration.
+The Function Specification should primarily reference and reuse catalogue-defined semantics rather than redefining the same metadata independently. If metadata must be included directly in the Function Specification for code generation or tooling purposes, it shall remain clear which information originates from the catalogue and which information belongs to function-specific configuration.
 
-A Function Specification File describes exactly **one** function. It does not describe the complete system-level composition of multiple functions. Dependencies to runnables of other functions may be referenced, while the complete composition is defined in the :doc:`Runtime Specification File </doc/runtime_specification/runtime_specification_file>`
+A Function Specification File describes exactly **one** function. It does not define the system-level composition of multiple functions. Dependencies on runnables from other functions may be referenced; however, the complete composition is defined in the :doc:`Runtime Specification File </doc/runtime_specification/runtime_specification_file>`.
 
 About the naming
 ----------------
 
-In our documentation, we deliberately use the term Function (for example, Function Specification File and Function Adapter) because other terms, such as Component application, or Module, often carry pre-existing meanings in different frameworks and toolchains.
+In our documentation, we deliberately use the term Function (for example, Function Specification File and Function Adapter) because alternative terms, such as Component, Application, or Module, often carry established meanings in different frameworks and toolchains.
 
-In this context, a Function represents a self-contained piece of functionality that encapsulates algorithmic/application logic (for example, MATLAB-generated code) and exposes it through a middleware-independent interface. Where needed, a wrapper or adapter can connect this logic to the underlying middleware or runtime environment. The term is intentionally generic and can be used to describe a wide range of algorithmic purposes, including:
+In this context, a Function represents a self-contained unit of functionality that encapsulates application or algorithmic logic (for example, MATLAB-generated code) and exposes it through a middleware-independent interface. Where required, a wrapper or adapter may be used to connect this logic to the underlying middleware or runtime environment. The term is intentionally generic and can be used to describe a wide range of functional implementations, including:
 
 - Vehicle Function
 - Diagnostic Function 
@@ -62,13 +61,14 @@ Therefore, the term Function should be understood as a generic abstraction for a
 Catalogue and VSS reuse
 -----------------------
 
-Existing VSS nodes shall be reused whenever their semantics match the required interface. New ``Vehicle.*`` paths shall only be introduced when no suitable VSS node exists, and such additions shall be explicitly identified as approved extensions rather than presented as standard VSS catalogue entries.
+Existing VSS nodes shall be reused whenever their semantics match the required interface. New ``Vehicle.*`` paths shall only be introduced when no suitable VSS node exists. Such additions shall be explicitly identified as approved extensions and shall not be presented as standard VSS catalogue entries.
 
-Parameter identifiers shall follow the same VSS-style hierarchical naming approach as the other catalogue interfaces. Existing catalogue entries shall be reused where available. If no suitable entry exists, the parameter shall be introduced as an explicitly approved extension under the relevant ``Vehicle.<Domain>...`` semantic branch rather than using a standalone function namespace.
+Parameter identifiers shall follow the same VSS-style hierarchical naming convention as all other catalogue interfaces. Existing catalogue entries shall be reused whenever available. If no suitable entry exists, the parameter shall be introduced as an explicitly approved extension within the relevant ``Vehicle.<Domain>...`` semantic branch rather than under a standalone function-specific namespace.
 
 Content Of Function Specification File
 --------------------------------------
-The metamodel defines mandatory properties *within* the interface types. It does not currently define collection-level cardinalities for every Function Specification File. Therefore, collection presence below is shown as guidance rather than as a metamodel requirement.
+
+The metamodel defines mandatory properties *within*  the interface types. However, it does not currently define collection-level cardinalities for every Function Specification File. Therefore, the presence of collections described below is provided as guidance rather than as a metamodel requirement.
 
 .. list-table:: Function Specification content
    :header-rows: 1

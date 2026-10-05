@@ -13,6 +13,7 @@
 * Contributors:
 *   Thomas Pfleiderer - documentation
 * *******************************************************************************
+*/
  
 #include "speed_hazard_detection.hpp"
 #include <algorithm>

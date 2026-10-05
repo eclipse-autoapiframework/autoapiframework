@@ -13,6 +13,7 @@
 * Contributors:
 *   Thomas Pfleiderer - documentation
 * *******************************************************************************
+*/
  
 #ifndef SPEED_HAZARD_DETECTION_HPP
 #define SPEED_HAZARD_DETECTION_HPP
