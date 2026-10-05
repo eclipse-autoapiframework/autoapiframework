@@ -1,7 +1,7 @@
 
 ..
    # *******************************************************************************
-   # Copyright (c) 2026 Contributors to the Eclipse Foundation
+   # Copyright (c) 2026 ZF Friedrichshafen AG
    #
    # See the NOTICE file(s) distributed with this work for additional
    # information regarding copyright ownership.
@@ -14,9 +14,8 @@
    #
    # Contributors:
    #   Thomas Pfleiderer - Meta model added
+   #   Saran Gundlapalli - function_specification_examples.rst updated according to metamodel v0.4.0
    # *******************************************************************************
-
-As no API specification is available yet,, **these examples should be considered preliminary drafts.**
 
 Examples
 ========
@@ -37,8 +36,17 @@ Use the multi-rate example when preprocessing and decision logic should run at d
 
    examples/vehicle_speed_fusion_multirate_example
 
+.. toctree::
+   :caption: wheel Speed Plausibility Check including error and supervision example
+   :maxdepth: 1
+
+   examples/wheel_speed_plausibility_check_example
+
 API
 ---
+
+As no final API specification is available yet, **these examples should be considered preliminary drafts.** They demonstrate the metamodel concepts and shall reuse canonical VSS semantics where possible. Any non-standard catalogue path must be identified as an approved extension.
+
 
 .. dropdown:: speed_hazard_detection.cpp
    :icon: code

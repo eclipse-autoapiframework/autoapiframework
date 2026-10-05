@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Purpose of the Meta Model &#8212; Eclipse Automotive API Framework  documentation</title>
+    <title>Software Architecture &#8212; Eclipse Automotive API Framework  documentation</title>
   
   
   
@@ -63,11 +63,11 @@
     <script src="../../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
     <script src="../../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
     <script src="../../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'doc/meta_model/meta_model_purpose';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'doc/runtime_specification/runtime_specification_file';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Meta Model" href="meta_model.html" />
-    <link rel="prev" title="Requirements" href="../requirements/requirements.html" />
+    <link rel="next" title="Summary" href="summary.html" />
+    <link rel="prev" title="WheelSpeedPlausibilityCheck Error and Supervision Example" href="../function_specification/examples/wheel_speed_plausibility_check_example.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="0.1" />
@@ -160,22 +160,22 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../meta_model/meta_model_purpose.html">
     Purpose of the Meta Model
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="meta_model.html">
+  <a class="nav-link nav-internal" href="../meta_model/meta_model.html">
     Meta Model
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="meta_model_function_adapter.html">
+  <a class="nav-link nav-internal" href="../meta_model/meta_model_function_adapter.html">
     Function Adapter
   </a>
 </li>
@@ -223,15 +223,15 @@
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../runtime_specification/runtime_specification_file.html">
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="#">
     Software Architecture
   </a>
 </li>
 
 
 <li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../runtime_specification/summary.html">
+  <a class="nav-link dropdown-item nav-internal" href="summary.html">
     Summary
   </a>
 </li>
@@ -340,22 +340,22 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../meta_model/meta_model_purpose.html">
     Purpose of the Meta Model
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="meta_model.html">
+  <a class="nav-link nav-internal" href="../meta_model/meta_model.html">
     Meta Model
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="meta_model_function_adapter.html">
+  <a class="nav-link nav-internal" href="../meta_model/meta_model_function_adapter.html">
     Function Adapter
   </a>
 </li>
@@ -396,15 +396,15 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../runtime_specification/runtime_specification_file.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
     Software Architecture
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../runtime_specification/summary.html">
+  <a class="nav-link nav-internal" href="summary.html">
     Summary
   </a>
 </li>
@@ -489,7 +489,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Purpose of the Meta Model</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Software Architecture</span></li>
   </ul>
 </nav>
 </div>
@@ -506,90 +506,45 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="purpose-of-the-meta-model">
-<h1>Purpose of the Meta Model<a class="headerlink" href="#purpose-of-the-meta-model" title="Link to this heading">#</a></h1>
-<section id="purpose-and-end-to-end-goal">
-<h2>Purpose and End-to-End Goal<a class="headerlink" href="#purpose-and-end-to-end-goal" title="Link to this heading">#</a></h2>
-<p>This project defines a common workflow to integrate vehicle functions on different middleware platforms with a shared technical contract.</p>
-<p>The central idea is:</p>
-<ol class="arabic simple">
-<li><p>Define a common <strong>meta model</strong> (based on COVESA VSS, extended with additional attributes such as safety metadata).</p></li>
-<li><p>Derive a stable, agreed <strong>static API contract</strong> from that meta model.</p></li>
-<li><p>Describe concrete vehicle functions in <strong>YAML model instance files</strong> that follow this contract.</p></li>
-<li><p>Use <strong>code generators</strong> to create implementation-specific artifacts for different runtimes and integration targets.</p></li>
-</ol>
-<p>This allows different companies to agree on the same interface definitions and safety semantics (for example ASIL context and E2E protection settings), while
-still generating code for their own preferred toolchains and middleware stacks.</p>
-</section>
-<section id="why-a-meta-model-first">
-<h2>Why a Meta Model First?<a class="headerlink" href="#why-a-meta-model-first" title="Link to this heading">#</a></h2>
+  <p>Current status of the project:</p>
 <figure class="align-default">
-<img alt="Central Meta Model for Automotive Software Development" src="../../_images/central_meta_model.png" />
+<img alt="time line of the project" src="../../_images/time_line.png" />
 </figure>
-<p>The meta model is the single source of truth for interface semantics. It defines which properties are mandatory, how data and parameters are structured,
-and how execution and safety constraints are represented.</p>
-<p>Without this shared model, each team would interpret names, datatypes, quality, scheduling, and safety behavior differently, which leads to integration
-friction and unsafe assumptions.</p>
-</section>
-<section id="from-meta-model-to-static-api">
-<h2>From Meta Model to Static API<a class="headerlink" href="#from-meta-model-to-static-api" title="Link to this heading">#</a></h2>
+<section id="software-architecture">
+<h1>Software Architecture<a class="headerlink" href="#software-architecture" title="Link to this heading">#</a></h1>
+<section id="runtime-specification-file">
+<h2>Runtime Specification File<a class="headerlink" href="#runtime-specification-file" title="Link to this heading">#</a></h2>
+<p>A <a class="reference internal" href="../function_specification/function_specification_file.html"><span class="doc">Function Specification File</span></a> fully describes exactly <strong>one</strong> function in
+isolation: its signals, its parameters, and the scheduling of its own runnables. It intentionally does not know anything about the other
+functions running on the same system.</p>
+<p>A real system, however, is composed of several such functions that need to be instantiated and executed together, in a defined order, and
+connected to the same middleware. The <strong>Runtime Specification File</strong> captures this system-level composition on top of one or more Function
+Specification Files:</p>
+<ul class="simple">
+<li><p><strong>Function reference</strong> - which Function Specification Files (i.e. which functions) are part of this runtime/system.</p></li>
+<li><p><strong>Sequencing</strong> - the execution order across those functions, i.e. how the <code class="docutils literal notranslate"><span class="pre">previousRunnableRef</span></code> chains of the individual functions are
+stitched together into one overall schedule.</p></li>
+</ul>
 <figure class="align-default">
-<img alt="One Specification - many artefacts" src="../../_images/vehicle_functions_standaried_by_design.png" />
+<img alt="One Specification - many artefacts" src="../../_images/runtime_specification_architecture.png" />
 </figure>
-<p>The static API is not handwritten per project. It is systematically derived from the meta model so that all participants share:</p>
+<p>As shown above, each <code class="docutils literal notranslate"><span class="pre">Software</span> <span class="pre">Function</span></code> (the function’s business logic) is executed through its own <code class="docutils literal notranslate"><span class="pre">Function</span> <span class="pre">Adapter</span></code>, which wraps it
+behind the stable, middleware-independent contract defined by the meta model. The <code class="docutils literal notranslate"><span class="pre">Runtime</span> <span class="pre">Scheduler</span></code> is generated from the Runtime
+Specification File and is responsible for triggering the OS-level <code class="docutils literal notranslate"><span class="pre">Init</span></code>/<code class="docutils literal notranslate"><span class="pre">Compute</span></code>/<code class="docutils literal notranslate"><span class="pre">Terminate</span></code> calls of every function, in the order
+described by the Runtime Specification File, through the <code class="docutils literal notranslate"><span class="pre">Middleware</span> <span class="pre">Abstraction</span> <span class="pre">Layer</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Runtime Specification File is not yet formally defined in the meta model (unlike the Function Specification File, which is defined by
+<code class="docutils literal notranslate"><span class="pre">Eclipse-autoapiframework-Metamodel</span></code> version 0.4.0). The concepts above describe the intended scope; a versioned schema, file extension,
+and worked examples are still to be added.</p>
+</div>
+<p>Open topics still to be worked out for the Runtime Specification File:</p>
 <ul class="simple">
-<li><p>the same signal and parameter naming/path conventions,</p></li>
-<li><p>the same dataType and unit interpretation,</p></li>
-<li><p>the same scheduling contract,</p></li>
-<li><p>the same safety extension contract (including E2E/integrity selections), and</p></li>
-<li><p>the same traceable structure for validation and review.</p></li>
+<li><p>Mapping of an output signal of one function to the input signal of another (data flow / connections).</p></li>
+<li><p>Explicit dependency declarations between functions, beyond the ordering implied by <code class="docutils literal notranslate"><span class="pre">previousRunnableRef</span></code>.</p></li>
+<li><p>Initialization / system setup information.</p></li>
+<li><p>Deployment information.</p></li>
 </ul>
-<p>In this context, “static” means the interface shape is agreed up front and can be generated consistently across organizations.</p>
-</section>
-<section id="role-of-yaml-model-instances">
-<h2>Role of YAML Model Instances<a class="headerlink" href="#role-of-yaml-model-instances" title="Link to this heading">#</a></h2>
-<figure class="align-default">
-<img alt="One Specification - many artefacts" src="../../_images/central_yaml_specification.png" />
-</figure>
-<p>Each vehicle function is described as a YAML model instance that conforms to the meta model schema.</p>
-<p>These YAML files capture function-specific content such as:</p>
-<ul class="simple">
-<li><p>data interfaces,</p></li>
-<li><p>calibration parameters,</p></li>
-<li><p>runnable scheduling information, and</p></li>
-<li><p>safety extensions (for example fallback behavior and E2E protection profile).</p></li>
-</ul>
-<p>Because all YAML instances follow one shared structure, they can be exchanged, reviewed, versioned, and validated early before implementation details are introduced.</p>
-<p>The file extension of these files will be <code class="docutils literal notranslate"><span class="pre">*.afs</span></code> (AutoAPI Function Specification).</p>
-</section>
-<section id="role-of-code-generators">
-<h2>Role of Code Generators<a class="headerlink" href="#role-of-code-generators" title="Link to this heading">#</a></h2>
-<p>Code generators transform the same YAML model instance into target artifacts, for example:</p>
-<ul class="simple">
-<li><p>static API headers/stubs,</p></li>
-<li><p>middleware binding code,</p></li>
-<li><p>validation/serialization code, and</p></li>
-<li><p>safety supervision and integrity-check scaffolding.</p></li>
-</ul>
-<p>This preserves one logical function definition while enabling multiple technical realizations. As a result, integration effort is reduced,
-consistency is improved, and safety-relevant behavior is made explicit and auditable.</p>
-</section>
-<section id="what-new-members-should-keep-in-mind">
-<h2>What New Members Should Keep in Mind<a class="headerlink" href="#what-new-members-should-keep-in-mind" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>The meta model defines the common language.</p></li>
-<li><p>The static API is the agreed contract derived from that language.</p></li>
-<li><p>YAML model instances describe concrete functions using that contract.</p></li>
-<li><p>Generators produce implementation artifacts without changing the agreed function semantics.</p></li>
-</ul>
-</section>
-<section id="status-of-the-current-project">
-<h2>Status Of The Current Project<a class="headerlink" href="#status-of-the-current-project" title="Link to this heading">#</a></h2>
-<p>Currently we have a Meta Model in place with additional parameters and attributes compared to existing vss definition of COVESA. There are discussions and feedback rounds about additional useful safety aspects to finalize the meta model.</p>
-<figure class="align-default">
-<img alt="status of the current project" src="../../_images/specification_sequence.png" />
-</figure>
-<p>An <code class="docutils literal notranslate"><span class="pre">*.afs</span></code> file does not use the VSPEC format. Instead, it is defined in YAML format.</p>
 </section>
 </section>
 
@@ -604,20 +559,20 @@ consistency is improved, and safety-relevant behavior is made explicit and audit
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../requirements/requirements.html"
+       href="../function_specification/examples/wheel_speed_plausibility_check_example.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Requirements</p>
+        <p class="prev-next-title">WheelSpeedPlausibilityCheck Error and Supervision Example</p>
       </div>
     </a>
     <a class="right-next"
-       href="meta_model.html"
+       href="summary.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Meta Model</p>
+        <p class="prev-next-title">Summary</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -640,13 +595,7 @@ consistency is improved, and safety-relevant behavior is made explicit and audit
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#purpose-and-end-to-end-goal">Purpose and End-to-End Goal</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-a-meta-model-first">Why a Meta Model First?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-meta-model-to-static-api">From Meta Model to Static API</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#role-of-yaml-model-instances">Role of YAML Model Instances</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#role-of-code-generators">Role of Code Generators</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-new-members-should-keep-in-mind">What New Members Should Keep in Mind</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#status-of-the-current-project">Status Of The Current Project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-specification-file">Runtime Specification File</a></li>
 </ul>
   </nav></div>
 
@@ -654,7 +603,7 @@ consistency is improved, and safety-relevant behavior is made explicit and audit
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/doc/meta_model/meta_model_purpose.rst.txt"
+      <li><a href="../../_sources/doc/runtime_specification/runtime_specification_file.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>

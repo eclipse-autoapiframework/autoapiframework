@@ -1,6 +1,6 @@
 ..
    # *******************************************************************************
-   # Copyright (c) 2024 Contributors to the Eclipse Foundation
+   # Copyright (c) 2026 ZF Friedrichshafen AG
    #
    # See the NOTICE file(s) distributed with this work for additional
    # information regarding copyright ownership.
@@ -43,7 +43,27 @@ Meta Model:
    doc/meta_model/meta_model_purpose
    doc/meta_model/meta_model
    doc/meta_model/meta_model_function_adapter
-   doc/meta_model/meta_model_examples  
+
+Function Specification File:
+-----------------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   doc/function_specification/function_specification_file
+   doc/function_specification/function_specification_examples
+   doc/function_specification/examples/speed_hazard_detection_example
+   doc/function_specification/examples/vehicle_speed_fusion_multirate_example
+   doc/function_specification/examples/wheel_speed_plausibility_check_example
+   
+Software Architecture:
+----------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   doc/runtime_specification/runtime_specification_file   
+   doc/runtime_specification/summary
 
 Examples (for application-framework):
 -------------------------------------
