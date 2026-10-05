@@ -14,9 +14,10 @@
    #
    # Contributors:
    #   Thomas Pfleiderer - Meta model added
+   #   Saran Gundlapalli - function_specification_examples.rst updated according to metamodel v0.4.0
    # *******************************************************************************
 
-As no API specification is available yet,, **these examples should be considered preliminary drafts.**
+As no final API specification is available yet, **these examples should be considered preliminary drafts.** They demonstrate the metamodel concepts and shall reuse canonical VSS semantics where possible. Any non-standard catalogue path must be identified as an approved extension.
 
 Examples
 ========
@@ -38,7 +39,7 @@ Use the multi-rate example when preprocessing and decision logic should run at d
    examples/vehicle_speed_fusion_multirate_example
 
 .. toctree::
-   :caption: Vehicle Speed Plausibility Check including error and supervision example 
+   :caption: wheel Speed Plausibility Check including error and supervision example
    :maxdepth: 1
 
    examples/wheel_speed_plausibility_check_example

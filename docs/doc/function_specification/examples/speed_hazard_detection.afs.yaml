@@ -12,6 +12,7 @@
 #
 # Contributors:
 #   Thomas Pfleiderer - Function specification added
+#   Saran Gundlapalli - speed_hazard_detection.afs.yaml updated according to metamodel v0.4.0
 # *******************************************************************************
 
 functionSpecification:
@@ -41,6 +42,15 @@ functionSpecification:
       minUpdatePeriodMs: 10
       accuracy: "+/-0.2 km/h"
       protection: complement
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.Speed.Qualifier
+          datatype: enum
+          enumRef: DataQuality
+
+        # Each Data interface explicitly indicates its runtime quality companion.
+        # The qualifier is an enum-based runtime interface and intentionally does not
+        # duplicate normal Data properties such as min/max/default/resolution.
 
     - name: Vehicle.Acceleration.Longitudinal
       direction: input
@@ -57,6 +67,17 @@ functionSpecification:
       minUpdatePeriodMs: 10
       accuracy: "+/-0.05 m/s2"
       protection: complement
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.Acceleration.Longitudinal.Qualifier
+          datatype: enum
+          enumRef: DataQuality
+
+
+    # Existing VSS semantics shall be reused where available. If the selected
+    # VSS release does not provide an equivalent hazard-light request node,
+    # this path must be treated/documented as an conceptual extension that follows
+    # VSS canonical naming.
 
     - name: Vehicle.Body.Lights.Hazard.Request
       direction: output
@@ -112,12 +133,13 @@ functionSpecification:
       max: 600000
 
   scheduling:
+
     - functionName: SpeedHazardDetection.Init
       runType: init
       description: Initialize internal states and latched outputs.
-      cycleTimeMs: 0
       implementedASIL: B
-      previousRunnableRef: System.Startup
+      executionResult:
+        type: FunctionResult
       supervision:
         required: false
 
@@ -127,14 +149,17 @@ functionSpecification:
       cycleTimeMs: 20
       implementedASIL: B
       previousRunnableRef: SpeedHazardDetection.Init
+      executionResult:
+        type: FunctionResult
       supervision:
         required: false
 
     - functionName: SpeedHazardDetection.Terminate
       runType: terminate
       description: Shutdown cleanup for deterministic deactivation.
-      cycleTimeMs: 0
       implementedASIL: QM
       previousRunnableRef: SpeedHazardDetection.Step
+      executionResult:
+        type: FunctionResult
       supervision:
         required: false

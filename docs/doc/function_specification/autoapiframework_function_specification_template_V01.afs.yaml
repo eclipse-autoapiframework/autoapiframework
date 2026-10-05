@@ -12,6 +12,7 @@
 #
 # Contributors:
 #   Thomas Pfleiderer - Function specification added
+#   Saran Gundlapalli - autoapiframework_function_specification_template_V01.afs.yaml updated according to metamodel v0.4.0
 # *******************************************************************************
 #
 # TEMPLATE - Function specification File (*.acs)
@@ -20,6 +21,8 @@
 # Every "row" below is one signal/parameter/runnable and MUST provide exactly
 # one value per entry listed under "columns", in the same order.
 # Remove this header and all "# <-- ..." hints once the file is filled in.
+# Unknown metadata shall remain null/omitted as allowed by the consuming schema;
+# do not invent plausible values only to complete an example.
 
 functionSpecification:
   name: <YourFunctionName>              # e.g. SpeedHazardDetection
@@ -31,14 +34,24 @@ functionSpecification:
   description: >-
     <One or two sentences describing what this function does.>
 
-  # -----------------------------------------------------------------------
-  # 1) DATA INTERFACES: one object per input/output signal.
-  #    - direction: input | output
-  #    - FuSa: true | false
-  #    - ASIL: QM | A | B | C | D
-  #    - protection: none | complement | other
-  #    - qualityCode is runtime companion information and therefore is not a
-  #      static metadata value in this specification.
+# -----------------------------------------------------------------------
+  # 1) DATA INTERFACES
+  #    Reuse canonical VSS paths whenever equivalent semantics already exist.
+  #    New Vehicle.* paths shall only be introduced as explicitly approved
+  #    extensions when no suitable standard VSS node exists.
+  #
+  #    Function-specific properties:
+  #      direction: input | output
+  #      protection: none | complement | other
+  #
+  #    FuSa: true | false
+  #    ASIL is optional and should be provided when the data interface is
+  #    safety-relevant. Do not populate ASIL mechanically for FuSa: false.
+  #
+  #    qualityCode is runtime companion information associated with the Data
+  #    interface. The qualifier shall be indicated explicitly as a runtime
+  #    enum interface, but shall not repeat normal Data metadata such as
+  #    min/max/default/resolution/precision.
   # -----------------------------------------------------------------------
   dataInterfaces:
     - name: Vehicle.<Domain>.<Signal>
@@ -52,10 +65,15 @@ functionSpecification:
       resolution: <resolution>
       precision: <precision>
       FuSa: true
-      ASIL: QM
+      ASIL: <QM|A|B|C|D>
       minUpdatePeriodMs: <minUpdatePeriodMs>
       accuracy: <expected accuracy>
       protection: none
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.<Domain>.<Signal>.Qualifier
+          datatype: enum
+          enumRef: DataQuality
 
     # - name: Vehicle.<Domain>.<OutputSignal>
     #   direction: output
@@ -68,15 +86,18 @@ functionSpecification:
     #   resolution: <resolution>
     #   precision: <precision>
     #   FuSa: false
-    #   ASIL: QM
     #   minUpdatePeriodMs: <minUpdatePeriodMs>
     #   accuracy: <expected accuracy>
     #   protection: none
 
   # -----------------------------------------------------------------------
-  # 2) PARAMETERS: one object per calibration/configuration value.
-  #    - dimensions is optional and only needed for array/map parameters,
-  #      e.g. [10] for a vector or [7, 10] for a 7x10 map.
+  # 2) PARAMETERS:
+  #    Parameter identifiers shall also follow the VSS-style hierarchical
+  #    Vehicle.<Domain>.<Subdomain>.<Parameter> naming approach. Reuse an
+  #    existing catalogue entry where available; otherwise use an explicitly
+  #    approved extension under the relevant semantic branch.
+  #    dimensions is optional and only needed for array/map parameters,
+  #    e.g. [10] for a vector or [7, 10] for a 7x10 map.
   # -----------------------------------------------------------------------
   parameters:
     - name: Vehicle.<Domain>.<Parameter>
@@ -87,13 +108,12 @@ functionSpecification:
       tunable: false
       min: <min>
       max: <max>
-      # dimensions: [<size>]
+      dimensions: [<size>]
 
   # -----------------------------------------------------------------------
-  # 3) ERROR INTERFACES: optional, one object per function-specific
-  #    diagnostic interface. Separate from the generic executionResult
-  #    reported per runnable in "scheduling" below.
-  #    - severity: information | warning | degraded | shutdown
+  # 3) ERROR INTERFACES:  - CANDIDATE / PROVISIONAL
+  #    Function-specific diagnostic interfaces, separate from FunctionResult.
+  #    This concept is still subject to partner alignment/review.
   #    - Naming convention: <FunctionName>.<ErrorName>.ErrorStatus
   # -----------------------------------------------------------------------
   # errorInterfaces:
@@ -109,7 +129,7 @@ functionSpecification:
   #     raisesSafetyReactionRefs: []
 
   # -----------------------------------------------------------------------
-  # 4) SCHEDULING: one object per runnable/function entry point.
+  # 4) SCHEDULING:
   #    - runType: init | cyclic | event | terminate
   #    - Naming convention: <FunctionName>.Init / .Step / .Terminate
   #    - previousRunnableRef: name of the runnable that must run right before
@@ -119,15 +139,22 @@ functionSpecification:
   #      supervision.type values below (alive | deadline | logical), each
   #      configured via its matching alive/deadline/logical object.
   #    - schedulingPolicy and stackSizeBytes are optional.
+  #
+  #    cycleTimeMs is present only for runType: cyclic.
+  #    previousRunnableRef is optional and is used only when an explicit
+  #    predecessor/order dependency exists. It does not mean "immediately
+  #    before".
+  #
+  #    executionResult describes the runtime result contract. The static
+  #    specification shall not hard-code success/failure/notAvailable.
   # -----------------------------------------------------------------------
   scheduling:
     - functionName: <YourFunctionName>.Init
       runType: init
       description: <Initialize internal states.>
-      cycleTimeMs: 0
       implementedASIL: QM
-      previousRunnableRef: System.Startup
-      executionResult: success
+      executionResult:
+        type: FunctionResult
       supervision:
         required: false
 
@@ -136,8 +163,9 @@ functionSpecification:
       description: <Evaluate inputs and calculate outputs.>
       cycleTimeMs: <cycleTimeMs>
       implementedASIL: QM
-      previousRunnableRef: <YourFunctionName>.Init
-      executionResult: success
+      # previousRunnableRef: <OtherFunction>.Step
+      executionResult:
+        type: FunctionResult
       supervision:
         required: false
       # supervision:
@@ -162,9 +190,9 @@ functionSpecification:
     - functionName: <YourFunctionName>.Terminate
       runType: terminate
       description: <Shutdown cleanup.>
-      cycleTimeMs: 0
       implementedASIL: QM
       previousRunnableRef: <YourFunctionName>.Step
-      executionResult: success
+      executionResult:
+        type: FunctionResult
       supervision:
         required: false
