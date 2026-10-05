@@ -22,10 +22,7 @@ functionSpecification:
     name: Eclipse-autoapiframework-Metamodel
     version: 0.4.0
 
-    description: >-
-    Fuses standard VSS wheel-speed inputs into Vehicle.Speed. Input
-    preprocessing is modeled as a separate function/runnable and referenced
-    through the predecessor relationship.
+    description: Fuses standard VSS wheel-speed inputs into Vehicle.Speed. Input preprocessing is modeled as a separate function/runnable and referenced through the predecessor relationship.
 
   dataInterfaces:
     - name: Vehicle.Chassis.Axle.Row1.Wheel.Left.Speed
