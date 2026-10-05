@@ -17,8 +17,6 @@
    #   Saran Gundlapalli - function_specification_examples.rst updated according to metamodel v0.4.0
    # *******************************************************************************
 
-As no final API specification is available yet, **these examples should be considered preliminary drafts.** They demonstrate the metamodel concepts and shall reuse canonical VSS semantics where possible. Any non-standard catalogue path must be identified as an approved extension.
-
 Examples
 ========
 
@@ -46,6 +44,9 @@ Use the multi-rate example when preprocessing and decision logic should run at d
 
 API
 ---
+
+As no final API specification is available yet, **these examples should be considered preliminary drafts.** They demonstrate the metamodel concepts and shall reuse canonical VSS semantics where possible. Any non-standard catalogue path must be identified as an approved extension.
+
 
 .. dropdown:: speed_hazard_detection.cpp
    :icon: code
