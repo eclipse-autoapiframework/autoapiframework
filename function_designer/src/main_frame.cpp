@@ -606,7 +606,7 @@ namespace afd
                 wxConfigBase::Get()->Flush();
                 if (isLoaded)
                 {
-                    wxMessageBox("Meta model reloaded successfully,\nto activate changes restart application.", kApplicationName,
+                    wxMessageBox("Meta model reloaded successfully.", kApplicationName,
                                 wxOK | wxICON_INFORMATION, this);
                 }
             }
