@@ -53,6 +53,7 @@ namespace afd
         static constexpr const char* kDataTypeKey = "dataType";
         static constexpr const char* kFloatDataType = "float";
         static constexpr const char* kDoubleDataType = "double";
+        static constexpr const char* kBoolDataType = "bool";        
         static constexpr const char* kInt8DataType = "int8";        
         static constexpr const char* kInt16DataType = "int16";        
         static constexpr const char* kInt32DataType = "int32";        

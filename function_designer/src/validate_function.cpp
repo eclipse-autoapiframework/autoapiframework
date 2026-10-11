@@ -434,6 +434,13 @@ namespace afd
                     return false;
                 }   
             }
+            if ((itemDataType == FunctionSpecification::kBoolDataType) || (itemDataType == kBooleanType))
+            {                
+                if (!ValidateBooleanType(itemName, itemDefault, itemMin, itemMax, error))
+                {
+                    return false;
+                }   
+            }            
 
             if (!ValidateCertainProperties(item, itemName, error))
             {     
@@ -487,6 +494,28 @@ namespace afd
         } 
 
         return true;
+    }
+
+    bool ValidateFunction::ValidateBooleanType(const std::string& itemName, const std::string& defaultValue,
+                         const std::string& min, const std::string& max, std::string& error )
+    {
+        if (IsBoolean(defaultValue) && IsBoolean(min) && IsBoolean(max))
+        {
+            return true;
+        }
+
+        error = itemName + ":\nall values must be boolean\n\n" + min + " (min)," + max + " (max), " + defaultValue + " (default)";  
+        return false;
+    }    
+
+    bool ValidateFunction::IsBoolean(const std::string& str)
+    {
+        if (str.empty() || str == "null")
+        {
+            return true;
+        }
+
+        return str == "true" || str == "false" || str == "1" || str == "0" || str == "yes" || str == "no";
     }
 
     bool ValidateFunction::ValidateFloatType(const std::string& itemName, const std::string& defaultValue,

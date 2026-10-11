@@ -40,7 +40,9 @@ namespace afd
         bool ValidateEnums(const YamlNodePtr& dataInterfaces, const std::string& interfaceTypeName, const MetaModel& metaModel, std::string& error);        
         bool ValidateBoolean(const YamlNodePtr& dataInterfaces, const std::string& interfaceTypeName, const MetaModel& metaModel, std::string& error);        
         bool ValidateMandatory(const YamlNodePtr& dataInterfaces, const std::string& interfaceTypeName, const MetaModel& metaModel, std::string& error);        
-        bool ValidateType(const YamlNodePtr& dataInterfaces, std::string& error);        
+        bool ValidateType(const YamlNodePtr& dataInterfaces, std::string& error);    
+        bool ValidateBooleanType(const std::string& itemName, const std::string& defaultValue, const std::string& min, const std::string& max, std::string& error );      
+        bool IsBoolean(const std::string& str);         
         bool ValidateFloatType(const std::string& itemName, const std::string& defaultValue, const std::string& min, const std::string& max, std::string& error );
         bool IsFloat(const std::string& str);
         bool IsLargerThanFloat(const std::string& strMax, const std::string& strMin);        
