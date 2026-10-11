@@ -505,7 +505,7 @@ namespace afd
             return true;
         }
 
-        error = itemName + ":\nall values must be boolean\n\n" + min + " (min)," + max + " (max), " + defaultValue + " (default)"; 
+        error = itemName + ":\nall values must be boolean\n\n" + min + " (min), " + max + " (max), " + defaultValue + " (default)"; 
         error +=  + "\n\naccepted boolean values are true, false, 1, 0, yes, no";          
         return false;
     }    
@@ -527,13 +527,13 @@ namespace afd
         {
             if (!IsLargerThanFloat(max, min))
             {
-                error = itemName + ":\nmax should be greater than min\n\n" + max + " (max)," + min + " (min)";  
+                error = itemName + ":\nmax should be greater than min\n\n" + max + " (max), " + min + " (min)";  
                 return false;
             }
             return true;
         }
 
-        error = itemName + ":\nall values must be empty or float\n\n" + min + " (min)," + max + " (max), " + defaultValue + " (default)";  
+        error = itemName + ":\nall values must be empty or float\n\n" + min + " (min), " + max + " (max), " + defaultValue + " (default)";  
         return false;
     }
 
@@ -580,13 +580,13 @@ namespace afd
         {
             if (!IsLargerThanInteger(max, min))
             {
-                error = itemName + ":\nmax should be greater than min\n\n" + max + " (max)," + min + " (min)";  
+                error = itemName + ":\nmax should be greater than min\n\n" + max + " (max), " + min + " (min)";  
                 return false;
             }            
             return true;
         }
 
-        error = itemName + ":\nall values must be empty or integer\n\n" + min + " (min)," + max + " (max), " + defaultValue + " (default)";          
+        error = itemName + ":\nall values must be empty or integer\n\n" + min + " (min), " + max + " (max), " + defaultValue + " (default)";          
         return false;
     }    
     
@@ -633,13 +633,13 @@ namespace afd
         {
             if (!IsLargerThanDouble(max, min))
             {
-                error = itemName + ":\nmax should be greater than min\n\n" + max + " (max)," + min + " (min)";  
+                error = itemName + ":\nmax should be greater than min\n\n" + max + " (max), " + min + " (min)";  
                 return false;
             }
             return true;
         }
 
-        error = itemName + ":\nall values must be empty or double\n\n" + min + " (min)," + max + " (max), " + defaultValue + " (default)";        
+        error = itemName + ":\nall values must be empty or double\n\n" + min + " (min), " + max + " (max), " + defaultValue + " (default)";        
         return false;
     }    
     
