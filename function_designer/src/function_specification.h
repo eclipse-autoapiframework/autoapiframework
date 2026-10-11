@@ -57,9 +57,11 @@ namespace afd
         static constexpr const char* kInt8DataType = "int8";        
         static constexpr const char* kInt16DataType = "int16";        
         static constexpr const char* kInt32DataType = "int32";        
-        static constexpr const char* kUint8DataType = "uint8";        
-        static constexpr const char* kUint16DataType = "uint16";        
-        static constexpr const char* kUint32DataType = "uint32";   
+        static constexpr const char* kInt64DataType = "int64";        
+        static constexpr const char* kUInt8DataType = "uint8";        
+        static constexpr const char* kUInt16DataType = "uint16";        
+        static constexpr const char* kUInt32DataType = "uint32";
+        static constexpr const char* kUInt64DataType = "uint64";              
         static constexpr const char* kPrecisionKey = "precision";
         static constexpr const char* kMinUpdatePeriodMsKey = "minUpdatePeriodMs";
         static constexpr const char* kCycleTimeMsKey = "cycleTimeMs";

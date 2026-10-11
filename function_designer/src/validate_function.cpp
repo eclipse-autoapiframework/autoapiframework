@@ -418,9 +418,10 @@ namespace afd
                     return false;
                 }   
             }   
-            if ((itemDataType == FunctionSpecification::kInt8DataType ) || (itemDataType == FunctionSpecification::kUint16DataType ) 
-               || (itemDataType == FunctionSpecification::kUint32DataType ) || (itemDataType == FunctionSpecification::kInt8DataType ) 
-               || (itemDataType == FunctionSpecification::kInt16DataType ) || (itemDataType == FunctionSpecification::kInt32DataType ))
+            if ((itemDataType == FunctionSpecification::kInt8DataType ) || (itemDataType == FunctionSpecification::kUInt8DataType ) 
+               || (itemDataType == FunctionSpecification::kInt16DataType ) || (itemDataType == FunctionSpecification::kUInt16DataType ) 
+               || (itemDataType == FunctionSpecification::kInt32DataType ) || (itemDataType == FunctionSpecification::kUInt32DataType )
+               || (itemDataType == FunctionSpecification::kInt64DataType ) || (itemDataType == FunctionSpecification::kUInt64DataType ))               
             {                
                 if (!ValidateintegerType(itemName, itemDefault, itemMin, itemMax, error))
                 {
@@ -504,7 +505,8 @@ namespace afd
             return true;
         }
 
-        error = itemName + ":\nall values must be boolean\n\n" + min + " (min)," + max + " (max), " + defaultValue + " (default)";  
+        error = itemName + ":\nall values must be boolean\n\n" + min + " (min)," + max + " (max), " + defaultValue + " (default)"; 
+        error +=  + "\n\naccepted boolean values are true, false, 1, 0, yes, no";          
         return false;
     }    
 
