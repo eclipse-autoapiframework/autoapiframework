@@ -270,7 +270,9 @@ namespace afd
             }
 
             bool skipASILCheck = SkipASILProperty(item, interfaceTypeName);
-            std::string itemName = item->Find(kNameKey) ? item->Find(kNameKey)->GetScalar() : "<unknown>";                   
+            // in scheduling it is functionName
+            std::string itemFunctionName = item->Find(kFunctionNameKey) ? item->Find(kFunctionNameKey)->GetScalar() : "<unknown>";               
+            std::string itemName = item->Find(kNameKey) ? item->Find(kNameKey)->GetScalar() : itemFunctionName;                   
           
             for (const auto& property : item->GetMap())
             {
@@ -330,7 +332,9 @@ namespace afd
                 error = "Each collection item must be a mapping.";
                 return false;
             }
-            std::string itemName = item->Find(kNameKey) ? item->Find(kNameKey)->GetScalar() : "<unknown>";            
+            // in scheduling it is functionName
+            std::string itemFunctionName = item->Find(kFunctionNameKey) ? item->Find(kFunctionNameKey)->GetScalar() : "<unknown>";               
+            std::string itemName = item->Find(kNameKey) ? item->Find(kNameKey)->GetScalar() : itemFunctionName;            
             for (const auto& property : item->GetMap())
             {
                 auto it = propertiesWithBooleanType.find(property.first.c_str());
@@ -375,7 +379,9 @@ namespace afd
                 error = "Each collection item must be a mapping.";
                 return false;
             }
-            std::string itemName = item->Find(kNameKey) ? item->Find(kNameKey)->GetScalar() : "<unknown>";
+            // in scheduling it is functionName
+            std::string itemFunctionName = item->Find(kFunctionNameKey) ? item->Find(kFunctionNameKey)->GetScalar() : "<unknown>";            
+            std::string itemName = item->Find(kNameKey) ? item->Find(kNameKey)->GetScalar() : itemFunctionName;
             for (const auto& property : item->GetMap())
             {
                 if (SkipCertainPropertiesFromSyntaxCheck(property.first, false, true))
@@ -406,7 +412,9 @@ namespace afd
                 error = "Each collection item must be a mapping.";
                 return false;
             }
-            std::string itemName = item->Find(kNameKey) ? item->Find(kNameKey)->GetScalar() : "<unknown>";  
+            // in scheduling it is functionName
+            std::string itemFunctionName = item->Find(kFunctionNameKey) ? item->Find(kFunctionNameKey)->GetScalar() : "<unknown>";               
+            std::string itemName = item->Find(kNameKey) ? item->Find(kNameKey)->GetScalar() : itemFunctionName;  
             std::string itemMin = item->Find(FunctionSpecification::kMinKey) ? item->Find(FunctionSpecification::kMinKey)->GetScalar() : "";
             std::string itemMax = item->Find(FunctionSpecification::kMaxKey) ? item->Find(FunctionSpecification::kMaxKey)->GetScalar() : "";
             std::string itemDefault = item->Find(FunctionSpecification::kDefaultValueKey) ? item->Find(FunctionSpecification::kDefaultValueKey)->GetScalar() : "";                        

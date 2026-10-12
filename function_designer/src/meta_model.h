@@ -30,6 +30,7 @@ namespace afd
     static constexpr const char* kExpectedName = "Eclipse-autoapiframework-Metamodel";
     static constexpr const char* kMetaModelKey = "metamodel";
     static constexpr const char* kNameKey = "name";
+    static constexpr const char* kFunctionNameKey = "functionName";
     static constexpr const char* kDescriptionKey = "description";    
     static constexpr const char* kVersionKey = "version";    
     static constexpr const char* kEnumsKey = "enums";
