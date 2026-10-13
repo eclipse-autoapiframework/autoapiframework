@@ -82,6 +82,97 @@ namespace afd
             [this](wxCommandEvent&) { UpdateVisibility(); });
         m_types->Bind(wxEVT_CHECKLISTBOX,
             [this](wxCommandEvent&) { UpdateVisibility(); });
+        m_dialog.Bind(wxEVT_BUTTON, [this](wxCommandEvent& event)
+        {
+            if (m_required->GetValue())
+            {
+                bool hasType = false;
+                for (unsigned int index = 0; index < m_types->GetCount(); ++index)
+                {
+                    if (m_types->IsChecked(index))
+                    {
+                        hasType = true;
+                        break;
+                    }
+                }
+                if (!hasType)
+                {
+                    wxMessageBox("Select at least one supervision type.", "Edit Supervision",
+                                 wxOK | wxICON_WARNING, &m_dialog);
+                    m_types->SetFocus();
+                    return;
+                }
+                for (const DetailGroup& group : m_groups)
+                {
+                    if (group.type == "deadline" && m_types->IsChecked(TypeIndex("deadline")))
+                    {
+                        for (const DetailField& field : group.fields)
+                        {
+                            if (field.name == "maxExecutionTimeMs" &&
+                                field.control->GetValue().Strip(wxString::both).empty())
+                            {
+                                wxMessageBox("'maxExecutionTimeMs' is mandatory.\nEnter maxExecutionTimeMs for deadline supervision.",
+                                             "Edit Supervision", wxOK | wxICON_WARNING, &m_dialog);
+                                field.control->SetFocus();
+                                return;
+                            }
+                            if (field.name == "maxExecutionTimeMs" &&
+                                !field.control->GetValue().Strip(wxString::both).empty() &&
+                                !IsDigit(ToStd(field.control->GetValue().Strip(wxString::both))))
+                            {
+                                wxMessageBox("'maxExecutionTimeMs' must be a number.",
+                                                "Edit Supervision", wxOK | wxICON_WARNING, &m_dialog);
+                                field.control->SetFocus();
+                                return;
+                            } 
+                            if (field.name == "minExecutionTimeMs" &&
+                                !field.control->GetValue().Strip(wxString::both).empty() &&
+                                !IsDigit(ToStd(field.control->GetValue().Strip(wxString::both))))
+                            {
+                                wxMessageBox("'minExecutionTimeMs' must be a number.",
+                                                "Edit Supervision", wxOK | wxICON_WARNING, &m_dialog);
+                                field.control->SetFocus();
+                                return;
+                            } 
+                        }
+                    }
+                    if (group.type == "alive" && m_types->IsChecked(TypeIndex("alive")))
+                    {
+                        for (const DetailField& field : group.fields)
+                        {
+                            if (field.name == "minIndications" &&
+                                !field.control->GetValue().Strip(wxString::both).empty() &&
+                                !IsInteger(ToStd(field.control->GetValue().Strip(wxString::both))))
+                            {
+                                wxMessageBox("'minIndications' must be of type uint32.",
+                                                "Edit Supervision", wxOK | wxICON_WARNING, &m_dialog);
+                                field.control->SetFocus();
+                                return;
+                            }
+                            if (field.name == "maxIndications" &&
+                                !field.control->GetValue().Strip(wxString::both).empty() &&
+                                !IsInteger(ToStd(field.control->GetValue().Strip(wxString::both))))
+                            {
+                                wxMessageBox("'maxIndications' must be of type uint32.",
+                                                "Edit Supervision", wxOK | wxICON_WARNING, &m_dialog);
+                                field.control->SetFocus();
+                                return;
+                            }
+                            if (field.name == "referenceCycleMs" &&
+                                !field.control->GetValue().Strip(wxString::both).empty() &&
+                                !IsDigit(ToStd(field.control->GetValue().Strip(wxString::both))))
+                            {
+                                wxMessageBox("'referenceCycleMs' must be a number.",
+                                                "Edit Supervision", wxOK | wxICON_WARNING, &m_dialog);
+                                field.control->SetFocus();
+                                return;
+                            }                            
+                        }                        
+                    }
+                }
+            }
+            event.Skip();
+        }, wxID_OK);
         UpdateVisibility();
     }
 
@@ -210,4 +301,40 @@ namespace afd
         m_dialog.Fit();
     }
 
+    bool SupervisionEditor::IsInteger(const std::string& str) const
+    {
+        if (str.empty() || str == "null")
+        {
+            return true;
+        }
+
+        try
+        {
+            size_t pos;
+            std::stoi(str, &pos);
+            
+            return pos == str.length(); // Ensure the entire string was parsed
+        }
+        catch (...)
+        {
+            return false;
+        }
+    }
+    
+    bool SupervisionEditor::IsDigit(const std::string& str) const
+    {
+        if (str.empty() || str == "null")
+        {
+            return true;
+        }
+
+        for (char c : str)
+        {
+            if (!std::isdigit(static_cast<unsigned char>(c)))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 } // namespace afd

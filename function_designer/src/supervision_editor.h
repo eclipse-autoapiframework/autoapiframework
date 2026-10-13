@@ -54,6 +54,8 @@ namespace afd
                       const std::string& type,
                       const std::vector<std::pair<std::string, bool>>& fieldDefinitions);
         void UpdateVisibility();
+        bool IsInteger(const std::string& str) const;
+        bool IsDigit(const std::string& str) const;        
 
         wxDialog& m_dialog;
         wxCheckBox* m_required = nullptr;

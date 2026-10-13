@@ -700,4 +700,20 @@ namespace afd
         return false;
     }
 
+    bool ValidateFunction::IsDigit(const std::string& str) const
+    {
+        if (str.empty() || str == "null")
+        {
+            return true;
+        }
+
+        for (char c : str)
+        {
+            if (!std::isdigit(static_cast<unsigned char>(c)))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 } // namespace afd

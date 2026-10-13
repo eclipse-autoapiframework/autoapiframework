@@ -55,6 +55,7 @@ namespace afd
         bool SkipCertainPropertiesFromSyntaxCheck(const std::string& property, bool enumCheck, bool mandatoryCheck);     
         bool ValidateCertainProperties(const YamlNodePtr& node, const std::string& nodeName, std::string& error );
         bool SkipASILProperty(const YamlNodePtr& item, const std::string& interfaceTypeName);
+        bool IsDigit(const std::string& str) const;          
     };
 } // namespace afd
 
