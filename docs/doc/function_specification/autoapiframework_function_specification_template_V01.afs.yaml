@@ -12,12 +12,12 @@
 #
 # Contributors:
 #   Thomas Pfleiderer - Function specification added
-#   Saran Gundlapalli - autoapiframework_function_specification_template_V01.afs.yaml updated according to metamodel v0.4.0
+#   Saran Gundlapalli - autoapiframework_function_specification_template_V01.afs.yaml updated according to metamodel v0.4.1
 # *******************************************************************************
 #
-# TEMPLATE - Function specification File (*.acs)
+# TEMPLATE - Function Specification File (*.afs.yaml)
 #
-# Copy this file, rename it to <YourFunctionName>.acs and fill it in.
+# Copy this file, rename it to <YourFunctionName>.afs.yaml and fill it in.
 # Every "row" below is one signal/parameter/runnable and MUST provide exactly
 # one value per entry listed under "columns", in the same order.
 # Remove this header and all "# <-- ..." hints once the file is filled in.
@@ -25,16 +25,16 @@
 # do not invent plausible values only to complete an example.
 
 functionSpecification:
-  name: <YourFunctionName>              # e.g. SpeedHazardDetection
-  version: 1.0.0                        # semantic version of this function specification
+  name: <YourFunctionName>     # e.g. SpeedHazardDetection
+  version: 1.0.0               # semantic version of this function specification
   metaModelRef:
     name: Eclipse-autoapiframework-Metamodel
-    version: 0.4.0                      # meta model version this file was written against
+    version: 0.4.1             # meta model version this file was written against
 
   description: >-
     <One or two sentences describing what this function does.>
 
-# -----------------------------------------------------------------------
+  # -----------------------------------------------------------------------
   # 1) DATA INTERFACES
   #    Reuse canonical VSS paths whenever equivalent semantics already exist.
   #    New Vehicle.* paths shall only be introduced as explicitly approved
@@ -42,7 +42,11 @@ functionSpecification:
   #
   #    Function-specific properties:
   #      direction: input | output
-  #      protection: none | complement | other
+  #      protectionRequired: true | false
+  #    direction is relative to the function/application being specified and
+  #    is independent of the VSS sensor/actuator classification.
+  #    protectionRequired states only whether protection is required; the
+  #    technical protection mechanism is selected during integration.
   #
   #    FuSa: true | false
   #    ASIL is optional and should be provided when the data interface is
@@ -54,7 +58,7 @@ functionSpecification:
   #    min/max/default/resolution/precision.
   # -----------------------------------------------------------------------
   dataInterfaces:
-    - name: Vehicle.<Domain>.<Signal>
+    - name: <CanonicalVSSOrApprovedExtensionPath>   # Vehicle.<Domain/Subdomains>.<Signal>
       direction: input
       dataType: float
       description: <Functional meaning of the signal.>
@@ -68,39 +72,24 @@ functionSpecification:
       ASIL: <QM|A|B|C|D>
       minUpdatePeriodMs: <minUpdatePeriodMs>
       accuracy: <expected accuracy>
-      protection: none
+      protectionRequired: false
       runtimeCompanion:
         qualityCode:
-          name: Vehicle.<Domain>.<Signal>.Qualifier
+          name: <CanonicalVSSOrApprovedExtensionPath>.Qualifier   # Vehicle.<Domain/Subdomains>.<Signal>.Qualifier
           datatype: enum
           enumRef: DataQuality
 
-    # - name: Vehicle.<Domain>.<OutputSignal>
-    #   direction: output
-    #   dataType: float
-    #   description: <Functional meaning of the output signal.>
-    #   unit: <unit>
-    #   min: <min>
-    #   max: <max>
-    #   defaultValue: <defaultValue>
-    #   resolution: <resolution>
-    #   precision: <precision>
-    #   FuSa: false
-    #   minUpdatePeriodMs: <minUpdatePeriodMs>
-    #   accuracy: <expected accuracy>
-    #   protection: none
-
   # -----------------------------------------------------------------------
-  # 2) PARAMETERS:
+  # 2) PARAMETERS
   #    Parameter identifiers shall also follow the VSS-style hierarchical
   #    Vehicle.<Domain>.<Subdomain>.<Parameter> naming approach. Reuse an
   #    existing catalogue entry where available; otherwise use an explicitly
   #    approved extension under the relevant semantic branch.
-  #    dimensions is optional and only needed for array/map parameters,
+  #    dimensions is optional and only needed for array/map parameters.
   #    e.g. [10] for a vector or [7, 10] for a 7x10 map.
   # -----------------------------------------------------------------------
   parameters:
-    - name: Vehicle.<Domain>.<Parameter>
+    - name: <CanonicalVSSOrApprovedExtensionPath>   # Vehicle.<Domain>.<Subdomain>.<Parameter>
       dataType: float
       defaultValue: <defaultValue>
       description: <Meaning and intended usage of the parameter.>
@@ -111,42 +100,43 @@ functionSpecification:
       dimensions: [<size>]
 
   # -----------------------------------------------------------------------
-  # 3) ERROR INTERFACES:  - CANDIDATE / PROVISIONAL
-  #    Function-specific diagnostic interfaces, separate from FunctionResult.
-  #    This concept is still subject to partner alignment/review.
-  #    - Naming convention: <FunctionName>.<ErrorName>.ErrorStatus
+  # 3) ERROR INTERFACES - CANDIDATE / PROVISIONAL
+  #    Lightweight function-specific error/status interfaces, separate from
+  #    FunctionResult. This candidate model does not redefine DSM/DTC or
+  #    event-memory handling. Application-level error/status information can
+  #    be consumed by middleware/platform diagnostic handling and logging.
+  #    Optional diagnostic metadata may be provided where required to support
+  #    downstream diagnostic configuration during integration. In v0.4.1,
+  #    maturationTimeMs is mandatory in the candidate Error type; severity,
+  #    reset/dependency/fallback/safety-reaction metadata are optional.
+  #    Naming convention: <FunctionName>.<ErrorName>.ErrorStatus
   # -----------------------------------------------------------------------
-  # errorInterfaces:
-  #   - name: <YourFunctionName>.<ErrorName>.ErrorStatus
-  #     dataType: boolean
-  #     description: <Meaning of the error and its trigger scenario.>
-  #     severity: degraded
-  #     maturationTimeMs: <maturationTimeMs>
-  #     resetTimeMs: <resetTimeMs>
-  #     resetCondition: <Condition that clears the error.>
-  #     dependencyRefs: []
-  #     fallbackBehavior: <Function-level fallback/degradation behavior.>
-  #     raisesSafetyReactionRefs: []
+  errorInterfaces:
+    - name: <YourFunctionName>.<ErrorName>.ErrorStatus
+      dataType: boolean
+      description: <Meaning of the error and its trigger scenario.>
+      severity: degraded  # optional
+      maturationTimeMs: <maturationTimeMs>
+      resetTimeMs: <resetTimeMs>  # optional/recommended
+      resetCondition: <Condition that clears the error.>  # optional/recommended
+      dependencyRefs: []  # optional
+      fallbackBehavior: <Function-level fallback/degradation behavior.>  # optional
+      raisesSafetyReactionRefs: []  # optional
 
   # -----------------------------------------------------------------------
-  # 4) SCHEDULING:
-  #    - runType: init | cyclic | event | terminate
-  #    - Naming convention: <FunctionName>.Init / .Step / .Terminate
-  #    - previousRunnableRef: name of the runnable that must run right before
-  #      this one (use System.Startup for the very first runnable).
-  #    - executionResult: success | failure | notAvailable
-  #    - supervision.required: false, or true with one or more of the
-  #      supervision.type values below (alive | deadline | logical), each
-  #      configured via its matching alive/deadline/logical object.
-  #    - schedulingPolicy and stackSizeBytes are optional.
-  #
+  # 4) SCHEDULING
+  #    Naming convention: <FunctionName>.Init / .Step / .Terminate
   #    cycleTimeMs is present only for runType: cyclic.
   #    previousRunnableRef is optional and is used only when an explicit
   #    predecessor/order dependency exists. It does not mean "immediately
-  #    before".
+  #    before" and no System.Startup convention is assumed here.
   #
   #    executionResult describes the runtime result contract. The static
   #    specification shall not hard-code success/failure/notAvailable.
+  #
+  #    supervision is nested within each scheduling entry. When required is
+  #    true, list the selected supervision types and only their relevant
+  #    configuration objects.
   # -----------------------------------------------------------------------
   scheduling:
     - functionName: <YourFunctionName>.Init
@@ -163,7 +153,7 @@ functionSpecification:
       description: <Evaluate inputs and calculate outputs.>
       cycleTimeMs: <cycleTimeMs>
       implementedASIL: QM
-      # previousRunnableRef: <OtherFunction>.Step
+      previousRunnableRef: <OtherFunction>.Step #Optional
       executionResult:
         type: FunctionResult
       supervision:
@@ -175,11 +165,12 @@ functionSpecification:
       #     - deadline
       #     - logical
       #   alive:
+      #     # Minimum expected alive indications in the reference cycle;
+      #     # this is not a lower tolerance margin.
       #     minIndications: <minIndications>
       #     maxIndications: <maxIndications>
       #     referenceCycleMs: <referenceCycleMs>
       #   deadline:
-      #     minExecutionTimeMs: <minExecutionTimeMs>
       #     maxExecutionTimeMs: <maxExecutionTimeMs>
       #   logical:
       #     predecessorRefs: []

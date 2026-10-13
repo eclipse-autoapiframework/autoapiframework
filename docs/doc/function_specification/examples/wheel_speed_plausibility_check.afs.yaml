@@ -12,7 +12,7 @@
 #
 # Contributors:
 #   Thomas Pfleiderer - Function specification added
-#   Saran Gundlapalli - wheel_speed_plausibility_check.afs.yaml updated according to metamodel v0.4.0
+#   Saran Gundlapalli - wheel_speed_plausibility_check.afs.yaml updated according to metamodel v0.4.1
 # *******************************************************************************
 
 functionSpecification:
@@ -20,7 +20,7 @@ functionSpecification:
   version: 1.0.0
   metaModelRef:
     name: Eclipse-autoapiframework-Metamodel
-    version: 0.4.0
+    version: 0.4.1
 
   description: >-
     Checks standard VSS wheel-speed inputs for plausibility and signal loss,
@@ -44,7 +44,7 @@ functionSpecification:
       ASIL: B
       minUpdatePeriodMs: 10
       accuracy: null
-      protection: complement
+      protectionRequired: true
       runtimeCompanion:
         qualityCode:
           name: Vehicle.Chassis.Axle.Row1.Wheel.Left.Speed.Qualifier
@@ -65,7 +65,7 @@ functionSpecification:
       ASIL: B
       minUpdatePeriodMs: 10
       accuracy: null
-      protection: complement
+      protectionRequired: true
       runtimeCompanion:
         qualityCode:
           name: Vehicle.Chassis.Axle.Row1.Wheel.Right.Speed.Qualifier
@@ -86,7 +86,7 @@ functionSpecification:
       ASIL: B
       minUpdatePeriodMs: 10
       accuracy: null
-      protection: complement
+      protectionRequired: true
       runtimeCompanion:
         qualityCode:
           name: Vehicle.Chassis.Axle.Row2.Wheel.Left.Speed.Qualifier
@@ -107,7 +107,7 @@ functionSpecification:
       ASIL: B
       minUpdatePeriodMs: 10
       accuracy: null
-      protection: complement
+      protectionRequired: true
       runtimeCompanion:
         qualityCode:
           name: Vehicle.Chassis.Axle.Row2.Wheel.Right.Speed.Qualifier
@@ -128,7 +128,7 @@ functionSpecification:
       ASIL: B
       minUpdatePeriodMs: 20
       accuracy: null
-      protection: complement
+      protectionRequired: true
       runtimeCompanion:
         qualityCode:
           name: Vehicle.Speed.Qualifier
@@ -211,7 +211,6 @@ functionSpecification:
           - deadline
           - logical
         deadline:
-          minExecutionTimeMs: 1
           maxExecutionTimeMs: 15
         logical:
           predecessorRefs:
