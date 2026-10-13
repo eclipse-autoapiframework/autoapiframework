@@ -14,7 +14,7 @@
    #
    # Contributors:
    #   Thomas Pfleiderer - Meta model added
-   #   Saran Gundlapalli - function_specification_file.rst updated according to metamodel v0.4.0
+   #   Saran Gundlapalli - function_specification_file.rst updated according to metamodel v0.4.1
    # *******************************************************************************
 
 Current status of the project:
@@ -63,7 +63,17 @@ Catalogue and VSS reuse
 
 Existing VSS nodes shall be reused whenever their semantics match the required interface. New ``Vehicle.*`` paths shall only be introduced when no suitable VSS node exists. Such additions shall be explicitly identified as approved extensions and shall not be presented as standard VSS catalogue entries.
 
+The ``name`` property contains the fully qualified VSS node identifier, including its hierarchical path, for example ``Vehicle.Speed``. The Function Specification therefore does not duplicate this identifier in a separate ``path`` or ``namePath`` property.
+
 Parameter identifiers shall follow the same VSS-style hierarchical naming convention as all other catalogue interfaces. Existing catalogue entries shall be reused whenever available. If no suitable entry exists, the parameter shall be introduced as an explicitly approved extension within the relevant ``Vehicle.<Domain>...`` semantic branch rather than under a standalone function-specific namespace.
+
+Direction and protection requirement
+------------------------------------
+
+``direction`` is defined relative to the function/application being specified: ``input`` means the function consumes the data and ``output`` means the function provides the data. This is independent of the VSS sensor/actuator classification.
+
+``protectionRequired`` is a boolean configuration requirement. It states whether protection is required for transfer of the Data interface between the function and its platform environment. The concrete protection mechanism is platform-dependent and is configured/enabled/implemented during integration rather than selected in the Function Specification.
+
 
 Content Of Function Specification File
 --------------------------------------
@@ -80,7 +90,7 @@ The metamodel defines mandatory properties *within*  the interface types. Howeve
      - Example / Notes
    * - ``dataInterfaces``
      - As needed
-     - Data interfaces used by the function. Reuse canonical VSS/catalogue semantics where available.
+     - Data interfaces used by the function. Reuse canonical VSS/catalogue semantics where available. ``direction`` is relative to the function/application being specified; ``protectionRequired`` states only whether protection is required..
      - ``name: Vehicle.Speed``; ``direction: input``; ``dataType: float``
    * - ``parameters``
      - As needed
@@ -88,8 +98,8 @@ The metamodel defines mandatory properties *within*  the interface types. Howeve
      - ``name: Vehicle.Chassis.HazardRequestDurationMs``; ``dataType: uint32``
    * - ``errorInterfaces``
      - Optional / candidate
-     - Candidate function-specific diagnostic interfaces, separate from generic ``FunctionResult``.
-     - ``name: <Function>.<ErrorName>.ErrorStatus``; ``severity: degraded``
+     - Candidate lightweight function-specific error/status interfaces, separate from generic ``FunctionResult`` and from DSM/DTC or event-memory handling.
+     - ``name: <Function>.<ErrorName>.ErrorStatus``; optional diagnostic metadata may support integration
    * - ``scheduling``
      - As needed
      - Runnable lifecycle, activation, timing and execution contract.
@@ -118,7 +128,7 @@ FunctionResult and Error
 
 ``FunctionResult`` describes the generic runtime execution outcome contract. A static Function Specification shall therefore describe the result type rather than hard-code a value such as ``executionResult: success``. The runtime instance carries ``success``, ``failure`` or ``notAvailable``.
 
-``errorInterfaces`` represents the **candidate/provisional** Error concept and remains subject to partner alignment/review within Eclipe and Shift2SdV projects and may evolve based on feedback. Example values for severity, maturation, dependencies, fallback behavior and safety reactions shall be requirement-based or explicitly identified as illustrative.
+``errorInterfaces`` represents the **candidate/provisional** lightweight function-specific Error/status concept and is separate from the generic ``FunctionResult``. It does not redefine DSM/DTC or event-memory handling. It conveys application-level error/status information that can be consumed by relevant middleware or platform components for diagnostic handling and logging. Optional diagnostic metadata may be provided where required to support downstream diagnostic configuration during integration. In the current v0.4.1 candidate, ``name``, ``dataType``, ``description`` and ``maturationTimeMs`` are mandatory, while severity, reset-time, dependency, fallback and safety-reaction metadata are optional. Example values shall be requirement-based or explicitly identified as illustrative.
 
 
 Template Version 0.0.1
