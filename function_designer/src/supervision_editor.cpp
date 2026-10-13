@@ -72,7 +72,7 @@ namespace afd
                  {{"minIndications", false}, {"maxIndications", false},
                   {"referenceCycleMs", false}});
         AddGroup(detailsSizer, existing, "deadline",
-                 {{"minExecutionTimeMs", false}, {"maxExecutionTimeMs", false}});
+             {{"maxExecutionTimeMs", false}});
         AddGroup(detailsSizer, existing, "logical",
                  {{"predecessorRefs", true}, {"successorRefs", true}});
 
@@ -121,15 +121,6 @@ namespace afd
                                 !IsDigit(ToStd(field.control->GetValue().Strip(wxString::both))))
                             {
                                 wxMessageBox("'maxExecutionTimeMs' must be a number.",
-                                                "Edit Supervision", wxOK | wxICON_WARNING, &m_dialog);
-                                field.control->SetFocus();
-                                return;
-                            } 
-                            if (field.name == "minExecutionTimeMs" &&
-                                !field.control->GetValue().Strip(wxString::both).empty() &&
-                                !IsDigit(ToStd(field.control->GetValue().Strip(wxString::both))))
-                            {
-                                wxMessageBox("'minExecutionTimeMs' must be a number.",
                                                 "Edit Supervision", wxOK | wxICON_WARNING, &m_dialog);
                                 field.control->SetFocus();
                                 return;
