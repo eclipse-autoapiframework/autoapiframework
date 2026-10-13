@@ -511,10 +511,10 @@
                   
   <section id="wheelspeedplausibilitycheck-error-and-supervision-example">
 <h1>WheelSpeedPlausibilityCheck Error and Supervision Example<a class="headerlink" href="#wheelspeedplausibilitycheck-error-and-supervision-example" title="Link to this heading">#</a></h1>
-<p>This example demonstrates standard VSS wheel-speed inputs, runtime-quality handling, deadline/logical supervision and the <strong>candidate/provisional</strong> <code class="docutils literal notranslate"><span class="pre">errorInterfaces</span></code> concept.</p>
+<p>This example demonstrates standard VSS wheel-speed inputs, runtime-quality handling, deadline/logical supervision and the <strong>candidate/provisional</strong> lightweight <code class="docutils literal notranslate"><span class="pre">errorInterfaces</span></code> concept aligned to metamodel v0.4.1.</p>
 <p>Runtime quality is explicitly indicated for each Data interface through <code class="docutils literal notranslate"><span class="pre">runtimeCompanion.qualityCode</span></code> as an enum-based qualifier interface, without duplicating normal Data metadata. <code class="docutils literal notranslate"><span class="pre">FunctionResult</span></code> is shown as a runtime result contract rather than a hard-coded <code class="docutils literal notranslate"><span class="pre">success</span></code> value.</p>
 <p>The preprocessing dependency is modeled as a separate runnable <code class="docutils literal notranslate"><span class="pre">WheelSpeedPreProcessor.Step</span></code>. This keeps the current metamodel naming convention <code class="docutils literal notranslate"><span class="pre">&lt;FunctionName&gt;.Init</span></code> / <code class="docutils literal notranslate"><span class="pre">.Step</span></code> / <code class="docutils literal notranslate"><span class="pre">.Terminate</span></code> intact. The complete specification of <code class="docutils literal notranslate"><span class="pre">WheelSpeedPreProcessor</span></code> belongs to its own Function Specification File.</p>
-<p>The diagnostic values in this example are illustrative and must be replaced by requirement-based values before standardization.</p>
+<p>The Error interfaces carry application-level error/status information without redefining DSM/DTC or event-memory handling. Diagnostic metadata in this example is illustrative and must be replaced by requirement-based values where such metadata is required for downstream diagnostic configuration during integration.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="c1"># *******************************************************************************</span>
 <span class="linenos">  2</span><span class="c1"># Copyright (c) 2026 ZF Friedrichshafen AG</span>
 <span class="linenos">  3</span><span class="c1">#</span>
@@ -529,7 +529,7 @@
 <span class="linenos"> 12</span><span class="c1">#</span>
 <span class="linenos"> 13</span><span class="c1"># Contributors:</span>
 <span class="linenos"> 14</span><span class="c1">#   Thomas Pfleiderer - Function specification added</span>
-<span class="linenos"> 15</span><span class="c1">#   Saran Gundlapalli - wheel_speed_plausibility_check.afs.yaml updated according to metamodel v0.4.0</span>
+<span class="linenos"> 15</span><span class="c1">#   Saran Gundlapalli - wheel_speed_plausibility_check.afs.yaml updated according to metamodel v0.4.1</span>
 <span class="linenos"> 16</span><span class="c1"># *******************************************************************************</span>
 <span class="linenos"> 17</span>
 <span class="linenos"> 18</span><span class="nt">functionSpecification</span><span class="p">:</span>
@@ -537,7 +537,7 @@
 <span class="linenos"> 20</span><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0.0</span>
 <span class="linenos"> 21</span><span class="w">  </span><span class="nt">metaModelRef</span><span class="p">:</span>
 <span class="linenos"> 22</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Eclipse-autoapiframework-Metamodel</span>
-<span class="linenos"> 23</span><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.4.0</span>
+<span class="linenos"> 23</span><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.4.1</span>
 <span class="linenos"> 24</span>
 <span class="linenos"> 25</span><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
 <span class="linenos"> 26</span><span class="w">    </span><span class="no">Checks standard VSS wheel-speed inputs for plausibility and signal loss,</span>
@@ -561,7 +561,7 @@
 <span class="linenos"> 44</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
 <span class="linenos"> 45</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 <span class="linenos"> 46</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="linenos"> 47</span><span class="w">      </span><span class="nt">protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complement</span>
+<span class="linenos"> 47</span><span class="w">      </span><span class="nt">protectionRequired</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="linenos"> 48</span><span class="w">      </span><span class="nt">runtimeCompanion</span><span class="p">:</span>
 <span class="linenos"> 49</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
 <span class="linenos"> 50</span><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Chassis.Axle.Row1.Wheel.Left.Speed.Qualifier</span>
@@ -582,7 +582,7 @@
 <span class="linenos"> 65</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
 <span class="linenos"> 66</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 <span class="linenos"> 67</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="linenos"> 68</span><span class="w">      </span><span class="nt">protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complement</span>
+<span class="linenos"> 68</span><span class="w">      </span><span class="nt">protectionRequired</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="linenos"> 69</span><span class="w">      </span><span class="nt">runtimeCompanion</span><span class="p">:</span>
 <span class="linenos"> 70</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
 <span class="linenos"> 71</span><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Chassis.Axle.Row1.Wheel.Right.Speed.Qualifier</span>
@@ -603,7 +603,7 @@
 <span class="linenos"> 86</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
 <span class="linenos"> 87</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 <span class="linenos"> 88</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="linenos"> 89</span><span class="w">      </span><span class="nt">protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complement</span>
+<span class="linenos"> 89</span><span class="w">      </span><span class="nt">protectionRequired</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="linenos"> 90</span><span class="w">      </span><span class="nt">runtimeCompanion</span><span class="p">:</span>
 <span class="linenos"> 91</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
 <span class="linenos"> 92</span><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Chassis.Axle.Row2.Wheel.Left.Speed.Qualifier</span>
@@ -624,7 +624,7 @@
 <span class="linenos">107</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
 <span class="linenos">108</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 <span class="linenos">109</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="linenos">110</span><span class="w">      </span><span class="nt">protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complement</span>
+<span class="linenos">110</span><span class="w">      </span><span class="nt">protectionRequired</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="linenos">111</span><span class="w">      </span><span class="nt">runtimeCompanion</span><span class="p">:</span>
 <span class="linenos">112</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
 <span class="linenos">113</span><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Chassis.Axle.Row2.Wheel.Right.Speed.Qualifier</span>
@@ -645,7 +645,7 @@
 <span class="linenos">128</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
 <span class="linenos">129</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
 <span class="linenos">130</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="linenos">131</span><span class="w">      </span><span class="nt">protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complement</span>
+<span class="linenos">131</span><span class="w">      </span><span class="nt">protectionRequired</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="linenos">132</span><span class="w">      </span><span class="nt">runtimeCompanion</span><span class="p">:</span>
 <span class="linenos">133</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
 <span class="linenos">134</span><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Speed.Qualifier</span>
@@ -728,22 +728,21 @@
 <span class="linenos">211</span><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deadline</span>
 <span class="linenos">212</span><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">logical</span>
 <span class="linenos">213</span><span class="w">        </span><span class="nt">deadline</span><span class="p">:</span>
-<span class="linenos">214</span><span class="w">          </span><span class="nt">minExecutionTimeMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="linenos">215</span><span class="w">          </span><span class="nt">maxExecutionTimeMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
-<span class="linenos">216</span><span class="w">        </span><span class="nt">logical</span><span class="p">:</span>
-<span class="linenos">217</span><span class="w">          </span><span class="nt">predecessorRefs</span><span class="p">:</span>
-<span class="linenos">218</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WheelSpeedPreProcessor.Step</span>
-<span class="linenos">219</span><span class="w">          </span><span class="nt">successorRefs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="linenos">220</span>
-<span class="linenos">221</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WheelSpeedPlausibilityCheck.Terminate</span>
-<span class="linenos">222</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate</span>
-<span class="linenos">223</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Shutdown cleanup for deterministic deactivation.</span>
-<span class="linenos">224</span><span class="w">      </span><span class="nt">implementedASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QM</span>
-<span class="linenos">225</span><span class="w">      </span><span class="nt">previousRunnableRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WheelSpeedPlausibilityCheck.Step</span>
-<span class="linenos">226</span><span class="w">      </span><span class="nt">executionResult</span><span class="p">:</span>
-<span class="linenos">227</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FunctionResult</span>
-<span class="linenos">228</span><span class="w">      </span><span class="nt">supervision</span><span class="p">:</span>
-<span class="linenos">229</span><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="linenos">214</span><span class="w">          </span><span class="nt">maxExecutionTimeMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
+<span class="linenos">215</span><span class="w">        </span><span class="nt">logical</span><span class="p">:</span>
+<span class="linenos">216</span><span class="w">          </span><span class="nt">predecessorRefs</span><span class="p">:</span>
+<span class="linenos">217</span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WheelSpeedPreProcessor.Step</span>
+<span class="linenos">218</span><span class="w">          </span><span class="nt">successorRefs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<span class="linenos">219</span>
+<span class="linenos">220</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WheelSpeedPlausibilityCheck.Terminate</span>
+<span class="linenos">221</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate</span>
+<span class="linenos">222</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Shutdown cleanup for deterministic deactivation.</span>
+<span class="linenos">223</span><span class="w">      </span><span class="nt">implementedASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QM</span>
+<span class="linenos">224</span><span class="w">      </span><span class="nt">previousRunnableRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WheelSpeedPlausibilityCheck.Step</span>
+<span class="linenos">225</span><span class="w">      </span><span class="nt">executionResult</span><span class="p">:</span>
+<span class="linenos">226</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FunctionResult</span>
+<span class="linenos">227</span><span class="w">      </span><span class="nt">supervision</span><span class="p">:</span>
+<span class="linenos">228</span><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
 </section>

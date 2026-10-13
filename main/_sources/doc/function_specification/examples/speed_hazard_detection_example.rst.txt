@@ -13,13 +13,13 @@
    #
    # Contributors:
    #   Thomas Pfleiderer - documentation
-   #   Saran Gundlapalli - speed_hazard_detection_example.rst updated according to metamodel v0.4.0
+   #   Saran Gundlapalli - speed_hazard_detection_example.rst updated according to metamodel v0.4.1
    # *******************************************************************************
 
 SpeedHazardDetection Example
 ============================
 
-This example shows a single cyclic ``Step`` runnable. Canonical VSS semantics are reused where available, runtime quality is explicitly indicated through enum-based runtime companion interfaces, and ``FunctionResult`` is represented as the runtime execution-result contract.
+This example shows a single cyclic ``Step`` runnable aligned to metamodel v0.4.1. Canonical VSS semantics are reused where available, runtime quality is explicitly indicated through enum-based runtime companion interfaces, ``protectionRequired`` expresses only whether interface protection is required, and ``FunctionResult`` is represented as the runtime execution-result contract.
 
 Calibration parameters use VSS-style hierarchical paths under the relevant vehicle-domain branch. Where such paths are not part of the standard catalogue, they shall be treated as approved/illustrative extensions.
 

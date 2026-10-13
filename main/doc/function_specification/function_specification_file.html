@@ -542,7 +542,13 @@
 <section id="catalogue-and-vss-reuse">
 <h2>Catalogue and VSS reuse<a class="headerlink" href="#catalogue-and-vss-reuse" title="Link to this heading">#</a></h2>
 <p>Existing VSS nodes shall be reused whenever their semantics match the required interface. New <code class="docutils literal notranslate"><span class="pre">Vehicle.*</span></code> paths shall only be introduced when no suitable VSS node exists. Such additions shall be explicitly identified as approved extensions and shall not be presented as standard VSS catalogue entries.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">name</span></code> property contains the fully qualified VSS node identifier, including its hierarchical path, for example <code class="docutils literal notranslate"><span class="pre">Vehicle.Speed</span></code>. The Function Specification therefore does not duplicate this identifier in a separate <code class="docutils literal notranslate"><span class="pre">path</span></code> or <code class="docutils literal notranslate"><span class="pre">namePath</span></code> property.</p>
 <p>Parameter identifiers shall follow the same VSS-style hierarchical naming convention as all other catalogue interfaces. Existing catalogue entries shall be reused whenever available. If no suitable entry exists, the parameter shall be introduced as an explicitly approved extension within the relevant <code class="docutils literal notranslate"><span class="pre">Vehicle.&lt;Domain&gt;...</span></code> semantic branch rather than under a standalone function-specific namespace.</p>
+</section>
+<section id="direction-and-protection-requirement">
+<h2>Direction and protection requirement<a class="headerlink" href="#direction-and-protection-requirement" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">direction</span></code> is defined relative to the function/application being specified: <code class="docutils literal notranslate"><span class="pre">input</span></code> means the function consumes the data and <code class="docutils literal notranslate"><span class="pre">output</span></code> means the function provides the data. This is independent of the VSS sensor/actuator classification.</p>
+<p><code class="docutils literal notranslate"><span class="pre">protectionRequired</span></code> is a boolean configuration requirement. It states whether protection is required for transfer of the Data interface between the function and its platform environment. The concrete protection mechanism is platform-dependent and is configured/enabled/implemented during integration rather than selected in the Function Specification.</p>
 </section>
 <section id="content-of-function-specification-file">
 <h2>Content Of Function Specification File<a class="headerlink" href="#content-of-function-specification-file" title="Link to this heading">#</a></h2>
@@ -565,7 +571,7 @@
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dataInterfaces</span></code></p></td>
 <td><p>As needed</p></td>
-<td><p>Data interfaces used by the function. Reuse canonical VSS/catalogue semantics where available.</p></td>
+<td><p>Data interfaces used by the function. Reuse canonical VSS/catalogue semantics where available. <code class="docutils literal notranslate"><span class="pre">direction</span></code> is relative to the function/application being specified; <code class="docutils literal notranslate"><span class="pre">protectionRequired</span></code> states only whether protection is required..</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">name:</span> <span class="pre">Vehicle.Speed</span></code>; <code class="docutils literal notranslate"><span class="pre">direction:</span> <span class="pre">input</span></code>; <code class="docutils literal notranslate"><span class="pre">dataType:</span> <span class="pre">float</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code></p></td>
@@ -575,8 +581,8 @@
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">errorInterfaces</span></code></p></td>
 <td><p>Optional / candidate</p></td>
-<td><p>Candidate function-specific diagnostic interfaces, separate from generic <code class="docutils literal notranslate"><span class="pre">FunctionResult</span></code>.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">name:</span> <span class="pre">&lt;Function&gt;.&lt;ErrorName&gt;.ErrorStatus</span></code>; <code class="docutils literal notranslate"><span class="pre">severity:</span> <span class="pre">degraded</span></code></p></td>
+<td><p>Candidate lightweight function-specific error/status interfaces, separate from generic <code class="docutils literal notranslate"><span class="pre">FunctionResult</span></code> and from DSM/DTC or event-memory handling.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">name:</span> <span class="pre">&lt;Function&gt;.&lt;ErrorName&gt;.ErrorStatus</span></code>; optional diagnostic metadata may support integration</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">scheduling</span></code></p></td>
 <td><p>As needed</p></td>
@@ -605,7 +611,7 @@
 <section id="functionresult-and-error">
 <h2>FunctionResult and Error<a class="headerlink" href="#functionresult-and-error" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">FunctionResult</span></code> describes the generic runtime execution outcome contract. A static Function Specification shall therefore describe the result type rather than hard-code a value such as <code class="docutils literal notranslate"><span class="pre">executionResult:</span> <span class="pre">success</span></code>. The runtime instance carries <code class="docutils literal notranslate"><span class="pre">success</span></code>, <code class="docutils literal notranslate"><span class="pre">failure</span></code> or <code class="docutils literal notranslate"><span class="pre">notAvailable</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">errorInterfaces</span></code> represents the <strong>candidate/provisional</strong> Error concept and remains subject to partner alignment/review within Eclipe and Shift2SdV projects and may evolve based on feedback. Example values for severity, maturation, dependencies, fallback behavior and safety reactions shall be requirement-based or explicitly identified as illustrative.</p>
+<p><code class="docutils literal notranslate"><span class="pre">errorInterfaces</span></code> represents the <strong>candidate/provisional</strong> lightweight function-specific Error/status concept and is separate from the generic <code class="docutils literal notranslate"><span class="pre">FunctionResult</span></code>. It does not redefine DSM/DTC or event-memory handling. It conveys application-level error/status information that can be consumed by relevant middleware or platform components for diagnostic handling and logging. Optional diagnostic metadata may be provided where required to support downstream diagnostic configuration during integration. In the current v0.4.1 candidate, <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">dataType</span></code>, <code class="docutils literal notranslate"><span class="pre">description</span></code> and <code class="docutils literal notranslate"><span class="pre">maturationTimeMs</span></code> are mandatory, while severity, reset-time, dependency, fallback and safety-reaction metadata are optional. Example values shall be requirement-based or explicitly identified as illustrative.</p>
 <p>Template Version 0.0.1</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="c1"># *******************************************************************************</span>
 <span class="linenos">  2</span><span class="c1"># Copyright (c) 2026 ZF Friedrichshafen AG</span>
@@ -621,12 +627,12 @@
 <span class="linenos"> 12</span><span class="c1">#</span>
 <span class="linenos"> 13</span><span class="c1"># Contributors:</span>
 <span class="linenos"> 14</span><span class="c1">#   Thomas Pfleiderer - Function specification added</span>
-<span class="linenos"> 15</span><span class="c1">#   Saran Gundlapalli - autoapiframework_function_specification_template_V01.afs.yaml updated according to metamodel v0.4.0</span>
+<span class="linenos"> 15</span><span class="c1">#   Saran Gundlapalli - autoapiframework_function_specification_template_V01.afs.yaml updated according to metamodel v0.4.1</span>
 <span class="linenos"> 16</span><span class="c1"># *******************************************************************************</span>
 <span class="linenos"> 17</span><span class="c1">#</span>
-<span class="linenos"> 18</span><span class="c1"># TEMPLATE - Function specification File (*.acs)</span>
+<span class="linenos"> 18</span><span class="c1"># TEMPLATE - Function Specification File (*.afs.yaml)</span>
 <span class="linenos"> 19</span><span class="c1">#</span>
-<span class="linenos"> 20</span><span class="c1"># Copy this file, rename it to &lt;YourFunctionName&gt;.acs and fill it in.</span>
+<span class="linenos"> 20</span><span class="c1"># Copy this file, rename it to &lt;YourFunctionName&gt;.afs.yaml and fill it in.</span>
 <span class="linenos"> 21</span><span class="c1"># Every &quot;row&quot; below is one signal/parameter/runnable and MUST provide exactly</span>
 <span class="linenos"> 22</span><span class="c1"># one value per entry listed under &quot;columns&quot;, in the same order.</span>
 <span class="linenos"> 23</span><span class="c1"># Remove this header and all &quot;# &lt;-- ...&quot; hints once the file is filled in.</span>
@@ -634,16 +640,16 @@
 <span class="linenos"> 25</span><span class="c1"># do not invent plausible values only to complete an example.</span>
 <span class="linenos"> 26</span>
 <span class="linenos"> 27</span><span class="nt">functionSpecification</span><span class="p">:</span>
-<span class="linenos"> 28</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;YourFunctionName&gt;</span><span class="w">              </span><span class="c1"># e.g. SpeedHazardDetection</span>
-<span class="linenos"> 29</span><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0.0</span><span class="w">                        </span><span class="c1"># semantic version of this function specification</span>
+<span class="linenos"> 28</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;YourFunctionName&gt;</span><span class="w">     </span><span class="c1"># e.g. SpeedHazardDetection</span>
+<span class="linenos"> 29</span><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0.0</span><span class="w">               </span><span class="c1"># semantic version of this function specification</span>
 <span class="linenos"> 30</span><span class="w">  </span><span class="nt">metaModelRef</span><span class="p">:</span>
 <span class="linenos"> 31</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Eclipse-autoapiframework-Metamodel</span>
-<span class="linenos"> 32</span><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.4.0</span><span class="w">                      </span><span class="c1"># meta model version this file was written against</span>
+<span class="linenos"> 32</span><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.4.1</span><span class="w">             </span><span class="c1"># meta model version this file was written against</span>
 <span class="linenos"> 33</span>
 <span class="linenos"> 34</span><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
 <span class="linenos"> 35</span><span class="w">    </span><span class="no">&lt;One or two sentences describing what this function does.&gt;</span>
 <span class="linenos"> 36</span>
-<span class="linenos"> 37</span><span class="c1"># -----------------------------------------------------------------------</span>
+<span class="linenos"> 37</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
 <span class="linenos"> 38</span><span class="w">  </span><span class="c1"># 1) DATA INTERFACES</span>
 <span class="linenos"> 39</span><span class="w">  </span><span class="c1">#    Reuse canonical VSS paths whenever equivalent semantics already exist.</span>
 <span class="linenos"> 40</span><span class="w">  </span><span class="c1">#    New Vehicle.* paths shall only be introduced as explicitly approved</span>
@@ -651,160 +657,151 @@
 <span class="linenos"> 42</span><span class="w">  </span><span class="c1">#</span>
 <span class="linenos"> 43</span><span class="w">  </span><span class="c1">#    Function-specific properties:</span>
 <span class="linenos"> 44</span><span class="w">  </span><span class="c1">#      direction: input | output</span>
-<span class="linenos"> 45</span><span class="w">  </span><span class="c1">#      protection: none | complement | other</span>
-<span class="linenos"> 46</span><span class="w">  </span><span class="c1">#</span>
-<span class="linenos"> 47</span><span class="w">  </span><span class="c1">#    FuSa: true | false</span>
-<span class="linenos"> 48</span><span class="w">  </span><span class="c1">#    ASIL is optional and should be provided when the data interface is</span>
-<span class="linenos"> 49</span><span class="w">  </span><span class="c1">#    safety-relevant. Do not populate ASIL mechanically for FuSa: false.</span>
+<span class="linenos"> 45</span><span class="w">  </span><span class="c1">#      protectionRequired: true | false</span>
+<span class="linenos"> 46</span><span class="w">  </span><span class="c1">#    direction is relative to the function/application being specified and</span>
+<span class="linenos"> 47</span><span class="w">  </span><span class="c1">#    is independent of the VSS sensor/actuator classification.</span>
+<span class="linenos"> 48</span><span class="w">  </span><span class="c1">#    protectionRequired states only whether protection is required; the</span>
+<span class="linenos"> 49</span><span class="w">  </span><span class="c1">#    technical protection mechanism is selected during integration.</span>
 <span class="linenos"> 50</span><span class="w">  </span><span class="c1">#</span>
-<span class="linenos"> 51</span><span class="w">  </span><span class="c1">#    qualityCode is runtime companion information associated with the Data</span>
-<span class="linenos"> 52</span><span class="w">  </span><span class="c1">#    interface. The qualifier shall be indicated explicitly as a runtime</span>
-<span class="linenos"> 53</span><span class="w">  </span><span class="c1">#    enum interface, but shall not repeat normal Data metadata such as</span>
-<span class="linenos"> 54</span><span class="w">  </span><span class="c1">#    min/max/default/resolution/precision.</span>
-<span class="linenos"> 55</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
-<span class="linenos"> 56</span><span class="w">  </span><span class="nt">dataInterfaces</span><span class="p">:</span>
-<span class="linenos"> 57</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.&lt;Domain&gt;.&lt;Signal&gt;</span>
-<span class="linenos"> 58</span><span class="w">      </span><span class="nt">direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">input</span>
-<span class="linenos"> 59</span><span class="w">      </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span>
-<span class="linenos"> 60</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Functional meaning of the signal.&gt;</span>
-<span class="linenos"> 61</span><span class="w">      </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;unit&gt;</span>
-<span class="linenos"> 62</span><span class="w">      </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;min&gt;</span>
-<span class="linenos"> 63</span><span class="w">      </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;max&gt;</span>
-<span class="linenos"> 64</span><span class="w">      </span><span class="nt">defaultValue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;defaultValue&gt;</span>
-<span class="linenos"> 65</span><span class="w">      </span><span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span>
-<span class="linenos"> 66</span><span class="w">      </span><span class="nt">precision</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;precision&gt;</span>
-<span class="linenos"> 67</span><span class="w">      </span><span class="nt">FuSa</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="linenos"> 68</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;QM|A|B|C|D&gt;</span>
-<span class="linenos"> 69</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;minUpdatePeriodMs&gt;</span>
-<span class="linenos"> 70</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;expected accuracy&gt;</span>
-<span class="linenos"> 71</span><span class="w">      </span><span class="nt">protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span>
-<span class="linenos"> 72</span><span class="w">      </span><span class="nt">runtimeCompanion</span><span class="p">:</span>
-<span class="linenos"> 73</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
-<span class="linenos"> 74</span><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.&lt;Domain&gt;.&lt;Signal&gt;.Qualifier</span>
-<span class="linenos"> 75</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enum</span>
-<span class="linenos"> 76</span><span class="w">          </span><span class="nt">enumRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DataQuality</span>
-<span class="linenos"> 77</span>
-<span class="linenos"> 78</span><span class="w">    </span><span class="c1"># - name: Vehicle.&lt;Domain&gt;.&lt;OutputSignal&gt;</span>
-<span class="linenos"> 79</span><span class="w">    </span><span class="c1">#   direction: output</span>
-<span class="linenos"> 80</span><span class="w">    </span><span class="c1">#   dataType: float</span>
-<span class="linenos"> 81</span><span class="w">    </span><span class="c1">#   description: &lt;Functional meaning of the output signal.&gt;</span>
-<span class="linenos"> 82</span><span class="w">    </span><span class="c1">#   unit: &lt;unit&gt;</span>
-<span class="linenos"> 83</span><span class="w">    </span><span class="c1">#   min: &lt;min&gt;</span>
-<span class="linenos"> 84</span><span class="w">    </span><span class="c1">#   max: &lt;max&gt;</span>
-<span class="linenos"> 85</span><span class="w">    </span><span class="c1">#   defaultValue: &lt;defaultValue&gt;</span>
-<span class="linenos"> 86</span><span class="w">    </span><span class="c1">#   resolution: &lt;resolution&gt;</span>
-<span class="linenos"> 87</span><span class="w">    </span><span class="c1">#   precision: &lt;precision&gt;</span>
-<span class="linenos"> 88</span><span class="w">    </span><span class="c1">#   FuSa: false</span>
-<span class="linenos"> 89</span><span class="w">    </span><span class="c1">#   minUpdatePeriodMs: &lt;minUpdatePeriodMs&gt;</span>
-<span class="linenos"> 90</span><span class="w">    </span><span class="c1">#   accuracy: &lt;expected accuracy&gt;</span>
-<span class="linenos"> 91</span><span class="w">    </span><span class="c1">#   protection: none</span>
-<span class="linenos"> 92</span>
-<span class="linenos"> 93</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
-<span class="linenos"> 94</span><span class="w">  </span><span class="c1"># 2) PARAMETERS:</span>
-<span class="linenos"> 95</span><span class="w">  </span><span class="c1">#    Parameter identifiers shall also follow the VSS-style hierarchical</span>
-<span class="linenos"> 96</span><span class="w">  </span><span class="c1">#    Vehicle.&lt;Domain&gt;.&lt;Subdomain&gt;.&lt;Parameter&gt; naming approach. Reuse an</span>
-<span class="linenos"> 97</span><span class="w">  </span><span class="c1">#    existing catalogue entry where available; otherwise use an explicitly</span>
-<span class="linenos"> 98</span><span class="w">  </span><span class="c1">#    approved extension under the relevant semantic branch.</span>
-<span class="linenos"> 99</span><span class="w">  </span><span class="c1">#    dimensions is optional and only needed for array/map parameters,</span>
-<span class="linenos">100</span><span class="w">  </span><span class="c1">#    e.g. [10] for a vector or [7, 10] for a 7x10 map.</span>
-<span class="linenos">101</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
-<span class="linenos">102</span><span class="w">  </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="linenos">103</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.&lt;Domain&gt;.&lt;Parameter&gt;</span>
-<span class="linenos">104</span><span class="w">      </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span>
-<span class="linenos">105</span><span class="w">      </span><span class="nt">defaultValue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;defaultValue&gt;</span>
-<span class="linenos">106</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Meaning and intended usage of the parameter.&gt;</span>
-<span class="linenos">107</span><span class="w">      </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;unit&gt;</span>
-<span class="linenos">108</span><span class="w">      </span><span class="nt">tunable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="linenos">109</span><span class="w">      </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;min&gt;</span>
-<span class="linenos">110</span><span class="w">      </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;max&gt;</span>
-<span class="linenos">111</span><span class="w">      </span><span class="nt">dimensions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">&lt;size&gt;</span><span class="p p-Indicator">]</span>
-<span class="linenos">112</span>
+<span class="linenos"> 51</span><span class="w">  </span><span class="c1">#    FuSa: true | false</span>
+<span class="linenos"> 52</span><span class="w">  </span><span class="c1">#    ASIL is optional and should be provided when the data interface is</span>
+<span class="linenos"> 53</span><span class="w">  </span><span class="c1">#    safety-relevant. Do not populate ASIL mechanically for FuSa: false.</span>
+<span class="linenos"> 54</span><span class="w">  </span><span class="c1">#</span>
+<span class="linenos"> 55</span><span class="w">  </span><span class="c1">#    qualityCode is runtime companion information associated with the Data</span>
+<span class="linenos"> 56</span><span class="w">  </span><span class="c1">#    interface. The qualifier shall be indicated explicitly as a runtime</span>
+<span class="linenos"> 57</span><span class="w">  </span><span class="c1">#    enum interface, but shall not repeat normal Data metadata such as</span>
+<span class="linenos"> 58</span><span class="w">  </span><span class="c1">#    min/max/default/resolution/precision.</span>
+<span class="linenos"> 59</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
+<span class="linenos"> 60</span><span class="w">  </span><span class="nt">dataInterfaces</span><span class="p">:</span>
+<span class="linenos"> 61</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;CanonicalVSSOrApprovedExtensionPath&gt;</span><span class="w">   </span><span class="c1"># Vehicle.&lt;Domain/Subdomains&gt;.&lt;Signal&gt;</span>
+<span class="linenos"> 62</span><span class="w">      </span><span class="nt">direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">input</span>
+<span class="linenos"> 63</span><span class="w">      </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span>
+<span class="linenos"> 64</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Functional meaning of the signal.&gt;</span>
+<span class="linenos"> 65</span><span class="w">      </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;unit&gt;</span>
+<span class="linenos"> 66</span><span class="w">      </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;min&gt;</span>
+<span class="linenos"> 67</span><span class="w">      </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;max&gt;</span>
+<span class="linenos"> 68</span><span class="w">      </span><span class="nt">defaultValue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;defaultValue&gt;</span>
+<span class="linenos"> 69</span><span class="w">      </span><span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span>
+<span class="linenos"> 70</span><span class="w">      </span><span class="nt">precision</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;precision&gt;</span>
+<span class="linenos"> 71</span><span class="w">      </span><span class="nt">FuSa</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos"> 72</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;QM|A|B|C|D&gt;</span>
+<span class="linenos"> 73</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;minUpdatePeriodMs&gt;</span>
+<span class="linenos"> 74</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;expected accuracy&gt;</span>
+<span class="linenos"> 75</span><span class="w">      </span><span class="nt">protectionRequired</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="linenos"> 76</span><span class="w">      </span><span class="nt">runtimeCompanion</span><span class="p">:</span>
+<span class="linenos"> 77</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
+<span class="linenos"> 78</span><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;CanonicalVSSOrApprovedExtensionPath&gt;.Qualifier</span><span class="w">   </span><span class="c1"># Vehicle.&lt;Domain/Subdomains&gt;.&lt;Signal&gt;.Qualifier</span>
+<span class="linenos"> 79</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enum</span>
+<span class="linenos"> 80</span><span class="w">          </span><span class="nt">enumRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DataQuality</span>
+<span class="linenos"> 81</span>
+<span class="linenos"> 82</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
+<span class="linenos"> 83</span><span class="w">  </span><span class="c1"># 2) PARAMETERS</span>
+<span class="linenos"> 84</span><span class="w">  </span><span class="c1">#    Parameter identifiers shall also follow the VSS-style hierarchical</span>
+<span class="linenos"> 85</span><span class="w">  </span><span class="c1">#    Vehicle.&lt;Domain&gt;.&lt;Subdomain&gt;.&lt;Parameter&gt; naming approach. Reuse an</span>
+<span class="linenos"> 86</span><span class="w">  </span><span class="c1">#    existing catalogue entry where available; otherwise use an explicitly</span>
+<span class="linenos"> 87</span><span class="w">  </span><span class="c1">#    approved extension under the relevant semantic branch.</span>
+<span class="linenos"> 88</span><span class="w">  </span><span class="c1">#    dimensions is optional and only needed for array/map parameters.</span>
+<span class="linenos"> 89</span><span class="w">  </span><span class="c1">#    e.g. [10] for a vector or [7, 10] for a 7x10 map.</span>
+<span class="linenos"> 90</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
+<span class="linenos"> 91</span><span class="w">  </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="linenos"> 92</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;CanonicalVSSOrApprovedExtensionPath&gt;</span><span class="w">   </span><span class="c1"># Vehicle.&lt;Domain&gt;.&lt;Subdomain&gt;.&lt;Parameter&gt;</span>
+<span class="linenos"> 93</span><span class="w">      </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span>
+<span class="linenos"> 94</span><span class="w">      </span><span class="nt">defaultValue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;defaultValue&gt;</span>
+<span class="linenos"> 95</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Meaning and intended usage of the parameter.&gt;</span>
+<span class="linenos"> 96</span><span class="w">      </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;unit&gt;</span>
+<span class="linenos"> 97</span><span class="w">      </span><span class="nt">tunable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="linenos"> 98</span><span class="w">      </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;min&gt;</span>
+<span class="linenos"> 99</span><span class="w">      </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;max&gt;</span>
+<span class="linenos">100</span><span class="w">      </span><span class="nt">dimensions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">&lt;size&gt;</span><span class="p p-Indicator">]</span>
+<span class="linenos">101</span>
+<span class="linenos">102</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
+<span class="linenos">103</span><span class="w">  </span><span class="c1"># 3) ERROR INTERFACES - CANDIDATE / PROVISIONAL</span>
+<span class="linenos">104</span><span class="w">  </span><span class="c1">#    Lightweight function-specific error/status interfaces, separate from</span>
+<span class="linenos">105</span><span class="w">  </span><span class="c1">#    FunctionResult. This candidate model does not redefine DSM/DTC or</span>
+<span class="linenos">106</span><span class="w">  </span><span class="c1">#    event-memory handling. Application-level error/status information can</span>
+<span class="linenos">107</span><span class="w">  </span><span class="c1">#    be consumed by middleware/platform diagnostic handling and logging.</span>
+<span class="linenos">108</span><span class="w">  </span><span class="c1">#    Optional diagnostic metadata may be provided where required to support</span>
+<span class="linenos">109</span><span class="w">  </span><span class="c1">#    downstream diagnostic configuration during integration. In v0.4.1,</span>
+<span class="linenos">110</span><span class="w">  </span><span class="c1">#    maturationTimeMs is mandatory in the candidate Error type; severity,</span>
+<span class="linenos">111</span><span class="w">  </span><span class="c1">#    reset/dependency/fallback/safety-reaction metadata are optional.</span>
+<span class="linenos">112</span><span class="w">  </span><span class="c1">#    Naming convention: &lt;FunctionName&gt;.&lt;ErrorName&gt;.ErrorStatus</span>
 <span class="linenos">113</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
-<span class="linenos">114</span><span class="w">  </span><span class="c1"># 3) ERROR INTERFACES:  - CANDIDATE / PROVISIONAL</span>
-<span class="linenos">115</span><span class="w">  </span><span class="c1">#    Function-specific diagnostic interfaces, separate from FunctionResult.</span>
-<span class="linenos">116</span><span class="w">  </span><span class="c1">#    This concept is still subject to partner alignment/review.</span>
-<span class="linenos">117</span><span class="w">  </span><span class="c1">#    - Naming convention: &lt;FunctionName&gt;.&lt;ErrorName&gt;.ErrorStatus</span>
-<span class="linenos">118</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
-<span class="linenos">119</span><span class="w">  </span><span class="c1"># errorInterfaces:</span>
-<span class="linenos">120</span><span class="w">  </span><span class="c1">#   - name: &lt;YourFunctionName&gt;.&lt;ErrorName&gt;.ErrorStatus</span>
-<span class="linenos">121</span><span class="w">  </span><span class="c1">#     dataType: boolean</span>
-<span class="linenos">122</span><span class="w">  </span><span class="c1">#     description: &lt;Meaning of the error and its trigger scenario.&gt;</span>
-<span class="linenos">123</span><span class="w">  </span><span class="c1">#     severity: degraded</span>
-<span class="linenos">124</span><span class="w">  </span><span class="c1">#     maturationTimeMs: &lt;maturationTimeMs&gt;</span>
-<span class="linenos">125</span><span class="w">  </span><span class="c1">#     resetTimeMs: &lt;resetTimeMs&gt;</span>
-<span class="linenos">126</span><span class="w">  </span><span class="c1">#     resetCondition: &lt;Condition that clears the error.&gt;</span>
-<span class="linenos">127</span><span class="w">  </span><span class="c1">#     dependencyRefs: []</span>
-<span class="linenos">128</span><span class="w">  </span><span class="c1">#     fallbackBehavior: &lt;Function-level fallback/degradation behavior.&gt;</span>
-<span class="linenos">129</span><span class="w">  </span><span class="c1">#     raisesSafetyReactionRefs: []</span>
-<span class="linenos">130</span>
-<span class="linenos">131</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
-<span class="linenos">132</span><span class="w">  </span><span class="c1"># 4) SCHEDULING:</span>
-<span class="linenos">133</span><span class="w">  </span><span class="c1">#    - runType: init | cyclic | event | terminate</span>
-<span class="linenos">134</span><span class="w">  </span><span class="c1">#    - Naming convention: &lt;FunctionName&gt;.Init / .Step / .Terminate</span>
-<span class="linenos">135</span><span class="w">  </span><span class="c1">#    - previousRunnableRef: name of the runnable that must run right before</span>
-<span class="linenos">136</span><span class="w">  </span><span class="c1">#      this one (use System.Startup for the very first runnable).</span>
-<span class="linenos">137</span><span class="w">  </span><span class="c1">#    - executionResult: success | failure | notAvailable</span>
-<span class="linenos">138</span><span class="w">  </span><span class="c1">#    - supervision.required: false, or true with one or more of the</span>
-<span class="linenos">139</span><span class="w">  </span><span class="c1">#      supervision.type values below (alive | deadline | logical), each</span>
-<span class="linenos">140</span><span class="w">  </span><span class="c1">#      configured via its matching alive/deadline/logical object.</span>
-<span class="linenos">141</span><span class="w">  </span><span class="c1">#    - schedulingPolicy and stackSizeBytes are optional.</span>
-<span class="linenos">142</span><span class="w">  </span><span class="c1">#</span>
-<span class="linenos">143</span><span class="w">  </span><span class="c1">#    cycleTimeMs is present only for runType: cyclic.</span>
-<span class="linenos">144</span><span class="w">  </span><span class="c1">#    previousRunnableRef is optional and is used only when an explicit</span>
-<span class="linenos">145</span><span class="w">  </span><span class="c1">#    predecessor/order dependency exists. It does not mean &quot;immediately</span>
-<span class="linenos">146</span><span class="w">  </span><span class="c1">#    before&quot;.</span>
-<span class="linenos">147</span><span class="w">  </span><span class="c1">#</span>
-<span class="linenos">148</span><span class="w">  </span><span class="c1">#    executionResult describes the runtime result contract. The static</span>
-<span class="linenos">149</span><span class="w">  </span><span class="c1">#    specification shall not hard-code success/failure/notAvailable.</span>
-<span class="linenos">150</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
-<span class="linenos">151</span><span class="w">  </span><span class="nt">scheduling</span><span class="p">:</span>
-<span class="linenos">152</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;YourFunctionName&gt;.Init</span>
-<span class="linenos">153</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">init</span>
-<span class="linenos">154</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Initialize internal states.&gt;</span>
+<span class="linenos">114</span><span class="w">  </span><span class="nt">errorInterfaces</span><span class="p">:</span>
+<span class="linenos">115</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;YourFunctionName&gt;.&lt;ErrorName&gt;.ErrorStatus</span>
+<span class="linenos">116</span><span class="w">      </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span>
+<span class="linenos">117</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Meaning of the error and its trigger scenario.&gt;</span>
+<span class="linenos">118</span><span class="w">      </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">degraded</span><span class="w">  </span><span class="c1"># optional</span>
+<span class="linenos">119</span><span class="w">      </span><span class="nt">maturationTimeMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;maturationTimeMs&gt;</span>
+<span class="linenos">120</span><span class="w">      </span><span class="nt">resetTimeMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resetTimeMs&gt;</span><span class="w">  </span><span class="c1"># optional/recommended</span>
+<span class="linenos">121</span><span class="w">      </span><span class="nt">resetCondition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Condition that clears the error.&gt;</span><span class="w">  </span><span class="c1"># optional/recommended</span>
+<span class="linenos">122</span><span class="w">      </span><span class="nt">dependencyRefs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w">  </span><span class="c1"># optional</span>
+<span class="linenos">123</span><span class="w">      </span><span class="nt">fallbackBehavior</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Function-level fallback/degradation behavior.&gt;</span><span class="w">  </span><span class="c1"># optional</span>
+<span class="linenos">124</span><span class="w">      </span><span class="nt">raisesSafetyReactionRefs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w">  </span><span class="c1"># optional</span>
+<span class="linenos">125</span>
+<span class="linenos">126</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
+<span class="linenos">127</span><span class="w">  </span><span class="c1"># 4) SCHEDULING</span>
+<span class="linenos">128</span><span class="w">  </span><span class="c1">#    Naming convention: &lt;FunctionName&gt;.Init / .Step / .Terminate</span>
+<span class="linenos">129</span><span class="w">  </span><span class="c1">#    cycleTimeMs is present only for runType: cyclic.</span>
+<span class="linenos">130</span><span class="w">  </span><span class="c1">#    previousRunnableRef is optional and is used only when an explicit</span>
+<span class="linenos">131</span><span class="w">  </span><span class="c1">#    predecessor/order dependency exists. It does not mean &quot;immediately</span>
+<span class="linenos">132</span><span class="w">  </span><span class="c1">#    before&quot; and no System.Startup convention is assumed here.</span>
+<span class="linenos">133</span><span class="w">  </span><span class="c1">#</span>
+<span class="linenos">134</span><span class="w">  </span><span class="c1">#    executionResult describes the runtime result contract. The static</span>
+<span class="linenos">135</span><span class="w">  </span><span class="c1">#    specification shall not hard-code success/failure/notAvailable.</span>
+<span class="linenos">136</span><span class="w">  </span><span class="c1">#</span>
+<span class="linenos">137</span><span class="w">  </span><span class="c1">#    supervision is nested within each scheduling entry. When required is</span>
+<span class="linenos">138</span><span class="w">  </span><span class="c1">#    true, list the selected supervision types and only their relevant</span>
+<span class="linenos">139</span><span class="w">  </span><span class="c1">#    configuration objects.</span>
+<span class="linenos">140</span><span class="w">  </span><span class="c1"># -----------------------------------------------------------------------</span>
+<span class="linenos">141</span><span class="w">  </span><span class="nt">scheduling</span><span class="p">:</span>
+<span class="linenos">142</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;YourFunctionName&gt;.Init</span>
+<span class="linenos">143</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">init</span>
+<span class="linenos">144</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Initialize internal states.&gt;</span>
+<span class="linenos">145</span><span class="w">      </span><span class="nt">implementedASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QM</span>
+<span class="linenos">146</span><span class="w">      </span><span class="nt">executionResult</span><span class="p">:</span>
+<span class="linenos">147</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FunctionResult</span>
+<span class="linenos">148</span><span class="w">      </span><span class="nt">supervision</span><span class="p">:</span>
+<span class="linenos">149</span><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="linenos">150</span>
+<span class="linenos">151</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;YourFunctionName&gt;.Step</span>
+<span class="linenos">152</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cyclic</span>
+<span class="linenos">153</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Evaluate inputs and calculate outputs.&gt;</span>
+<span class="linenos">154</span><span class="w">      </span><span class="nt">cycleTimeMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;cycleTimeMs&gt;</span>
 <span class="linenos">155</span><span class="w">      </span><span class="nt">implementedASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QM</span>
-<span class="linenos">156</span><span class="w">      </span><span class="nt">executionResult</span><span class="p">:</span>
-<span class="linenos">157</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FunctionResult</span>
-<span class="linenos">158</span><span class="w">      </span><span class="nt">supervision</span><span class="p">:</span>
-<span class="linenos">159</span><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="linenos">160</span>
-<span class="linenos">161</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;YourFunctionName&gt;.Step</span>
-<span class="linenos">162</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cyclic</span>
-<span class="linenos">163</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Evaluate inputs and calculate outputs.&gt;</span>
-<span class="linenos">164</span><span class="w">      </span><span class="nt">cycleTimeMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;cycleTimeMs&gt;</span>
-<span class="linenos">165</span><span class="w">      </span><span class="nt">implementedASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QM</span>
-<span class="linenos">166</span><span class="w">      </span><span class="c1"># previousRunnableRef: &lt;OtherFunction&gt;.Step</span>
-<span class="linenos">167</span><span class="w">      </span><span class="nt">executionResult</span><span class="p">:</span>
-<span class="linenos">168</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FunctionResult</span>
-<span class="linenos">169</span><span class="w">      </span><span class="nt">supervision</span><span class="p">:</span>
-<span class="linenos">170</span><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="linenos">171</span><span class="w">      </span><span class="c1"># supervision:</span>
-<span class="linenos">172</span><span class="w">      </span><span class="c1">#   required: true</span>
-<span class="linenos">173</span><span class="w">      </span><span class="c1">#   type:</span>
-<span class="linenos">174</span><span class="w">      </span><span class="c1">#     - alive</span>
-<span class="linenos">175</span><span class="w">      </span><span class="c1">#     - deadline</span>
-<span class="linenos">176</span><span class="w">      </span><span class="c1">#     - logical</span>
-<span class="linenos">177</span><span class="w">      </span><span class="c1">#   alive:</span>
-<span class="linenos">178</span><span class="w">      </span><span class="c1">#     minIndications: &lt;minIndications&gt;</span>
-<span class="linenos">179</span><span class="w">      </span><span class="c1">#     maxIndications: &lt;maxIndications&gt;</span>
-<span class="linenos">180</span><span class="w">      </span><span class="c1">#     referenceCycleMs: &lt;referenceCycleMs&gt;</span>
-<span class="linenos">181</span><span class="w">      </span><span class="c1">#   deadline:</span>
-<span class="linenos">182</span><span class="w">      </span><span class="c1">#     minExecutionTimeMs: &lt;minExecutionTimeMs&gt;</span>
-<span class="linenos">183</span><span class="w">      </span><span class="c1">#     maxExecutionTimeMs: &lt;maxExecutionTimeMs&gt;</span>
-<span class="linenos">184</span><span class="w">      </span><span class="c1">#   logical:</span>
-<span class="linenos">185</span><span class="w">      </span><span class="c1">#     predecessorRefs: []</span>
-<span class="linenos">186</span><span class="w">      </span><span class="c1">#     successorRefs: []</span>
-<span class="linenos">187</span><span class="w">      </span><span class="c1"># schedulingPolicy: &lt;e.g. preemptive/non-preemptive&gt;</span>
-<span class="linenos">188</span><span class="w">      </span><span class="c1"># stackSizeBytes: &lt;stackSizeBytes&gt;</span>
-<span class="linenos">189</span>
-<span class="linenos">190</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;YourFunctionName&gt;.Terminate</span>
-<span class="linenos">191</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate</span>
-<span class="linenos">192</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Shutdown cleanup.&gt;</span>
-<span class="linenos">193</span><span class="w">      </span><span class="nt">implementedASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QM</span>
-<span class="linenos">194</span><span class="w">      </span><span class="nt">previousRunnableRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;YourFunctionName&gt;.Step</span>
-<span class="linenos">195</span><span class="w">      </span><span class="nt">executionResult</span><span class="p">:</span>
-<span class="linenos">196</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FunctionResult</span>
-<span class="linenos">197</span><span class="w">      </span><span class="nt">supervision</span><span class="p">:</span>
-<span class="linenos">198</span><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="linenos">156</span><span class="w">      </span><span class="nt">previousRunnableRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;OtherFunction&gt;.Step</span><span class="w"> </span><span class="c1">#Optional</span>
+<span class="linenos">157</span><span class="w">      </span><span class="nt">executionResult</span><span class="p">:</span>
+<span class="linenos">158</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FunctionResult</span>
+<span class="linenos">159</span><span class="w">      </span><span class="nt">supervision</span><span class="p">:</span>
+<span class="linenos">160</span><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="linenos">161</span><span class="w">      </span><span class="c1"># supervision:</span>
+<span class="linenos">162</span><span class="w">      </span><span class="c1">#   required: true</span>
+<span class="linenos">163</span><span class="w">      </span><span class="c1">#   type:</span>
+<span class="linenos">164</span><span class="w">      </span><span class="c1">#     - alive</span>
+<span class="linenos">165</span><span class="w">      </span><span class="c1">#     - deadline</span>
+<span class="linenos">166</span><span class="w">      </span><span class="c1">#     - logical</span>
+<span class="linenos">167</span><span class="w">      </span><span class="c1">#   alive:</span>
+<span class="linenos">168</span><span class="w">      </span><span class="c1">#     # Minimum expected alive indications in the reference cycle;</span>
+<span class="linenos">169</span><span class="w">      </span><span class="c1">#     # this is not a lower tolerance margin.</span>
+<span class="linenos">170</span><span class="w">      </span><span class="c1">#     minIndications: &lt;minIndications&gt;</span>
+<span class="linenos">171</span><span class="w">      </span><span class="c1">#     maxIndications: &lt;maxIndications&gt;</span>
+<span class="linenos">172</span><span class="w">      </span><span class="c1">#     referenceCycleMs: &lt;referenceCycleMs&gt;</span>
+<span class="linenos">173</span><span class="w">      </span><span class="c1">#   deadline:</span>
+<span class="linenos">174</span><span class="w">      </span><span class="c1">#     maxExecutionTimeMs: &lt;maxExecutionTimeMs&gt;</span>
+<span class="linenos">175</span><span class="w">      </span><span class="c1">#   logical:</span>
+<span class="linenos">176</span><span class="w">      </span><span class="c1">#     predecessorRefs: []</span>
+<span class="linenos">177</span><span class="w">      </span><span class="c1">#     successorRefs: []</span>
+<span class="linenos">178</span><span class="w">      </span><span class="c1"># schedulingPolicy: &lt;e.g. preemptive/non-preemptive&gt;</span>
+<span class="linenos">179</span><span class="w">      </span><span class="c1"># stackSizeBytes: &lt;stackSizeBytes&gt;</span>
+<span class="linenos">180</span>
+<span class="linenos">181</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;YourFunctionName&gt;.Terminate</span>
+<span class="linenos">182</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate</span>
+<span class="linenos">183</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;Shutdown cleanup.&gt;</span>
+<span class="linenos">184</span><span class="w">      </span><span class="nt">implementedASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QM</span>
+<span class="linenos">185</span><span class="w">      </span><span class="nt">previousRunnableRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;YourFunctionName&gt;.Step</span>
+<span class="linenos">186</span><span class="w">      </span><span class="nt">executionResult</span><span class="p">:</span>
+<span class="linenos">187</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FunctionResult</span>
+<span class="linenos">188</span><span class="w">      </span><span class="nt">supervision</span><span class="p">:</span>
+<span class="linenos">189</span><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
 <p>What needs to be added for the SpeedHazardDetection example:</p>
@@ -822,7 +819,7 @@
 <span class="linenos"> 12</span><span class="c1">#</span>
 <span class="linenos"> 13</span><span class="c1"># Contributors:</span>
 <span class="linenos"> 14</span><span class="c1">#   Thomas Pfleiderer - Function specification added</span>
-<span class="linenos"> 15</span><span class="c1">#   Saran Gundlapalli - autoapiframework_function_specification_example.afs.yaml updated according to metamodel v0.4.0</span>
+<span class="linenos"> 15</span><span class="c1">#   Saran Gundlapalli - autoapiframework_function_specification_example.afs.yaml updated according to metamodel v0.4.1</span>
 <span class="linenos"> 16</span><span class="c1"># *******************************************************************************</span>
 <span class="linenos"> 17</span>
 <span class="linenos"> 18</span><span class="nt">functionSpecification</span><span class="p">:</span>
@@ -830,7 +827,7 @@
 <span class="linenos"> 20</span><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0.0</span>
 <span class="linenos"> 21</span><span class="w">  </span><span class="nt">metaModelRef</span><span class="p">:</span>
 <span class="linenos"> 22</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Eclipse-autoapiframework-Metamodel</span>
-<span class="linenos"> 23</span><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.4.0</span>
+<span class="linenos"> 23</span><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.4.1</span>
 <span class="linenos"> 24</span>
 <span class="linenos"> 25</span><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
 <span class="linenos"> 26</span><span class="w">    </span><span class="no">Detects rapid acceleration and requests hazard warning lights if the</span>
@@ -851,7 +848,7 @@
 <span class="linenos"> 41</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
 <span class="linenos"> 42</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 <span class="linenos"> 43</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;+/-0.2</span><span class="nv"> </span><span class="s">km/h&quot;</span>
-<span class="linenos"> 44</span><span class="w">      </span><span class="nt">protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complement</span>
+<span class="linenos"> 44</span><span class="w">      </span><span class="nt">protectionRequired</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="linenos"> 45</span><span class="w">      </span><span class="nt">runtimeCompanion</span><span class="p">:</span>
 <span class="linenos"> 46</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
 <span class="linenos"> 47</span><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Speed.Qualifier</span>
@@ -876,7 +873,7 @@
 <span class="linenos"> 66</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
 <span class="linenos"> 67</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 <span class="linenos"> 68</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;+/-0.05</span><span class="nv"> </span><span class="s">m/s2&quot;</span>
-<span class="linenos"> 69</span><span class="w">      </span><span class="nt">protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complement</span>
+<span class="linenos"> 69</span><span class="w">      </span><span class="nt">protectionRequired</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="linenos"> 70</span><span class="w">      </span><span class="nt">runtimeCompanion</span><span class="p">:</span>
 <span class="linenos"> 71</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
 <span class="linenos"> 72</span><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Acceleration.Longitudinal.Qualifier</span>
@@ -901,7 +898,7 @@
 <span class="linenos"> 91</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
 <span class="linenos"> 92</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
 <span class="linenos"> 93</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">logical</span>
-<span class="linenos"> 94</span><span class="w">      </span><span class="nt">protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complement</span>
+<span class="linenos"> 94</span><span class="w">      </span><span class="nt">protectionRequired</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="linenos"> 95</span><span class="w">      </span><span class="nt">runtimeCompanion</span><span class="p">:</span>
 <span class="linenos"> 96</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
 <span class="linenos"> 97</span><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Body.Lights.Hazard.Request.Qualifier</span>
@@ -1016,6 +1013,7 @@
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-naming">About the naming</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#catalogue-and-vss-reuse">Catalogue and VSS reuse</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direction-and-protection-requirement">Direction and protection requirement</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#content-of-function-specification-file">Content Of Function Specification File</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scheduling-notes">Scheduling notes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-quality">Runtime quality</a></li>

@@ -511,7 +511,7 @@
                   
   <section id="speedhazarddetection-example">
 <h1>SpeedHazardDetection Example<a class="headerlink" href="#speedhazarddetection-example" title="Link to this heading">#</a></h1>
-<p>This example shows a single cyclic <code class="docutils literal notranslate"><span class="pre">Step</span></code> runnable. Canonical VSS semantics are reused where available, runtime quality is explicitly indicated through enum-based runtime companion interfaces, and <code class="docutils literal notranslate"><span class="pre">FunctionResult</span></code> is represented as the runtime execution-result contract.</p>
+<p>This example shows a single cyclic <code class="docutils literal notranslate"><span class="pre">Step</span></code> runnable aligned to metamodel v0.4.1. Canonical VSS semantics are reused where available, runtime quality is explicitly indicated through enum-based runtime companion interfaces, <code class="docutils literal notranslate"><span class="pre">protectionRequired</span></code> expresses only whether interface protection is required, and <code class="docutils literal notranslate"><span class="pre">FunctionResult</span></code> is represented as the runtime execution-result contract.</p>
 <p>Calibration parameters use VSS-style hierarchical paths under the relevant vehicle-domain branch. Where such paths are not part of the standard catalogue, they shall be treated as approved/illustrative extensions.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="c1"># *******************************************************************************</span>
 <span class="linenos">  2</span><span class="c1"># Copyright (c) 2026 ZF Friedrichshafen AG</span>
@@ -527,7 +527,7 @@
 <span class="linenos"> 12</span><span class="c1">#</span>
 <span class="linenos"> 13</span><span class="c1"># Contributors:</span>
 <span class="linenos"> 14</span><span class="c1">#   Thomas Pfleiderer - Function specification added</span>
-<span class="linenos"> 15</span><span class="c1">#   Saran Gundlapalli - speed_hazard_detection.afs.yaml updated according to metamodel v0.4.0</span>
+<span class="linenos"> 15</span><span class="c1">#   Saran Gundlapalli - speed_hazard_detection.afs.yaml updated according to metamodel v0.4.1</span>
 <span class="linenos"> 16</span><span class="c1"># *******************************************************************************</span>
 <span class="linenos"> 17</span>
 <span class="linenos"> 18</span><span class="nt">functionSpecification</span><span class="p">:</span>
@@ -535,7 +535,7 @@
 <span class="linenos"> 20</span><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0.0</span>
 <span class="linenos"> 21</span><span class="w">  </span><span class="nt">metaModelRef</span><span class="p">:</span>
 <span class="linenos"> 22</span><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Eclipse-autoapiframework-Metamodel</span>
-<span class="linenos"> 23</span><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.4.0</span>
+<span class="linenos"> 23</span><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.4.1</span>
 <span class="linenos"> 24</span>
 <span class="linenos"> 25</span><span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
 <span class="linenos"> 26</span><span class="w">    </span><span class="no">Detects rapid acceleration and requests hazard warning lights if the</span>
@@ -556,7 +556,7 @@
 <span class="linenos"> 41</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
 <span class="linenos"> 42</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 <span class="linenos"> 43</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;+/-0.2</span><span class="nv"> </span><span class="s">km/h&quot;</span>
-<span class="linenos"> 44</span><span class="w">      </span><span class="nt">protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complement</span>
+<span class="linenos"> 44</span><span class="w">      </span><span class="nt">protectionRequired</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="linenos"> 45</span><span class="w">      </span><span class="nt">runtimeCompanion</span><span class="p">:</span>
 <span class="linenos"> 46</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
 <span class="linenos"> 47</span><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Speed.Qualifier</span>
@@ -581,7 +581,7 @@
 <span class="linenos"> 66</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
 <span class="linenos"> 67</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 <span class="linenos"> 68</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;+/-0.05</span><span class="nv"> </span><span class="s">m/s2&quot;</span>
-<span class="linenos"> 69</span><span class="w">      </span><span class="nt">protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complement</span>
+<span class="linenos"> 69</span><span class="w">      </span><span class="nt">protectionRequired</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="linenos"> 70</span><span class="w">      </span><span class="nt">runtimeCompanion</span><span class="p">:</span>
 <span class="linenos"> 71</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
 <span class="linenos"> 72</span><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Acceleration.Longitudinal.Qualifier</span>
@@ -608,76 +608,66 @@
 <span class="linenos"> 93</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
 <span class="linenos"> 94</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
 <span class="linenos"> 95</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">logical</span>
-<span class="linenos"> 96</span><span class="w">      </span><span class="nt">protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">complement</span>
-<span class="linenos"> 97</span>
-<span class="linenos"> 98</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Speed.Qualifier</span>
-<span class="linenos"> 99</span><span class="w">      </span><span class="nt">direction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">input</span>
-<span class="linenos">100</span><span class="w">      </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uint8</span>
-<span class="linenos">101</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Runtime quality qualifier for Vehicle.Speed value.</span>
-<span class="linenos">102</span><span class="w">      </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">code</span>
-<span class="linenos">103</span><span class="w">      </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<span class="linenos">104</span><span class="w">      </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
-<span class="linenos">105</span><span class="w">      </span><span class="nt">defaultValue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<span class="linenos">106</span><span class="w">      </span><span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="linenos">107</span><span class="w">      </span><span class="nt">precision</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="linenos">108</span><span class="w">      </span><span class="nt">FuSa</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="linenos">109</span><span class="w">      </span><span class="nt">ASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QM</span>
-<span class="linenos">110</span><span class="w">      </span><span class="nt">minUpdatePeriodMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-<span class="linenos">111</span><span class="w">      </span><span class="nt">accuracy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enum-based</span>
-<span class="linenos">112</span><span class="w">      </span><span class="nt">protection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span>
-<span class="linenos">113</span>
-<span class="linenos">114</span><span class="w">  </span><span class="nt">parameters</span><span class="p">:</span>
-<span class="linenos">115</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Chassis.SpeedHazardForward</span>
-<span class="linenos">116</span><span class="w">      </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span>
-<span class="linenos">117</span><span class="w">      </span><span class="nt">defaultValue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span>
-<span class="linenos">118</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
-<span class="linenos">119</span><span class="w">        </span><span class="no">Relative speed increase threshold in percent for triggering</span>
-<span class="linenos">120</span><span class="w">        </span><span class="no">hazard request while driving forward.</span>
-<span class="linenos">121</span><span class="w">      </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percent</span>
-<span class="linenos">122</span><span class="w">      </span><span class="nt">tunable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="linenos">123</span><span class="w">      </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
-<span class="linenos">124</span><span class="w">      </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.0</span>
-<span class="linenos">125</span>
-<span class="linenos">126</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Chassis.HazardRequestDurationMs</span>
-<span class="linenos">127</span><span class="w">      </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uint32</span>
-<span class="linenos">128</span><span class="w">      </span><span class="nt">defaultValue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3000</span>
-<span class="linenos">129</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hold time for hazard request after trigger.</span>
-<span class="linenos">130</span><span class="w">      </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ms</span>
-<span class="linenos">131</span><span class="w">      </span><span class="nt">tunable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="linenos">132</span><span class="w">      </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<span class="linenos">133</span><span class="w">      </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600000</span>
-<span class="linenos">134</span>
-<span class="linenos">135</span><span class="w">  </span><span class="nt">scheduling</span><span class="p">:</span>
-<span class="linenos">136</span>
-<span class="linenos">137</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpeedHazardDetection.Init</span>
-<span class="linenos">138</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">init</span>
-<span class="linenos">139</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Initialize internal states and latched outputs.</span>
+<span class="linenos"> 96</span><span class="w">      </span><span class="nt">protectionRequired</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="linenos"> 97</span><span class="w">      </span><span class="nt">runtimeCompanion</span><span class="p">:</span>
+<span class="linenos"> 98</span><span class="w">        </span><span class="nt">qualityCode</span><span class="p">:</span>
+<span class="linenos"> 99</span><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Body.Lights.Hazard.Request.Qualifier</span>
+<span class="linenos">100</span><span class="w">          </span><span class="nt">datatype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enum</span>
+<span class="linenos">101</span><span class="w">          </span><span class="nt">enumRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DataQuality</span>
+<span class="linenos">102</span>
+<span class="linenos">103</span>
+<span class="linenos">104</span><span class="w">  </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="linenos">105</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Chassis.SpeedHazardForward</span>
+<span class="linenos">106</span><span class="w">      </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span>
+<span class="linenos">107</span><span class="w">      </span><span class="nt">defaultValue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span>
+<span class="linenos">108</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;-</span>
+<span class="linenos">109</span><span class="w">        </span><span class="no">Relative speed increase threshold in percent for triggering</span>
+<span class="linenos">110</span><span class="w">        </span><span class="no">hazard request while driving forward.</span>
+<span class="linenos">111</span><span class="w">      </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">percent</span>
+<span class="linenos">112</span><span class="w">      </span><span class="nt">tunable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="linenos">113</span><span class="w">      </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
+<span class="linenos">114</span><span class="w">      </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.0</span>
+<span class="linenos">115</span>
+<span class="linenos">116</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Vehicle.Chassis.HazardRequestDurationMs</span>
+<span class="linenos">117</span><span class="w">      </span><span class="nt">dataType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uint32</span>
+<span class="linenos">118</span><span class="w">      </span><span class="nt">defaultValue</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3000</span>
+<span class="linenos">119</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Hold time for hazard request after trigger.</span>
+<span class="linenos">120</span><span class="w">      </span><span class="nt">unit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ms</span>
+<span class="linenos">121</span><span class="w">      </span><span class="nt">tunable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="linenos">122</span><span class="w">      </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="linenos">123</span><span class="w">      </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600000</span>
+<span class="linenos">124</span>
+<span class="linenos">125</span><span class="w">  </span><span class="nt">scheduling</span><span class="p">:</span>
+<span class="linenos">126</span>
+<span class="linenos">127</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpeedHazardDetection.Init</span>
+<span class="linenos">128</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">init</span>
+<span class="linenos">129</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Initialize internal states and latched outputs.</span>
+<span class="linenos">130</span><span class="w">      </span><span class="nt">implementedASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
+<span class="linenos">131</span><span class="w">      </span><span class="nt">executionResult</span><span class="p">:</span>
+<span class="linenos">132</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FunctionResult</span>
+<span class="linenos">133</span><span class="w">      </span><span class="nt">supervision</span><span class="p">:</span>
+<span class="linenos">134</span><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="linenos">135</span>
+<span class="linenos">136</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpeedHazardDetection.Step</span>
+<span class="linenos">137</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cyclic</span>
+<span class="linenos">138</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Evaluate inputs and calculate hazard request output.</span>
+<span class="linenos">139</span><span class="w">      </span><span class="nt">cycleTimeMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
 <span class="linenos">140</span><span class="w">      </span><span class="nt">implementedASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
-<span class="linenos">141</span><span class="w">      </span><span class="nt">executionResult</span><span class="p">:</span>
-<span class="linenos">142</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FunctionResult</span>
-<span class="linenos">143</span><span class="w">      </span><span class="nt">supervision</span><span class="p">:</span>
-<span class="linenos">144</span><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="linenos">145</span>
-<span class="linenos">146</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpeedHazardDetection.Step</span>
-<span class="linenos">147</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cyclic</span>
-<span class="linenos">148</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Evaluate inputs and calculate hazard request output.</span>
-<span class="linenos">149</span><span class="w">      </span><span class="nt">cycleTimeMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
-<span class="linenos">150</span><span class="w">      </span><span class="nt">implementedASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">B</span>
-<span class="linenos">151</span><span class="w">      </span><span class="nt">previousRunnableRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpeedHazardDetection.Init</span>
+<span class="linenos">141</span><span class="w">      </span><span class="nt">previousRunnableRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpeedHazardDetection.Init</span>
+<span class="linenos">142</span><span class="w">      </span><span class="nt">executionResult</span><span class="p">:</span>
+<span class="linenos">143</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FunctionResult</span>
+<span class="linenos">144</span><span class="w">      </span><span class="nt">supervision</span><span class="p">:</span>
+<span class="linenos">145</span><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="linenos">146</span>
+<span class="linenos">147</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpeedHazardDetection.Terminate</span>
+<span class="linenos">148</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate</span>
+<span class="linenos">149</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Shutdown cleanup for deterministic deactivation.</span>
+<span class="linenos">150</span><span class="w">      </span><span class="nt">implementedASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QM</span>
+<span class="linenos">151</span><span class="w">      </span><span class="nt">previousRunnableRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpeedHazardDetection.Step</span>
 <span class="linenos">152</span><span class="w">      </span><span class="nt">executionResult</span><span class="p">:</span>
 <span class="linenos">153</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FunctionResult</span>
 <span class="linenos">154</span><span class="w">      </span><span class="nt">supervision</span><span class="p">:</span>
 <span class="linenos">155</span><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="linenos">156</span>
-<span class="linenos">157</span><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">functionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpeedHazardDetection.Terminate</span>
-<span class="linenos">158</span><span class="w">      </span><span class="nt">runType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terminate</span>
-<span class="linenos">159</span><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Shutdown cleanup for deterministic deactivation.</span>
-<span class="linenos">160</span><span class="w">      </span><span class="nt">implementedASIL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">QM</span>
-<span class="linenos">161</span><span class="w">      </span><span class="nt">previousRunnableRef</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpeedHazardDetection.Step</span>
-<span class="linenos">162</span><span class="w">      </span><span class="nt">executionResult</span><span class="p">:</span>
-<span class="linenos">163</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FunctionResult</span>
-<span class="linenos">164</span><span class="w">      </span><span class="nt">supervision</span><span class="p">:</span>
-<span class="linenos">165</span><span class="w">        </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
 </section>

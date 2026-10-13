@@ -1,6 +1,6 @@
 ..
    # *******************************************************************************
-   # Copyright (c) 2026 ZF Friedrichshafen AG
+   # Copyright (c) 2026 Contributors to the Eclipse Foundation
    #
    # See the NOTICE file(s) distributed with this work for additional
    # information regarding copyright ownership.
@@ -13,7 +13,7 @@
    #
    # Contributors:
    #   Thomas Pfleiderer
-   #   Saran Gundlapalli - meta model 1, 2 & 4
+   #   Saran Gundlapalli
    # *******************************************************************************
 
 Current status of the project
@@ -35,9 +35,10 @@ and a candidate **Error** interface. The model also defines common enumerations,
 runtime companion information for data quality, execution-result semantics, and
 cross-cutting modelling rules.
 
-For Data and Parameter interfaces, ``name`` is the unique interface identifier.
-The value follows the canonical hierarchical naming convention and therefore a
-separate ``path`` property is not used.
+For Data and Parameter interfaces, ``name`` is the unique interface identifier
+and contains the fully qualified hierarchical identifier. The hierarchy remains
+part of the VSS/catalogue semantics; it is carried by ``name`` rather than
+duplicated in a second ``path`` property.
 
 Enum Type Description
 ---------------------
@@ -64,9 +65,6 @@ runtime information.
    * - RunType
      - ``init``, ``cyclic``, ``event``, ``terminate``
      - Activation type of a runnable.
-   * - ProtectionType
-     - ``none``, ``complement``, ``other``
-     - Abstract protection requirement. Concrete middleware protection details are platform/deployment-specific.
    * - FunctionResult
      - ``success``, ``failure``, ``notAvailable``
      - Generic execution result only. It does not encode function-specific diagnostic causes.
@@ -94,8 +92,9 @@ Data Type Description
 
 **Standard Naming Convention:** ``Vehicle.<Domain/Subdomains>.<Signal>``
 
-``name`` contains the complete canonical interface identifier, for example
-``Vehicle.Speed``. A separate ``path`` property is not used.
+``name`` contains the fully qualified VSS node identifier, including its
+hierarchical path, for example ``Vehicle.Speed``. The metamodel therefore does
+not duplicate this identifier in an additional ``path`` property.
 
 .. list-table:: Meta Model Data Type
    :header-rows: 1
@@ -109,7 +108,7 @@ Data Type Description
    * - name
      - Yes
      - string
-     - Unique interface or node name based on the canonical VSS path of the Data interface.
+     - Unique interface or node name containing the fully qualified VSS node identifier, including its hierarchical path.
      - ``Vehicle.Speed``
    * - dataType
      - Yes
@@ -174,13 +173,13 @@ Data Type Description
    * - direction
      - Yes
      - enum: Direction
-     - Input/output relationship relative to the function using the interface. It shall not be inferred from the VSS sensor/actuator type.
+     - Defines the direction of the interface relative to the function/application being specified. ``input`` means the function consumes the data; ``output`` means the function provides the data. This is independent of the VSS sensor/actuator classification.
      - ``input`` / ``output``
-   * - protection
+   * - protectionRequired
      - Yes
-     - enum: ProtectionType
-     - Protection requirement for transfer of the Data between the function and its adapter/platform. Detailed realization is binding-specific.
-     - ``none`` / ``complement`` / ``other``
+     - boolean
+     - Indicates whether protection is required for transfer of the Data between the function and its platform environment. The technical realization is platform-dependent and outside the scope of the metamodel/application specification.
+     - ``true`` / ``false``
 
 Runtime Data Quality
 ~~~~~~~~~~~~~~~~~~~~
@@ -209,8 +208,9 @@ Parameter Type Description
 
 **Standard Naming Convention:** ``Vehicle.<Domain/Subdomains>.<Parameter>``
 
-``name`` contains the complete canonical parameter identifier. A separate
-``path`` property is not used.
+``name`` contains the complete canonical parameter identifier, including its
+hierarchical path. The metamodel therefore does not duplicate this identifier in
+an additional ``path`` property.
 
 .. list-table:: Meta Model Parameter Type
    :header-rows: 1
@@ -224,7 +224,7 @@ Parameter Type Description
    * - name
      - Yes
      - string
-     - Unique parameter name based on the canonical VSS path of the Parameter interface.
+     - Unique parameter identifier following the canonical VSS-style hierarchy, including its hierarchical path.
      - ``Vehicle.Brake.Gain``
    * - dataType
      - Yes
@@ -366,7 +366,7 @@ and the corresponding configuration is supplied.
    * - supervision.deadline
      - Conditional
      - object
-     - Required when ``type`` contains ``deadline``. Supports ``minExecutionTimeMs`` and mandatory ``maxExecutionTimeMs``.
+     - Required when ``type`` contains ``deadline``. Uses mandatory ``maxExecutionTimeMs``.
    * - supervision.logical
      - Conditional
      - object
@@ -386,7 +386,7 @@ Alive Supervision
    * - minIndications
      - No
      - uint32
-     - Minimum allowed number of alive indications in the reference cycle.
+     - Minimum expected number of alive indications within the reference cycle. This is not a lower tolerance margin.
    * - maxIndications
      - No
      - uint32
@@ -399,6 +399,9 @@ Alive Supervision
 Deadline Supervision
 ^^^^^^^^^^^^^^^^^^^^
 
+Deadline supervision verifies that execution completes within the configured
+maximum execution-time limit.
+
 .. list-table:: Deadline Supervision Properties
    :header-rows: 1
    :widths: 30 20 18 32
@@ -407,10 +410,6 @@ Deadline Supervision
      - **Req.**
      - **Datatype**
      - **Description**
-   * - minExecutionTimeMs
-     - No
-     - number
-     - Optional minimum execution-time boundary.
    * - maxExecutionTimeMs
      - Yes
      - number
@@ -445,10 +444,14 @@ Logical Supervision
 Error Type Description
 ----------------------
 
-The Error interface is currently marked as **candidate**. It represents
-function-specific diagnostic/error information and is separated from the
-generic ``FunctionResult``. It shall not be confused with ECU-specific DTC or
-event-memory configuration.
+The Error interface is currently marked as **candidate**. It is a lightweight
+function-specific error/status interface, separated from the generic
+``FunctionResult``. This candidate model does not redefine DSM/DTC or
+event-memory handling. It conveys application-level error/status information
+that can be consumed by relevant middleware or platform components for
+diagnostic handling and logging. Optional diagnostic metadata may be provided
+where required to support downstream diagnostic configuration during
+integration.
 
 **Standard Naming Convention:**
 ``<FunctionName>.<ErrorName>.ErrorStatus``
@@ -478,39 +481,39 @@ event-memory configuration.
      - Meaning of the Error and its trigger scenario.
      - Range error due to implausible input
    * - severity
-     - Yes
+     - No
      - enum: ErrorSeverity
-     - Functional impact/severity associated with the Error.
+     - Optional functional impact/severity associated with the Error, when required for downstream diagnostic configuration.
      - ``warning`` / ``degraded`` / ``shutdown``
    * - maturationTimeMs
      - Yes
      - number (ms)
-     - Time the Error condition must persist before it is asserted/logged by the underlying middleware.
+     - Time for which the Error condition must persist before it is considered matured to be set, when required by the diagnostic/integration concept.
      - ``100``
    * - resetTimeMs
      - Recommended
      - number
-     - De-maturation/reset time before clearing the Error.
+     - Optional de-maturation/reset time before clearing the Error, when required by the diagnostic/integration concept.
      - ``200``
    * - resetCondition
      - Recommended
      - string
-     - Condition that clears the Error.
+     - Optional condition that clears the Error, when required by the diagnostic/integration concept.
      - Input valid for a defined duration
    * - dependencyRefs
      - No
      - string[]
-     - Related upstream Error interfaces that may propagate/trigger this Error.
+     - Optional references to related upstream Error interfaces that may propagate/trigger this Error, when required for integration.
      - ``<SensorTimeout>.ErrorStatus``
    * - fallbackBehavior
      - No
      - string
-     - Function-level fallback/degradation behavior associated with the Error.
+     - Optional function-level fallback/degradation behavior associated with the Error.
      - ``use_substituted_value``
    * - raisesSafetyReactionRefs
      - No
      - string[]
-     - References to safety reactions associated with this Error.
+     - Optional references to safety reactions associated with this Error.
      - ``<SafetyCondition>.SafetyConditionStatus``
 
 Modeling Rules
@@ -531,14 +534,14 @@ The following cross-cutting rules apply to the meta model.
    * - MR-003
      - Generic ``FunctionResult`` shall be limited to execution outcome and shall not replace function-specific diagnostic/error interfaces.
    * - MR-004
-     - Protection indicates a requirement at function-configuration level; concrete middleware-specific protection realization belongs to platform/deployment binding.
+     - The metamodel specifies whether protection is required for an interface. The technical realization of that protection is platform-dependent and outside the scope of the metamodel/application specification; it may be provided by the operating system, middleware, communication stack, or other platform mechanisms and shall be configured/enabled/implemented during integration.
    * - MR-005
      - Unknown metadata shall remain ``null`` according to the consuming schema/tool and shall not be replaced with invented plausible values.
 
 Meta Model File
 ---------------
 
-Version 0.4
+Version 0.4.1
 
 .. literalinclude:: autoapiframework_metadata_V04.yaml
    :language: yaml
@@ -563,10 +566,14 @@ History
      - Thomas Pfleiderer
      - Signal protection attribute, FunctionResult enum, and typo corrections.
      - Functional enhancement
-   * - 0.4.0
+   * - 0.4
      - Gundlapalli Saran
-     - Updated Data and Parameter metadata; separated runtime quality information; moved function-relative direction/protection to Data; added FuSa handling, execution supervision, generic execution-result semantics, candidate Error interface, and modelling rules.
+     - Updated Data and Parameter metadata; separated runtime quality information; moved function-relative direction/protection requirement to Data; added FuSa handling, execution supervision, generic execution-result semantics, candidate Error interface, and modelling rules.
      - Architectural and functional enhancement
+   * - 0.4.1
+     - Gundlapalli Saran
+     - Incorporated review feedback from Bosch: replaced the protection mechanism enum with the boolean ``protectionRequired`` requirement; clarified VSS hierarchical naming and function/application-relative ``direction`` semantics; clarified ``minIndications`` semantics for alive supervision; removed ``minExecutionTimeMs`` from deadline supervision; refined the candidate Error interface and its downstream diagnostic-integration purpose; and reworded MR-004 to keep protection realization platform-dependent and outside the metamodel/application specification.
+     - Review-driven clarification and simplification
 
 Examples
 --------
