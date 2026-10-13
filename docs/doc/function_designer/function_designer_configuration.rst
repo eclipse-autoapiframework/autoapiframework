@@ -148,7 +148,7 @@ Only the settings for selected types are available for editing and written to
 the specification. If no type is selected, the supervision configuration
 contains no type-specific settings.
 
-**alive:** set the minimum and maximum number of indications and the reference cycle in milliseconds.
+**alive:** set the maximum number of indications and the reference cycle in milliseconds.
 
 .. figure:: figures/supervision_edit_windows.png
    :alt: supervision edit windows
