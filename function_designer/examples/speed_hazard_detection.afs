@@ -12,7 +12,7 @@
 #
 # Contributors:
 #   Thomas Pfleiderer - Function specification added
-#   Saran Gundlapalli - speed_hazard_detection.afs.yaml updated according to metamodel v0.4.0
+#   Saran Gundlapalli - speed_hazard_detection.afs.yaml updated according to metamodel v0.4.1
 # *******************************************************************************
 
 functionSpecification:
@@ -20,7 +20,7 @@ functionSpecification:
   version: 1.0.0
   metaModelRef:
     name: Eclipse-autoapiframework-Metamodel
-    version: 0.4.0
+    version: 0.4.1
 
   description: >-
     Detects rapid acceleration and requests hazard warning lights if the
@@ -41,7 +41,7 @@ functionSpecification:
       ASIL: B
       minUpdatePeriodMs: 10
       accuracy: "+/-0.2 km/h"
-      protection: complement
+      protectionRequired: true
       runtimeCompanion:
         qualityCode:
           name: Vehicle.Speed.Qualifier
@@ -66,7 +66,7 @@ functionSpecification:
       ASIL: B
       minUpdatePeriodMs: 10
       accuracy: "+/-0.05 m/s2"
-      protection: complement
+      protectionRequired: true
       runtimeCompanion:
         qualityCode:
           name: Vehicle.Acceleration.Longitudinal.Qualifier
@@ -93,22 +93,13 @@ functionSpecification:
       ASIL: B
       minUpdatePeriodMs: 20
       accuracy: logical
-      protection: complement
+      protectionRequired: true
+      runtimeCompanion:
+        qualityCode:
+          name: Vehicle.Body.Lights.Hazard.Request.Qualifier
+          datatype: enum
+          enumRef: DataQuality
 
-    - name: Vehicle.Speed.Qualifier
-      direction: input
-      dataType: uint8
-      description: Runtime quality qualifier for Vehicle.Speed value.
-      unit: code
-      min: 0
-      max: 5
-      defaultValue: 0
-      resolution: 1
-      precision: 1
-      FuSa: false
-      minUpdatePeriodMs: 10
-      accuracy: enum-based
-      protection: none
 
   parameters:
     - name: Vehicle.Chassis.SpeedHazardForward

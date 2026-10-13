@@ -50,8 +50,7 @@ namespace afd
         constexpr const char* kLogoFileName = "autoapiframework_logo.png";
         constexpr const char* kLogoFileNameLarge = "autoapiframework_logo_large.png";		
         constexpr const char* kIconFileName = "autoapiframework_icon.png";
-        //constexpr const char* kHelpUrl = "https://eclipse-autoapiframework.github.io/autoapiframework/main/";
-        constexpr const char* kHelpUrl = "https://tompzf.github.io/autoapiframework/function_designer/";        
+        constexpr const char* kHelpUrl = "https://eclipse-autoapiframework.github.io/autoapiframework/main/";      
         constexpr int kFirstColumnWidth = 25;
         constexpr int kMinColumnWidth = 90;
         constexpr int kMaxColumnWidth = 320;

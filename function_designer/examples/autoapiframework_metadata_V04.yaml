@@ -11,14 +11,14 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Contributors:
-#   Thomas Pfleiderer - Signal protection, FunctionResult
-#   Saran Gundlapalli - Error handling added
+#   Saran Gundlapalli
+#   Thomas Pfleiderer
 # *******************************************************************************
 
 metamodel:
   name: Eclipse-autoapiframework-Metamodel
-  version: 0.4.0
-  scope: Middleware-independent metadata for definition and generation of standardized function APIs. Catalogue/interface metadata (fro e.g., from VSS) is separated from function-specific configuration and runtime state where applicable.
+  version: 0.4.1
+  scope: Middleware-independent metadata for definition and generation of standardized function APIs. Catalogue/interface metadata (for e.g., from VSS) is separated from function-specific configuration and runtime state where applicable.
   intent: Core interface types and essential metadata are required for standardized API definition and generation.
 
   enums:
@@ -48,13 +48,6 @@ metamodel:
       - event
       - terminate
     
-    ProtectionType:
-      description: Abstract protection requirement. Concrete middleware protection profile and binding details may be defined during platform/deployment configuration.
-      values:
-        - none
-        - complement
-        - other
-
     FunctionResult:
       description: Generic execution result only. It shall not encode function-specific diagnostic causes. Detailed errors are exposed through "Error interfaces".
       values:
@@ -78,13 +71,13 @@ metamodel:
   interfaceTypes:
 
     Data:
-      description: Runtime data interfaces exchanged between applications or systems. Semantic properties may originate from VSS or an extended catalogue. Direction and protection are resolved for the function usage/configuration and are not intrinsic properties of the canonical VSS node.
+      description: Runtime data interfaces exchanged between applications or systems. Semantic properties may originate from VSS or an extended catalogue. Direction and the protection requirement are resolved for the function usage/configuration and are not intrinsic properties of the canonical VSS node.
 
       properties:
         name:
           mandatory: true
           datatype: string
-          description: Unique interface or node name. Based on canonical VSS path of the data interface - Vehicle.<Domain/Subdomains>.<Signal>
+          description: Unique interface or node name containing the fully qualified VSS node identifier, including its hierarchical path - Vehicle.<Domain/Subdomains>.<Signal>.
           example: Vehicle.Speed
 
         dataType:
@@ -92,10 +85,10 @@ metamodel:
           datatype: string
           description: Type of value transported by the interface.
           examples: 
-            - float
-            - uint8
-            - uint16
-            - boolean
+           - float
+           - uint8
+           - uint16
+           - boolean
 
         description:
           mandatory: true
@@ -159,15 +152,14 @@ metamodel:
           mandatory: true
           datatype: enum
           enumRef: Direction
-          description: Input/output relationship relative to the function using the interface. This shall not be inferred from the VSS sensor/actuator type.
+          description: Defines the direction of the interface relative to the function/application being specified. input means the function consumes the data; output means the function provides the data. This is independent of the VSS sensor/actuator classification.
           example: input
 
-        protection:
+        protectionRequired:
           mandatory: true
-          datatype: enum
-          enumRef: ProtectionType
-          description: Protection requirement for transfer of the data between the function and its adapter/platform. Detailed realization is binding-specific.
-          example: complement
+          datatype: boolean
+          description: Indicates whether protection is required for transfer of the data between the function and its platform environment. The technical realization is platform-dependent and outside the scope of the metamodel/application specification.
+          example: true
 
       runtimeCompanion:
         qualityCode:
@@ -185,7 +177,7 @@ metamodel:
         name:
           mandatory: true
           datatype: string
-          description: Unique parameter name. Based on canonical VSS path of the parameter - Vehicle.<Domain/Subdomains>.<Parameter>
+          description: Unique parameter identifier following the canonical VSS-style hierarchy, including its hierarchical path - Vehicle.<Domain/Subdomains>.<Parameter>.
           example: Vehicle.Brake.Gain
 
         dataType:
@@ -193,10 +185,10 @@ metamodel:
           datatype: string
           description: Datatype of the parameter value.
           examples: 
-            - float
-            - float[]
-            - uint8
-            - boolean
+           - float
+           - float[]
+           - uint8
+           - boolean
 
         defaultValue:
           mandatory: true
@@ -299,30 +291,42 @@ metamodel:
                 - deadline
                 - logical
 
-              alive:
-                mandatory: conditional
-                condition: type contains alive
-                datatype: object
-                properties:
-                minIndications: {datatype: uint32, mandatory: false}
-                maxIndications: {datatype: uint32, mandatory: false}
-                referenceCycleMs: {datatype: number, mandatory: false}
+            alive:
+              mandatory: conditional
+              condition: type contains alive
+              datatype: object
+              properties:
+                minIndications:
+                  datatype: uint32
+                  mandatory: false
+                  description: Minimum expected number of alive indications within the reference cycle; this is not a lower tolerance margin.
+                maxIndications:
+                  datatype: uint32
+                  mandatory: false
+                  description: Maximum allowed number of alive indications within the reference cycle.
+                referenceCycleMs:
+                  datatype: number
+                  mandatory: false
+                  description: Reference cycle used to evaluate alive indications.
                 
-              deadline:
-                mandatory: conditional
-                condition: type contains deadline
-                datatype: object
-                properties:
-                  minExecutionTimeMs: {datatype: number, mandatory: false}
-                  maxExecutionTimeMs: {datatype: number, mandatory: true}
+            deadline:
+              mandatory: conditional
+              condition: type contains deadline
+              datatype: object
+              description: Deadline supervision verifies that execution completes within the configured maximum execution-time limit.
+              properties:
+                maxExecutionTimeMs:
+                  datatype: number
+                  mandatory: true
+                  description: Maximum allowed execution time for deadline supervision.
 
-              logical:
-                mandatory: conditional
-                condition: type contains logical
-                datatype: object
-                properties:
-                  predecessorRefs: {datatype: "string[]", mandatory: false}
-                  successorRefs: {datatype: "string[]", mandatory: false}
+            logical:
+              mandatory: conditional
+              condition: type contains logical
+              datatype: object
+              properties:
+                predecessorRefs: {datatype: "string[]", mandatory: false}
+                successorRefs: {datatype: "string[]", mandatory: false}
 
         stackSizeBytes:
           mandatory: false
@@ -337,7 +341,7 @@ metamodel:
 
     Error:
       status: candidate
-      description: Function-specific diagnostic/error interface, separated from the generic FunctionResult. This model is a candidate for later standardization and shall not be confused with ECU-specific DTC/event-memory configuration.
+      description: Lightweight function-specific error/status interface, separated from the generic FunctionResult. This candidate model does not redefine DSM/DTC or event-memory handling. It conveys application-level error/status information that can be consumed by relevant middleware or platform components for diagnostic handling and logging. Optional diagnostic metadata may be provided where required to support downstream diagnostic configuration during integration.
 
       properties:
         name:
@@ -360,42 +364,42 @@ metamodel:
           description: Meaning of the error and its trigger scenario.
 
         severity:
-          mandatory: true
+          mandatory: false
           datatype: enum
           enumRef: ErrorSeverity
-          description: Functional impact/severity associated with the error.
+          description: Optional functional impact/severity associated with the error, when required for downstream diagnostic configuration.
 
         maturationTimeMs:
           mandatory: true
           datatype: number in milliseconds
-          description: Time the error condition must persist before the error is asserted/logged by the underlying middleware.
+          description: Time for which the error condition must persist before it is considered matured to be set, when required by the diagnostic/integration concept.
 
         resetTimeMs:
           mandatory: false
           recommendation: recommended
           datatype: number
-          description: De-maturation/reset time before clearing the error.
+          description: Optional de-maturation/reset time before clearing the error, when required by the diagnostic/integration concept.
 
         resetCondition:
           mandatory: false
           recommendation: recommended
           datatype: string
-          description: Condition that clears the error.
+          description: Optional condition that clears the error, when required by the diagnostic/integration concept.
 
         dependencyRefs:
           mandatory: false
           datatype: "string[]"
-          description: Related upstream error interfaces that may propagate/trigger this error.
+          description: Optional references to related upstream error interfaces that may propagate/trigger this error, when required for integration.
 
         fallbackBehavior:
           mandatory: false
           datatype: string
-          description: Function-level fallback/degradation behavior associated with the error.
+          description: Optional function-level fallback/degradation behavior associated with the error.
 
         raisesSafetyReactionRefs:
           mandatory: false
           datatype: "string[]"
-          description: References to safety reactions associated with this error - <SafetyCondition>.SafetyConditionStatus.
+          description: Optional references to safety reactions associated with this error - <SafetyCondition>.SafetyConditionStatus.
 
   modelingRules:
     - id: MR-001
@@ -415,8 +419,11 @@ metamodel:
 
     - id: MR-004
       rule: >-
-        Protection indicates a requirement at function configuration level; concrete
-        middleware specific protection realization belongs to platform/deployment binding.
+        The metamodel specifies whether protection is required for an interface. The
+        technical realization of that protection is platform-dependent and outside the scope
+        of the metamodel/application specification; it may be provided by the operating system,
+        middleware, communication stack, or other platform mechanisms and shall be
+        configured/enabled/implemented during integration.
 
     - id: MR-005
       rule: >-
