@@ -13,7 +13,7 @@
    #
    # Contributors:
    #   Thomas Pfleiderer - documentation
-   #   Saran Gundlapalli - vehicle_speed_fusion_multirate_example.rst updated according to metamodel v0.4.0
+   #   Saran Gundlapalli - vehicle_speed_fusion_multirate_example.rst updated according to metamodel v0.4.1
    # *******************************************************************************
 
 VehicleSpeedFusion Multi-Rate Example
@@ -21,7 +21,8 @@ VehicleSpeedFusion Multi-Rate Example
 
 This example shows a ``VehicleSpeedFusion.Step`` runnable that depends on a separately modeled preprocessing function, ``VehicleSpeedPreProcessor.Step``. The runnables are  introduced following the standard naming convention which defines ``Init``, ``Step`` and ``Terminate`` entry points per function.
 
-The Data interfaces reuse standard wheel-speed VSS paths and ``Vehicle.Speed``. Runtime quality is explicitly indicated through ``runtimeCompanion.qualityCode`` as an enum-based qualifier interface, without duplicating the normal Data metadata.
+The Data interfaces reuse standard wheel-speed VSS paths and ``Vehicle.Speed``. Runtime quality is explicitly indicated through ``runtimeCompanion.qualityCode`` as an enum-based qualifier interface, without duplicating the normal Data metadata. Metamodel v0.4.1 uses ``protectionRequired`` as a boolean requirement and leaves the protection mechanism to integration.
+
 
 .. literalinclude:: vehicle_speed_fusion_multirate.afs.yaml
    :language: yaml

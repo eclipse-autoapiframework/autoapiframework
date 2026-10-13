@@ -12,7 +12,7 @@
 #
 # Contributors:
 #   Thomas Pfleiderer - Function specification added
-#   Saran Gundlapalli - vehicle_speed_fusion_multirate.afs.yaml updated according to metamodel v0.4.0
+#   Saran Gundlapalli - vehicle_speed_fusion_multirate.afs.yaml updated according to metamodel v0.4.1
 # *******************************************************************************
 
 functionSpecification:
@@ -20,7 +20,7 @@ functionSpecification:
   version: 1.0.0
   metaModelRef:
     name: Eclipse-autoapiframework-Metamodel
-    version: 0.4.0
+    version: 0.4.1
 
     description: Fuses standard VSS wheel-speed inputs into Vehicle.Speed. Input preprocessing is modeled as a separate function/runnable and referenced through the predecessor relationship.
 
@@ -39,7 +39,7 @@ functionSpecification:
       ASIL: B
       minUpdatePeriodMs: 10
       accuracy: null
-      protection: complement
+      protectionRequired: true
       runtimeCompanion:
         qualityCode:
           name: Vehicle.Chassis.Axle.Row1.Wheel.Left.Speed.Qualifier
@@ -60,7 +60,7 @@ functionSpecification:
       ASIL: B
       minUpdatePeriodMs: 10
       accuracy: null
-      protection: complement
+      protectionRequired: true
       runtimeCompanion:
         qualityCode:
           name: Vehicle.Chassis.Axle.Row1.Wheel.Right.Speed.Qualifier
@@ -81,7 +81,7 @@ functionSpecification:
       ASIL: B
       minUpdatePeriodMs: 10
       accuracy: null
-      protection: complement
+      protectionRequired: true
       runtimeCompanion:
         qualityCode:
           name: Vehicle.Chassis.Axle.Row2.Wheel.Left.Speed.Qualifier
@@ -102,7 +102,7 @@ functionSpecification:
       ASIL: B
       minUpdatePeriodMs: 10
       accuracy: null
-      protection: complement
+      protectionRequired: true
       runtimeCompanion:
         qualityCode:
           name: Vehicle.Chassis.Axle.Row2.Wheel.Right.Speed.Qualifier
@@ -123,7 +123,7 @@ functionSpecification:
       ASIL: B
       minUpdatePeriodMs: 20
       accuracy: null
-      protection: complement
+      protectionRequired: true
       runtimeCompanion:
         qualityCode:
           name: Vehicle.Speed.Qualifier

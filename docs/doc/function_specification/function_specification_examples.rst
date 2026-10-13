@@ -1,4 +1,3 @@
-
 ..
    # *******************************************************************************
    # Copyright (c) 2026 ZF Friedrichshafen AG
@@ -14,8 +13,10 @@
    #
    # Contributors:
    #   Thomas Pfleiderer - Meta model added
-   #   Saran Gundlapalli - function_specification_examples.rst updated according to metamodel v0.4.0
+   #   Saran Gundlapalli - function_specification_examples.rst updated according to metamodel v0.4.1
    # *******************************************************************************
+
+As no final API specification is available yet, **these examples should be considered preliminary drafts aligned to metamodel v0.4.1.** They demonstrate the metamodel concepts and shall reuse canonical VSS semantics where possible. Any non-standard catalogue path must be identified as an approved extension. Data protection is expressed only as the boolean ``protectionRequired`` requirement; the protection mechanism is outside the Function Specification.
 
 Examples
 ========
@@ -31,13 +32,13 @@ Use the multi-rate example when preprocessing and decision logic should run at d
    examples/speed_hazard_detection_example
 
 .. toctree::
-   :caption: VehicleSpeedFusion (multi-rate cyclic runnables at 10 ms and 20 ms) 
+   :caption: VehicleSpeedFusion (multi-rate cyclic runnables at 10 ms and 20 ms)
    :maxdepth: 1
 
    examples/vehicle_speed_fusion_multirate_example
 
 .. toctree::
-   :caption: wheel Speed Plausibility Check including error and supervision example
+   :caption: Wheel Speed Plausibility Check including error and supervision example
    :maxdepth: 1
 
    examples/wheel_speed_plausibility_check_example
@@ -45,19 +46,16 @@ Use the multi-rate example when preprocessing and decision logic should run at d
 API
 ---
 
-As no final API specification is available yet, **these examples should be considered preliminary drafts.** They demonstrate the metamodel concepts and shall reuse canonical VSS semantics where possible. Any non-standard catalogue path must be identified as an approved extension.
-
-
 .. dropdown:: speed_hazard_detection.cpp
    :icon: code
-   
+
    .. literalinclude:: examples/speed_hazard_detection.cpp
       :language: cpp
       :linenos:
 
 .. dropdown:: speed_hazard_detection.hpp
    :icon: code
-   
+
    .. literalinclude:: examples/speed_hazard_detection.hpp
       :language: cpp
       :linenos:
