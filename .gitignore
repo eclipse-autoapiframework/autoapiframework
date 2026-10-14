@@ -1,9 +1,15 @@
 .tmp/
 *.bkp
 .cache
-build
 public
 **/__pycache__/
-_build/
 bazel-*
 .venv*/
+
+#CMake intermediate files and folders
+build
+_build/
+
+# Visual Studio Code 
+.vs/
+.vscode/

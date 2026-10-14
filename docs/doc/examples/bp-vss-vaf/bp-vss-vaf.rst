@@ -20,6 +20,10 @@ Blueprint project (VSS + VAF)
 
 This blueprint project illustrates the combined usage of the VSS editing tool (as contributed by ZF Group) and the Application Framework (as contributed by Vector Informatik GmbH).
 
+.. attention::
+
+   The Blueprint example is part of the application-framework repository and is not intended as an example for the Meta Model or the Function Designer.
+   
 Overview
 --------
 
