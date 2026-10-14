@@ -26,6 +26,21 @@
 
 namespace afd 
 {
+    /// @brief Strings for the nodes and properties of the supervision editor.
+    static constexpr const char* kAlive = "alive";
+    static constexpr const char* kDeadline = "deadline";
+    static constexpr const char* kLogical = "logical";
+
+    static constexpr const char* kSupervisionRequired = "Supervision required";
+    static constexpr const char* kType = "type";
+    static constexpr const char* kMinIndications = "minIndications";
+    static constexpr const char* kMaxIndications = "maxIndications";
+    static constexpr const char* kReferenceCycleMs = "referenceCycleMs";
+    static constexpr const char* kMaxExecutionTimeMs = "maxExecutionTimeMs";
+    static constexpr const char* kPredecessorRefs = "predecessorRefs";
+    static constexpr const char* kSuccessorRefs = "successorRefs";
+
+    static constexpr const char* kEditSupervisionDlgTitle = "Edit Supervision";
 
     class SupervisionEditor
     {

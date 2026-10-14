@@ -39,7 +39,7 @@ namespace afd
     {
         const bool required = existing &&
             existing->ScalarOf(kSupervisionRequiredKey) == "true";
-        m_required = new wxCheckBox(&dialog, wxID_ANY, "Supervision required");
+        m_required = new wxCheckBox(&dialog, wxID_ANY, kSupervisionRequired);
         m_required->SetValue(required);
         parentSizer.Add(m_required, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 12);
 
@@ -47,12 +47,12 @@ namespace afd
         wxBoxSizer* detailsSizer = new wxBoxSizer(wxVERTICAL);
         detailsSizer->Add(new wxStaticText(m_details, wxID_ANY, "Types"), 0, wxBOTTOM, 4);
         m_types = new wxCheckListBox(m_details, wxID_ANY);
-        m_types->Append("alive");
-        m_types->Append("deadline");
-        m_types->Append("logical");
+        m_types->Append(kAlive);
+        m_types->Append(kDeadline);
+        m_types->Append(kLogical);
         detailsSizer->Add(m_types, 0, wxEXPAND | wxBOTTOM, 8);
 
-        const YamlNodePtr existingTypes = existing ? existing->Find("type") : nullptr;
+        const YamlNodePtr existingTypes = existing ? existing->Find(kType) : nullptr;
         for (unsigned int index = 0; index < m_types->GetCount(); ++index)
         {
             if (existingTypes && existingTypes->IsSequence())
@@ -68,13 +68,13 @@ namespace afd
             }
         }
 
-        AddGroup(detailsSizer, existing, "alive",
-                 {{"minIndications", false}, {"maxIndications", false},
-                  {"referenceCycleMs", false}});
-        AddGroup(detailsSizer, existing, "deadline",
-             {{"maxExecutionTimeMs", false}});
-        AddGroup(detailsSizer, existing, "logical",
-                 {{"predecessorRefs", true}, {"successorRefs", true}});
+        AddGroup(detailsSizer, existing, kAlive,
+                 {{kMinIndications, false}, {kMaxIndications, false},
+                  {kReferenceCycleMs, false}});
+        AddGroup(detailsSizer, existing, kDeadline,
+             {{kMaxExecutionTimeMs, false}});
+        AddGroup(detailsSizer, existing, kLogical,
+                 {{kPredecessorRefs, true}, {kSuccessorRefs, true}});
 
         m_details->SetSizer(detailsSizer);
         parentSizer.Add(m_details, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 12);
@@ -104,57 +104,58 @@ namespace afd
                 }
                 for (const DetailGroup& group : m_groups)
                 {
-                    if (group.type == "deadline" && m_types->IsChecked(TypeIndex("deadline")))
+                    if (group.type == kDeadline && m_types->IsChecked(TypeIndex(kDeadline)))
                     {
                         for (const DetailField& field : group.fields)
                         {
-                            if (field.name == "maxExecutionTimeMs" &&
+                            if (field.name == kMaxExecutionTimeMs &&
                                 field.control->GetValue().Strip(wxString::both).empty())
                             {
-                                wxMessageBox("'maxExecutionTimeMs' is mandatory.\nEnter maxExecutionTimeMs for deadline supervision.",
-                                             "Edit Supervision", wxOK | wxICON_WARNING, &m_dialog);
+                                wxMessageBox("'" + std::string(kMaxExecutionTimeMs) + "' is mandatory.\nEnter '" 
+                                             + std::string(kMaxExecutionTimeMs) + "' for deadline supervision.",
+                                             kEditSupervisionDlgTitle, wxOK | wxICON_WARNING, &m_dialog);
                                 field.control->SetFocus();
                                 return;
                             }
-                            if (field.name == "maxExecutionTimeMs" &&
+                            if (field.name == kMaxExecutionTimeMs &&
                                 !field.control->GetValue().Strip(wxString::both).empty() &&
                                 !IsDigit(ToStd(field.control->GetValue().Strip(wxString::both))))
                             {
-                                wxMessageBox("'maxExecutionTimeMs' must be a number.",
-                                                "Edit Supervision", wxOK | wxICON_WARNING, &m_dialog);
+                                wxMessageBox("'" + std::string(kMaxExecutionTimeMs) + "' must be a number.",
+                                                kEditSupervisionDlgTitle, wxOK | wxICON_WARNING, &m_dialog);
                                 field.control->SetFocus();
                                 return;
                             } 
                         }
                     }
-                    if (group.type == "alive" && m_types->IsChecked(TypeIndex("alive")))
+                    if (group.type == kAlive && m_types->IsChecked(TypeIndex(kAlive)))
                     {
                         for (const DetailField& field : group.fields)
                         {
-                            if (field.name == "minIndications" &&
+                            if (field.name == kMinIndications &&
                                 !field.control->GetValue().Strip(wxString::both).empty() &&
                                 !IsInteger(ToStd(field.control->GetValue().Strip(wxString::both))))
                             {
-                                wxMessageBox("'minIndications' must be of type uint32.",
-                                                "Edit Supervision", wxOK | wxICON_WARNING, &m_dialog);
+                                wxMessageBox("'" + std::string(kMinIndications) + "' must be of type uint32.",
+                                                kEditSupervisionDlgTitle, wxOK | wxICON_WARNING, &m_dialog);
                                 field.control->SetFocus();
                                 return;
                             }
-                            if (field.name == "maxIndications" &&
+                            if (field.name == kMaxIndications &&
                                 !field.control->GetValue().Strip(wxString::both).empty() &&
                                 !IsInteger(ToStd(field.control->GetValue().Strip(wxString::both))))
                             {
-                                wxMessageBox("'maxIndications' must be of type uint32.",
-                                                "Edit Supervision", wxOK | wxICON_WARNING, &m_dialog);
+                                wxMessageBox("'" + std::string(kMaxIndications) + "' must be of type uint32.",
+                                                kEditSupervisionDlgTitle, wxOK | wxICON_WARNING, &m_dialog);
                                 field.control->SetFocus();
                                 return;
                             }
-                            if (field.name == "referenceCycleMs" &&
+                            if (field.name == kReferenceCycleMs &&
                                 !field.control->GetValue().Strip(wxString::both).empty() &&
                                 !IsDigit(ToStd(field.control->GetValue().Strip(wxString::both))))
-                            {
-                                wxMessageBox("'referenceCycleMs' must be a number.",
-                                                "Edit Supervision", wxOK | wxICON_WARNING, &m_dialog);
+                            {                            
+                                wxMessageBox("'" + std::string(kReferenceCycleMs) + "' must be a number.",
+                                                kEditSupervisionDlgTitle, wxOK | wxICON_WARNING, &m_dialog);
                                 field.control->SetFocus();
                                 return;
                             }                            
@@ -186,7 +187,7 @@ namespace afd
                 types->Append(YamlNode::MakeScalar(ToStd(m_types->GetString(index))));
             }
         }
-        supervision->Set("type", types);
+        supervision->Set(kType, types);
 
         for (const DetailGroup& group : m_groups)
         {
@@ -228,11 +229,11 @@ namespace afd
 
     unsigned int SupervisionEditor::TypeIndex(const std::string& type) const
     {
-        if (type == "deadline")
+        if (type == kDeadline)
         {
             return 1;
         }
-        return type == "logical" ? 2 : 0;
+        return type == kLogical ? 2 : 0;
     }
 
     void SupervisionEditor::AddGroup(
