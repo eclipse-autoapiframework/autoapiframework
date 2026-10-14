@@ -20,6 +20,10 @@ Blueprint project (IFEX + VAF)
 
 This blueprint extends the one with VSS as provided in `bp-vss-vaf <../bp-vss-vaf/>`__. Instead of VSS, Interface Exchange (IFEX) is used as description and input format.
 
+.. attention::
+
+   The Blueprint example is part of the application-framework repository and is not intended as an example for the Meta Model or the Function Designer.
+
 IFEX
 ----
 
