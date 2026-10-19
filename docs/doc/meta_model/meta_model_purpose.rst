@@ -122,7 +122,10 @@ What New Members Should Keep in Mind
 Status Of The Current Project
 -----------------------------
 
-Currently we have a Meta Model in place with additional parameters and attributes compared to existing vss definition of COVESA. There are discussions and feedback rounds about additional useful safety aspects to finalize the meta model.
+Currently, we have a Meta Model and a Function Specification template in place, including error handling. 
+Together, they cover the function description and support ASIL D requirements. 
+The next step is to generate API code based on the function specification file.
+
 
 .. figure:: figures/specification_sequence.png
    :alt: status of the current project
