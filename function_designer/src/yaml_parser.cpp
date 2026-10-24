@@ -302,6 +302,17 @@ namespace afd
                     }
 
                     const std::string item = Trim(content.substr(1));
+                    if (item == "{}" || item == "[]")
+                    {
+                        ++m_index;
+                        sequence->Append(item == "{}" ? YamlNode::MakeMap() : YamlNode::MakeSequence());
+                        continue;
+                    }
+                    if (!item.empty() && (item.front() == '{' || item.front() == '['))
+                    {
+                        Fail("flow collections are not supported");
+                        break;
+                    }
                     if (item.empty()) 
                     {
                         ++m_index;
@@ -337,6 +348,14 @@ namespace afd
 
             YamlNodePtr ParseValue(int keyIndent, const std::string& rest) 
             {
+                if (rest == "{}")
+                {
+                    return YamlNode::MakeMap();
+                }
+                if (rest == "[]")
+                {
+                    return YamlNode::MakeSequence();
+                }
                 if (!rest.empty() && (rest[0] == '>' || rest[0] == '|')) 
                 {
                     return ParseBlockScalar(keyIndent, rest);

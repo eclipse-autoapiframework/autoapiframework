@@ -20,8 +20,8 @@ Dependencies and Build
 ======================
 
 The Function Designer is a wxWidgets desktop application for reading,
-inspecting, validating, and writing Eclipse autoapiframework function
-specifications. Function specifications use the ``.afs`` extension and YAML
+inspecting, validating, and writing Eclipse Autoapiframework Function
+Specifications. Function specifications use the ``.afs`` extension and YAML
 syntax.
 
 .. figure:: figures/function_designer_window.png

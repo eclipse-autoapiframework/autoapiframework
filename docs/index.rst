@@ -75,12 +75,4 @@ Function Designer:
    doc/function_designer/application_purpose_and_use
    doc/function_designer/function_designer_configuration
 
-Examples (for application-framework):
--------------------------------------
-
-.. toctree::
-   :maxdepth: 1
-
-   doc/examples/bp-ifex-vaf/bp-ifex-vaf
-   doc/examples/bp-vss-vaf/bp-vss-vaf
 
