@@ -49,7 +49,7 @@ described by the Runtime Specification File, through the ``Middleware Abstractio
 
 .. note::
    The Runtime Specification File is not yet formally defined in the meta model (unlike the Function Specification File, which is defined by
-   ``Eclipse-autoapiframework-Metamodel`` version 0.4.0). The concepts above describe the intended scope; a versioned schema, file extension,
+   ``Eclipse-Autoapiframework-Metamodel`` version 0.4.0). The concepts above describe the intended scope; a versioned schema, file extension,
    and worked examples are still to be added.
 
 Open topics still to be worked out for the Runtime Specification File:

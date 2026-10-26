@@ -19,16 +19,45 @@
 Application Purpose and Use
 ===========================
 
-The Function Designer is an application for viewing and editing Eclipse autoapiframework function specifications.
+The Function Designer is an application for viewing and editing Eclipse Autoapiframework Function Specifications.
+
+Graphical user interface (GUI)
+------------------------------
 
 .. figure:: figures/meta_model_window.png
    :alt: meta model window
 
+Command-line application (CLI)
+------------------------------ 
+
+Alongside the graphical editor, the Function Designer provides a separate command-line 
+executable, ``AutoAPIFunctionDesigner_SyntaxCheck.exe``, for checking function specifications
+in automated workflows. It accepts one ``.afs`` file, checks its syntax against the bundled 
+V04 meta model (the file ``autoapiframework_meta_model.yaml`` is loaded), and prints either 
+a success message or details of the syntax error. The process exit code can be used by 
+scripts and build pipelines to detect whether the check passed. As with the syntax check in the 
+GUI, a successful check does not guarantee full compliance with every meta-model requirement.
+
+Run the executable with the path to the specification:
+
+.. code-block:: powershell
+
+   AutoAPIFunctionDesigner_SyntaxCheck.exe speed_hazard_detection.afs
+
+Examples of the supported execution scenarios:
+
+(1) syntax validation without errors,
+(2) syntax validation with reported errors, and
+(3) invalid invocation due to a missing AFS file.
+
+.. figure:: figures/command-line_application.png
+   :alt: command-line application
+
 Purpose
 -------
 
-The AutoAPI Function Designer is a desktop editor for Eclipse autoapiframework
-function specifications. It provides a human-readable view of function API
+The Autoapiframework Function Designer is a desktop editor for Eclipse Autoapiframework
+Function Specifications. It provides a human-readable view of function API
 metadata and preserves the YAML document structure when a specification is
 written again.
 
