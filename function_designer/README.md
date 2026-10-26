@@ -17,7 +17,7 @@
 # AutoAPI Function Designer
 
 wxWidgets desktop application for reading, inspecting and writing Eclipse
-autoapiframework function specifications (`*.afs`, YAML content).
+Autoapiframework Function Specifications (`*.afs`, YAML content).
 
 ## What it does
 
@@ -113,11 +113,39 @@ cmake --build --preset linux-debug
 The meta model and the sample specification are copied next to the executable
 after each build.
 
+### Syntax check
+
+The Command-line application (CLI) accepts one `.afs` path to run the syntax checker against
+the bundled meta model. It exits with `0` for valid input, `1` for a syntax
+error, or `2` for a usage or setup error. 
+
+```powershell
+.\build\windows-gcc-debug\bin\AutoAPIFunctionDesigner_SyntaxCheck.exe mandatory_property_is_missing_syntax_error.afs
+```
+
+### CTest executable
+
+The test executable runs the unit tests:
+
+```powershell
+.\build\windows-gcc-debug\bin\function_designer_tests.exe mandatory_property_is_missing_syntax_error.afs
+```
+
+CTest runs the valid and intentionally invalid examples as part of its test
+suite. Building compiles the tests but does not execute them; run them with:
+
+```powershell
+ctest --test-dir build/windows-gcc-debug --output-on-failure
+```
+
 ## Sample
 
-`../examples/vehicle_speed_fusion_multirate` and
-`../examples/speed_hazard_detection.afs` are ready to use function
+`../examples/speed_hazard_detection.afs` and
+`../examples/vehicle_speed_fusion_multirate.afs` and
+`../examples/wheel_speed_plausibility_check.afs` are ready to use function
 specifications for trying out read, display and write.
+
+`../examples/mandatory_property_is_missing_syntax_error.afs` contains a syntax check error.
 
 `../examples/autoapiframework_metadata_V04.yaml` is the current meta model specification file.
 
@@ -126,12 +154,15 @@ specifications for trying out read, display and write.
 | File | Purpose |
 | --- | --- |
 | `src/main.cpp` | wxApp entry point |
+| `main_syntax_checkcpp` | Command-line application (CLI) entry point |
 | `src/main_frame.*` | Window, buttons and the four collection views |
 | `src/yaml_node.*` | Order preserving YAML document tree |
 | `src/yaml_parser.*` | Block style YAML subset parser |
 | `src/yaml_writer.*` | Emitter reproducing the `.afs` layout |
 | `src/validate_function.*` | Methods for syntax checks |
 | `src/meta_model.*` | `autoapiframework_meta_model.yaml` (enums, interface types) |
+| `json_signal_parser.*` | json parser |
+| `supervision_editor.*` | Dialog to edit supervision node |
 | `src/function_specification.*` | Function specification access and load/save |
 
 ## vspec files

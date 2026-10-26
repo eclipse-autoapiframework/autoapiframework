@@ -81,7 +81,7 @@ Conceptually: Runtime = "How do the functions work together?"
 4. Naming
 ---------
 
-``*.afs``    AutoAPI Function Specification files
+``*.afs``    Autoapiframework Function Specification files
 
-``*.ars``    AutoAPI Runtime Specification files
+``*.ars``    Autoapiframework Runtime Specification files
 

@@ -89,7 +89,7 @@ These YAML files capture function-specific content such as:
 
 Because all YAML instances follow one shared structure, they can be exchanged, reviewed, versioned, and validated early before implementation details are introduced.
 
-The file extension of these files will be ``*.afs`` (AutoAPI Function Specification).
+The file extension of these files will be ``*.afs`` (Autoapiframework Function Specification).
 
 
 Role of Code Generators
