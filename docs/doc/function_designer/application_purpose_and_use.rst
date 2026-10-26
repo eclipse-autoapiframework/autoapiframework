@@ -30,13 +30,25 @@ Graphical user interface (GUI)
 Command-line application (CLI)
 ------------------------------ 
 
-Alongside the graphical editor, the Function Designer provides a separate command-line executable, ``AutoAPIFunctionDesigner_SyntaxCheck.exe``, for checking function specifications in automated workflows. It accepts one ``.afs`` file, checks its syntax against the bundled V04 meta model, and prints either a success message or details of the syntax error. The process exit code can be used by scripts and build pipelines to detect whether the check passed. As with the syntax check in the GUI, a successful check does not guarantee full compliance with every meta-model requirement.
+Alongside the graphical editor, the Function Designer provides a separate command-line 
+executable, ``AutoAPIFunctionDesigner_SyntaxCheck.exe``, for checking function specifications
+in automated workflows. It accepts one ``.afs`` file, checks its syntax against the bundled 
+V04 meta model (the file ``autoapiframework_meta_model.yaml`` is loaded), and prints either 
+a success message or details of the syntax error. The process exit code can be used by 
+scripts and build pipelines to detect whether the check passed. As with the syntax check in the 
+GUI, a successful check does not guarantee full compliance with every meta-model requirement.
 
 Run the executable with the path to the specification:
 
 .. code-block:: powershell
 
    AutoAPIFunctionDesigner_SyntaxCheck.exe speed_hazard_detection.afs
+
+Examples of the supported execution scenarios:
+
+(1) syntax validation without errors,
+(2) syntax validation with reported errors, and
+(3) invalid invocation due to a missing AFS file.
 
 .. figure:: figures/command-line_application.png
    :alt: command-line application
