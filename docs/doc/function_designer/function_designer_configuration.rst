@@ -182,3 +182,13 @@ Specification reference for its current status and modeling guidance.
 
 .. figure:: figures/error_collection.png
    :alt: error collection in the collection window
+
+Syntax Check
+------------
+
+Some properties are mandatory.
+
+.. tip::
+
+   Add null to mandatory properties so that they are accepted by the syntax check.
+   

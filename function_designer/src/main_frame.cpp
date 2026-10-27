@@ -1020,7 +1020,7 @@ namespace afd
                 {
                     YamlNodePtr quality = YamlNode::MakeMap();
                     quality->Set(kNameKey, YamlNode::MakeScalar(name));
-                    quality->Set(kDatatypeKey, YamlNode::MakeScalar(kEnumsKey));
+                    quality->Set(kDatatypeKey, YamlNode::MakeScalar(kEnumKey));
                     quality->Set(kEnumRefKey, YamlNode::MakeScalar(kDataQualityKey));
                     YamlNodePtr companion = YamlNode::MakeMap();
                     companion->Set(kQualityCodeKey , std::move(quality));
@@ -1375,6 +1375,7 @@ namespace afd
     {
         std::string title = "";
         wxMessageBox( title + "\nThe automatic syntax check performed before saving a file to disk can be disabled.\n" +
+                     "\nAdd 'null' to mandatory properties so that they are accepted by the syntax check.\n"         
                      "\nThe supervision node on the Scheduling collection is editable in the 'Edit scheduling item' dialog.\n" +
                      "\nAPI creation is not implemented yet.",
                      kApplicationName,
@@ -1614,7 +1615,7 @@ namespace afd
                 {
                     quality = YamlNode::MakeMap();
                     quality->Set(kNameKey, YamlNode::MakeScalar(""));
-                    quality->Set(kDatatypeKey, YamlNode::MakeScalar(kEnumsKey));
+                    quality->Set(kDatatypeKey, YamlNode::MakeScalar(kEnumKey));
                     quality->Set(kEnumRefKey, YamlNode::MakeScalar(kDataQualityKey));
                     companion->Set(kQualityCodeKey, quality);
                 }

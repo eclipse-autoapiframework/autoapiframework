@@ -33,7 +33,8 @@ namespace afd
     static constexpr const char* kFunctionNameKey = "functionName";
     static constexpr const char* kDescriptionKey = "description";    
     static constexpr const char* kVersionKey = "version";    
-    static constexpr const char* kEnumsKey = "enums";
+    static constexpr const char* kEnumKey = "enum";
+    static constexpr const char* kEnumsKey = "enums";    
     static constexpr const char* kEnumRefKey = "enumRef";
     static constexpr const char* kInterfaceTypesKey = "interfaceTypes";
 
