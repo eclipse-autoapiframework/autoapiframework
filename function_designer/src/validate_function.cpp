@@ -379,6 +379,21 @@ namespace afd
                 error = "Each collection item must be a mapping.";
                 return false;
             }
+
+            // all mandatory properties must be present in the item
+            for (const auto& property : propertiesWithMandatory)
+            {
+                if (SkipCertainPropertiesFromSyntaxCheck(property.first, false, true))
+                {
+                    continue;
+                }                
+                if (!item->Find(property.first))
+                {
+                    error = property.first + " is missing but property is mandatory. (" + (item->Find(kNameKey) ? item->Find(kNameKey)->GetScalar() : "<unknown>") + ")";
+                    return false;
+                }
+            }
+
             // in scheduling it is functionName
             std::string itemFunctionName = item->Find(kFunctionNameKey) ? item->Find(kFunctionNameKey)->GetScalar() : "<unknown>";            
             std::string itemName = item->Find(kNameKey) ? item->Find(kNameKey)->GetScalar() : itemFunctionName;
