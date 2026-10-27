@@ -183,7 +183,7 @@ namespace afd
 
    void MetaModel::CollectEnums(const YamlNodePtr& model) 
     {
-        if (const YamlNodePtr enums = model->Find("enums")) 
+        if (const YamlNodePtr enums = model->Find(kEnumsKey)) 
         {
             m_enums.clear(); 
             for (const auto& entry : enums->GetMap()) 
