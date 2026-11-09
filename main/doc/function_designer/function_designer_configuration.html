@@ -38,11 +38,11 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_style.css?v=92936fa5" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/modern.css?v=803738c0" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=7ce7bdb0" />
   
@@ -66,6 +66,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'doc/function_designer/function_designer_configuration';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Executables" href="executables.html" />
     <link rel="prev" title="Application Purpose and Use" href="application_purpose_and_use.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -256,6 +257,13 @@
   </a>
 </li>
 
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="executables.html">
+    Executables
+  </a>
+</li>
+
                 </ul>
             </li>
             
@@ -436,6 +444,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="executables.html">
+    Executables
+  </a>
+</li>
+
   </ul>
 </nav></div>
           
@@ -526,6 +541,23 @@ loaded Meta Model. Use the guidance below when creating or reviewing its
 collections. For the complete property definitions, see the
 <a class="reference internal" href="../meta_model/meta_model.html"><span class="doc">Meta Model reference</span></a> and
 <a class="reference internal" href="../function_specification/function_specification_file.html"><span class="doc">Function Specification File reference</span></a>.</p>
+<section id="enums">
+<h2>Enums<a class="headerlink" href="#enums" title="Link to this heading">#</a></h2>
+<p>Function-specific enumerations are stored in the optional <code class="docutils literal notranslate"><span class="pre">enums</span></code> section of
+the specification. Click <code class="docutils literal notranslate"><span class="pre">Edit</span> <span class="pre">enums</span></code> (enabled once a specification is
+loaded) to open the <code class="docutils literal notranslate"><span class="pre">Edit</span> <span class="pre">enums</span></code> dialog.</p>
+<ul class="simple">
+<li><p>The left list shows all enums. <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">enum</span></code> asks for a name, which must be
+unique within the specification. <code class="docutils literal notranslate"><span class="pre">Delete</span> <span class="pre">enum</span></code> removes the selected enum.</p></li>
+<li><p>The right field lists the values of the selected enum, one per line. Leading
+and trailing whitespace is removed and empty lines are ignored.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OK</span></code> writes the changes to the specification; <code class="docutils literal notranslate"><span class="pre">Cancel</span></code> discards them.</p></li>
+</ul>
+<p>Enums can then be referenced from interfaces via <code class="docutils literal notranslate"><span class="pre">enumRef</span></code>.</p>
+<figure class="align-default">
+<img alt="edit enums dialog" src="../../_images/edit_enums.png" />
+</figure>
+</section>
 <section id="signal-collection">
 <h2>Signal Collection<a class="headerlink" href="#signal-collection" title="Link to this heading">#</a></h2>
 <p>Add one entry to <code class="docutils literal notranslate"><span class="pre">dataInterfaces</span></code> for each data interface the function
@@ -710,6 +742,15 @@ Specification reference for its current status and modeling guidance.</p>
         <p class="prev-next-title">Application Purpose and Use</p>
       </div>
     </a>
+    <a class="right-next"
+       href="executables.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Executables</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -729,6 +770,7 @@ Specification reference for its current status and modeling guidance.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enums">Enums</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#signal-collection">Signal Collection</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-collection">Parameter Collection</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scheduling-collection">Scheduling Collection</a></li>
