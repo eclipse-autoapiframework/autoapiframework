@@ -123,6 +123,33 @@ error, or `2` for a usage or setup error.
 .\build\windows-gcc-debug\bin\AutoAPIFunctionDesigner_SyntaxCheck.exe mandatory_property_is_missing_syntax_error.afs
 ```
 
+### AFS parser CLI
+
+`AfsFileParser` reads an `.afs` file into the typed signal, parameter,
+scheduling and error structures and reports the extracted collection counts.
+It exits with `0` on success, `1` when parsing fails, and `2` when the file
+cannot be opened.
+
+```powershell
+.\build\windows-gcc-debug\bin\AfsFileParser.exe .\examples\speed_hazard_detection.afs
+```
+
+An optional second argument is a text file with the expected content. Mismatches
+are reported and the exit code is `3`. Supported lines (`#` starts a comment):
+
+```text
+enums = 2
+signals = 3
+parameters = 2
+schedules = 3
+errors = 0
+supervision SpeedHazardDetection.Step = alive,deadline   # none | alive | deadline | logical
+```
+
+```powershell
+.\build\windows-gcc-debug\bin\AfsFileParser.exe .\examples\speed_hazard_detection.afs .\examples\speed_hazard_detection.expected.txt
+```
+
 ### CTest executable
 
 The test executable runs the unit tests:
@@ -137,6 +164,17 @@ suite. Building compiles the tests but does not execute them; run them with:
 ```powershell
 ctest --test-dir build/windows-gcc-debug --output-on-failure
 ```
+
+### Executables
+
+| Executable | Purpose |
+| --- | --- |
+| `AutoAPIFunctionDesigner` | GUI to create, edit, validate and save `.afs` function specifications against the meta model. |
+| `AutoAPIFunctionDesigner_SyntaxCheck` | Command-line syntax check of an `.afs` file against the meta model. |
+| `AfsFileParser` | Command-line parser that reads an `.afs` file and prints the counts of enums, signals, parameters, schedules and errors. |
+| `function_designer_tests` | Unit tests built from `tests/yaml_tests.cpp` and the other sources listed in `CMakeLists.txt`, mainly covering the YAML parser and writer. |
+| `syntax_check_tests` | Unit tests for the syntax check. |
+| `afs_file_parser_tests` | Unit tests for `AfsFileParser`. |
 
 ## Sample
 

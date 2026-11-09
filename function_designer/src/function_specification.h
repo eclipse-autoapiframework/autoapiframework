@@ -43,9 +43,12 @@ namespace afd
         static constexpr const char* kParametersKey = "parameters";
         static constexpr const char* kSchedulingKey = "scheduling";
         static constexpr const char* kErrorsKey = "errorInterfaces";
+        static constexpr const char* kEnumsKey = "enums";
+        static constexpr const char* kEnumValuesKey = "values";
         static constexpr const char* kPropertiesKey = "properties";   
         static constexpr const char* kNamePathKey = "name";
         static constexpr const char* kFunctionNameKey = "functionName";
+        static constexpr const char* kSupervisionKey = "supervision";        
 
         static constexpr const char* kMinKey = "min";
         static constexpr const char* kMaxKey = "max";
@@ -91,6 +94,11 @@ namespace afd
 
         /// Header attributes (all scalar keys of `functionSpecification`) in file order.
         std::vector<std::pair<std::string, std::string>> GetAttributes() const;
+
+        /// Enums declared in the specification (name and values in file order).
+        std::vector<std::pair<std::string, std::vector<std::string>>> GetEnums() const;
+        /// Replaces the enum set; descriptions of enums that keep their name are preserved.
+        void SetEnums(const std::vector<std::pair<std::string, std::vector<std::string>>>& enums);
 
         /// Entries of the signal, parameter or scheduling collection.
         std::vector<YamlNodePtr> GetCollection(const std::string& key) const;

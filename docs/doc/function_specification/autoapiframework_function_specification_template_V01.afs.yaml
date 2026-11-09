@@ -35,6 +35,23 @@ functionSpecification:
     <One or two sentences describing what this function does.>
 
   # -----------------------------------------------------------------------
+  # ENUMS (optional)
+  #    Function-specific enumerations, keyed by enum name. Each enum is a
+  #    list of values (or a map with optional 'description' and 'values').
+  #    Referenced from interfaces via enumRef. Enums already defined by the
+  #    meta model (e.g. DataQuality, ASIL) do not need to be redeclared.
+  # -----------------------------------------------------------------------
+  enums:
+    <EnumName>:
+      - <value1>
+      - <value2>
+    # <EnumName2>:
+    #   description: <Meaning of the enum.>
+    #   values:
+    #     - <value1>
+    #     - <value2>
+
+  # -----------------------------------------------------------------------
   # 1) DATA INTERFACES
   #    Reuse canonical VSS paths whenever equivalent semantics already exist.
   #    New Vehicle.* paths shall only be introduced as explicitly approved
