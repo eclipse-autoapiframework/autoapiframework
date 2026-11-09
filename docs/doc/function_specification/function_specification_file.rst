@@ -88,6 +88,10 @@ The metamodel defines mandatory properties *within*  the interface types. Howeve
      - Presence
      - Description
      - Example / Notes
+   * - ``enums``
+     - Optional
+     - Function-specific enumerations, keyed by enum name. Each enum is either a list of values or a map with an optional ``description`` and a ``values`` list. They can be referenced from interfaces via ``enumRef``. Enums already defined by the metamodel (for example ``DataQuality``) need not be redeclared.
+     - ``Status: [on, off, disabled]``
    * - ``dataInterfaces``
      - As needed
      - Data interfaces used by the function. Reuse canonical VSS/catalogue semantics where available. ``direction`` is relative to the function/application being specified; ``protectionRequired`` states only whether protection is required..

@@ -1,0 +1,11 @@
+# Expected content of speed_hazard_detection.afs
+enums = 0
+signals = 5
+parameters = 2
+schedules = 3
+errors = 0
+
+# supervision <functionName> = none | alive | deadline | logical (comma separated)
+supervision VehicleSpeedFusion.Init = none
+supervision VehicleSpeedFusion.Step = none
+supervision VehicleSpeedFusion.Terminate = none

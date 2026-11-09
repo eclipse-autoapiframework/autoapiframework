@@ -31,6 +31,8 @@
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
 #include <wx/stdpaths.h>
+#include <wx/listbox.h>
+#include <wx/textdlg.h>
 
 #include <algorithm>
 #include <functional>
@@ -182,6 +184,7 @@ namespace afd
         EVT_BUTTON(MainFrame::ID_ShowMetaModel, MainFrame::OnShowMetaModel)
         EVT_BUTTON(MainFrame::ID_Settings, MainFrame::OnSettings)
         EVT_BUTTON(MainFrame::ID_AddVWithVspecFile, MainFrame::OnAddWithVspecFile)
+        EVT_BUTTON(MainFrame::ID_EditEnums, MainFrame::OnEditEnums)
         EVT_BUTTON(MainFrame::ID_Add, MainFrame::OnAdd)
         EVT_BUTTON(MainFrame::ID_Delete, MainFrame::OnDelete)
         EVT_BUTTON(MainFrame::ID_Edit, MainFrame::OnEdit)
@@ -290,6 +293,8 @@ namespace afd
         mainSizer->Add(buttonSizer, 0, wxEXPAND);
 
         wxBoxSizer* editButtonSizer = new wxBoxSizer(wxHORIZONTAL);
+        m_editEnumsButton = new wxButton(panel, ID_EditEnums, "Edit enums");
+        m_editEnumsButton->Enable(false);
         m_addWithVspecFileButton = new wxButton(panel, ID_AddVWithVspecFile, "Add by vspec file");
         m_addWithVspecFileButton->Enable(false);
         m_addButton = new wxButton(panel, ID_Add, "Add");
@@ -304,6 +309,7 @@ namespace afd
         m_showButton->Enable(false);
         m_createAPIButton = new wxButton(panel, ID_CreateAPI, "Create API");
         m_createAPIButton->Enable(false);
+        editButtonSizer->Add(m_editEnumsButton, 0, wxALL, 5);
         editButtonSizer->Add(m_addWithVspecFileButton, 0, wxALL, 5);
         editButtonSizer->Add(m_addButton, 0, wxALL, 5);
         editButtonSizer->Add(m_deleteButton, 0, wxALL, 5);
@@ -757,6 +763,147 @@ namespace afd
         dialog.ShowModal();
     }
 
+    void MainFrame::OnEditEnums(wxCommandEvent&)
+    {
+        auto enums = m_specification.GetEnums();
+
+        wxDialog dialog(this, wxID_ANY, "Edit enums", wxDefaultPosition, wxDefaultSize,
+                        wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+        wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+        wxBoxSizer* content = new wxBoxSizer(wxHORIZONTAL);
+
+        wxBoxSizer* leftSizer = new wxBoxSizer(wxVERTICAL);
+        wxListBox* nameList = new wxListBox(&dialog, wxID_ANY, wxDefaultPosition, wxSize(220, 280));
+        wxBoxSizer* nameButtons = new wxBoxSizer(wxHORIZONTAL);
+        wxButton* addEnumButton = new wxButton(&dialog, wxID_ANY, "Add enum");
+        wxButton* deleteEnumButton = new wxButton(&dialog, wxID_ANY, "Delete enum");
+        nameButtons->Add(addEnumButton, 0, wxRIGHT, 6);
+        nameButtons->Add(deleteEnumButton, 0);
+        leftSizer->Add(nameList, 1, wxEXPAND | wxBOTTOM, 6);
+        leftSizer->Add(nameButtons, 0);
+
+        wxBoxSizer* rightSizer = new wxBoxSizer(wxVERTICAL);
+        rightSizer->Add(new wxStaticText(&dialog, wxID_ANY, "Values (one per line)"), 0, wxBOTTOM, 4);
+        wxTextCtrl* valuesText = new wxTextCtrl(&dialog, wxID_ANY, "", wxDefaultPosition,
+                                                wxSize(280, 280), wxTE_MULTILINE);
+        rightSizer->Add(valuesText, 1, wxEXPAND);
+
+        content->Add(leftSizer, 0, wxEXPAND | wxRIGHT, 12);
+        content->Add(rightSizer, 1, wxEXPAND);
+        sizer->Add(content, 1, wxEXPAND | wxALL, 12);
+        sizer->Add(dialog.CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxALL, 8);
+
+        int current = wxNOT_FOUND;
+        auto splitLines = [](const wxString& text)
+        {
+            std::vector<std::string> values;
+            for (const wxString& line : wxSplit(text, '\n'))
+            {
+                const std::string value = ToStd(line.Strip(wxString::both));
+                if (!value.empty())
+                {
+                    values.push_back(value);
+                }
+            }
+            return values;
+        };
+        auto storeCurrent = [&]()
+        {
+            if (current >= 0 && current < static_cast<int>(enums.size()))
+            {
+                enums[current].second = splitLines(valuesText->GetValue());
+            }
+        };
+        auto showSelection = [&](int index)
+        {
+            current = index;
+            wxString text;
+            if (index >= 0)
+            {
+                for (const std::string& value : enums[index].second)
+                {
+                    text += ToWx(value) + "\n";
+                }
+            }
+            valuesText->SetValue(text);
+            valuesText->Enable(index >= 0);
+            deleteEnumButton->Enable(index >= 0);
+        };
+
+        for (const auto& entry : enums)
+        {
+            nameList->Append(ToWx(entry.first));
+        }
+        if (!enums.empty())
+        {
+            nameList->SetSelection(0);
+        }
+        showSelection(enums.empty() ? wxNOT_FOUND : 0);
+
+        nameList->Bind(wxEVT_LISTBOX, [&](wxCommandEvent&)
+        {
+            storeCurrent();
+            showSelection(nameList->GetSelection());
+        });
+        addEnumButton->Bind(wxEVT_BUTTON, [&](wxCommandEvent&)
+        {
+            wxTextEntryDialog nameDialog(&dialog, "Name of the new enum:", "Add enum");
+            if (nameDialog.ShowModal() != wxID_OK)
+            {
+                return;
+            }
+            const std::string name = ToStd(nameDialog.GetValue().Strip(wxString::both));
+            if (name.empty())
+            {
+                return;
+            }
+            for (const auto& entry : enums)
+            {
+                if (entry.first == name)
+                {
+                    wxMessageBox("Enum '" + ToWx(name) + "' already exists.", kApplicationName,
+                                 wxOK | wxICON_WARNING, &dialog);
+                    return;
+                }
+            }
+            storeCurrent();
+            enums.emplace_back(name, std::vector<std::string>());
+            nameList->Append(ToWx(name));
+            nameList->SetSelection(static_cast<int>(enums.size()) - 1);
+            showSelection(static_cast<int>(enums.size()) - 1);
+            valuesText->SetFocus();
+        });
+        deleteEnumButton->Bind(wxEVT_BUTTON, [&](wxCommandEvent&)
+        {
+            const int index = nameList->GetSelection();
+            if (index < 0)
+            {
+                return;
+            }
+            enums.erase(enums.begin() + index);
+            nameList->Delete(index);
+            const int next = enums.empty() ? wxNOT_FOUND : std::min(index, static_cast<int>(enums.size()) - 1);
+            if (next >= 0)
+            {
+                nameList->SetSelection(next);
+            }
+            showSelection(next);
+        });
+
+        dialog.SetSizerAndFit(sizer);
+        dialog.CentreOnParent();
+        if (dialog.ShowModal() != wxID_OK)
+        {
+            return;
+        }
+        storeCurrent();
+
+        m_specification.SetEnums(enums);
+        m_contentChanged = true;
+        RefreshAll();
+        SetStatusText(wxString::Format("Enums updated (%d)", static_cast<int>(enums.size())), 0);
+    }
+
     void MainFrame::OnAddWithVspecFile(wxCommandEvent&)
     {
         if (!IsVspecAvailable())
@@ -978,7 +1125,7 @@ namespace afd
             }
             else if (isSupervisionRequired)
             {
-                control->SetValue("false");
+                control->SetValue(kFalseKey);
                 control->SetEditable(false);
             }
 
@@ -1265,11 +1412,9 @@ namespace afd
             return false;
         }
 
-        std::string content = m_specification.ToText();
         std::string error;
-
         ValidateFunction validateFunction;
-        if (validateFunction.SyntaxCheckIsOK(m_metaModel, content, error))
+        if (validateFunction.SyntaxCheckIsOK(m_metaModel, m_specification.ToText(), error))
         {
             if (!doNotShowOnSuccess)
             {
@@ -1352,7 +1497,8 @@ namespace afd
             sizer->Add(new wxStaticBitmap(&dialog, wxID_ANY, wxBitmap(logoImage)), 0,
                        wxALIGN_CENTER_HORIZONTAL | wxALL, 12);
         }
-        sizer->Add(new wxStaticText(&dialog, wxID_ANY, wxString(kApplicationName) + "\n\n"
+        sizer->Add(new wxStaticText(&dialog, wxID_ANY, wxString(kApplicationName)
+                    + " - " + wxString(kApplicationVersion) + "\n\n"
                     "Reads, displays and writes Eclipse autoapiframework function\n"
                     "specifications (*.afs, YAML content) based on the framework meta model.",
                     wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER_HORIZONTAL),
@@ -1373,7 +1519,7 @@ namespace afd
 
     void MainFrame::OnQuickTips(wxCommandEvent&)
     {
-        std::string title = "";
+        std::string title = "Quick Tips:\n";
         wxMessageBox( title + "\nThe automatic syntax check performed before saving a file to disk can be disabled.\n" +
                      "\nAdd 'null' to mandatory properties so that they are accepted by the syntax check.\n"         
                      "\nThe supervision node on the Scheduling collection is editable in the 'Edit scheduling item' dialog.\n" +
@@ -1434,6 +1580,7 @@ namespace afd
     {
         GetMenuBar()->Enable(ID_SaveSpecification, m_contentChanged);	        
         m_saveButton->Enable(m_contentChanged);  
+        m_editEnumsButton->Enable(m_specification.IsLoaded());
         FillAttributes();
         FillCollection(m_signalList, FunctionSpecification::kDataInterfacesKey, kDataInterfaceTypeKey);
         FillCollection(m_parameterList, FunctionSpecification::kParametersKey, kParameterInterfaceTypeKey);

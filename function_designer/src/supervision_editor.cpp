@@ -37,8 +37,7 @@ namespace afd
                                          const YamlNodePtr& existing)
         : m_dialog(dialog)
     {
-        const bool required = existing &&
-            existing->ScalarOf(kSupervisionRequiredKey) == "true";
+        const bool required = existing && existing->ScalarOf(kSupervisionRequiredKey) == kTrueKey;
         m_required = new wxCheckBox(&dialog, wxID_ANY, kSupervisionRequired);
         m_required->SetValue(required);
         parentSizer.Add(m_required, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 12);
@@ -173,7 +172,7 @@ namespace afd
         YamlNodePtr supervision = YamlNode::MakeMap();
         const bool required = m_required->GetValue();
         supervision->Set(kSupervisionRequiredKey,
-                         YamlNode::MakeScalar(required ? "true" : "false"));
+                         YamlNode::MakeScalar(required ? kTrueKey : kFalseKey));
         if (!required)
         {
             return supervision;

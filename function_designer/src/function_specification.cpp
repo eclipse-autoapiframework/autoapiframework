@@ -58,6 +58,7 @@ namespace afd
         spec->Set(kNameKey , YamlNode::MakeScalar("NewExample"));
         spec->Set(kVersionKey, YamlNode::MakeScalar("0.0.0"));
         spec->Set(kDescriptionKey, YamlNode::MakeScalar(""));
+        spec->Set(kEnumsKey, YamlNode::MakeMap());
         spec->Set(kDataInterfacesKey, YamlNode::MakeSequence());
         spec->Set(kParametersKey, YamlNode::MakeSequence());
         spec->Set(kSchedulingKey, YamlNode::MakeSequence());
@@ -209,6 +210,67 @@ namespace afd
             }
         }
         return attributes;
+    }
+
+    std::vector<std::pair<std::string, std::vector<std::string>>> FunctionSpecification::GetEnums() const
+    {
+        std::vector<std::pair<std::string, std::vector<std::string>>> result;
+        const YamlNodePtr enums = m_spec ? m_spec->Find(kEnumsKey) : nullptr;
+        if (!enums || !enums->IsMap())
+        {
+            return result;
+        }
+        for (const auto& entry : enums->GetMap())
+        {
+            YamlNodePtr valueList = entry.second;
+            if (valueList && valueList->IsMap())
+            {
+                valueList = valueList->Find(kEnumValuesKey);
+            }
+            std::vector<std::string> values;
+            if (valueList && valueList->IsSequence())
+            {
+                for (const YamlNodePtr& value : valueList->GetSequence())
+                {
+                    if (value && value->IsScalar())
+                    {
+                        values.push_back(value->GetScalar());
+                    }
+                }
+            }
+            result.emplace_back(entry.first, std::move(values));
+        }
+        return result;
+    }
+
+    void FunctionSpecification::SetEnums(
+        const std::vector<std::pair<std::string, std::vector<std::string>>>& enums)
+    {
+        if (!m_spec)
+        {
+            return;
+        }
+        const YamlNodePtr previous = m_spec->Find(kEnumsKey);
+        YamlNodePtr updated = YamlNode::MakeMap();
+        for (const auto& entry : enums)
+        {
+            YamlNodePtr values = YamlNode::MakeSequence();
+            for (const std::string& value : entry.second)
+            {
+                values->Append(YamlNode::MakeScalar(value));
+            }
+            const YamlNodePtr old = previous ? previous->Find(entry.first) : nullptr;
+            if (old && old->IsMap())
+            {
+                old->Set(kEnumValuesKey, values);
+                updated->Set(entry.first, old);
+            }
+            else
+            {
+                updated->Set(entry.first, values);
+            }
+        }
+        m_spec->Set(kEnumsKey, updated);
     }
 
     std::vector<YamlNodePtr> FunctionSpecification::GetCollection(const std::string& key) const 

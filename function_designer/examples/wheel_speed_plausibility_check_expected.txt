@@ -1,0 +1,11 @@
+# Expected content of speed_hazard_detection.afs
+enums = 0
+signals = 5
+parameters = 1
+schedules = 3
+errors = 2
+
+# supervision <functionName> = none | alive | deadline | logical (comma separated)
+supervision WheelSpeedPlausibilityCheck.Init = none
+supervision WheelSpeedPlausibilityCheck.Step = deadline,logical
+supervision WheelSpeedPlausibilityCheck.Terminate = none

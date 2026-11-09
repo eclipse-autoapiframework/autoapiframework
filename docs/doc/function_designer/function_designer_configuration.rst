@@ -24,6 +24,24 @@ collections. For the complete property definitions, see the
 :doc:`Meta Model reference </doc/meta_model/meta_model>` and
 :doc:`Function Specification File reference </doc/function_specification/function_specification_file>`.
 
+Enums
+-----
+
+Function-specific enumerations are stored in the optional ``enums`` section of
+the specification. Click ``Edit enums`` (enabled once a specification is
+loaded) to open the ``Edit enums`` dialog.
+
+- The left list shows all enums. ``Add enum`` asks for a name, which must be
+  unique within the specification. ``Delete enum`` removes the selected enum.
+- The right field lists the values of the selected enum, one per line. Leading
+  and trailing whitespace is removed and empty lines are ignored.
+- ``OK`` writes the changes to the specification; ``Cancel`` discards them.
+
+Enums can then be referenced from interfaces via ``enumRef``.
+
+.. figure:: figures/edit_enums.png
+   :alt: edit enums dialog
+
 Signal Collection
 -----------------
 

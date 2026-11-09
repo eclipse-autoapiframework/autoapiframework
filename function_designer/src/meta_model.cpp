@@ -181,7 +181,7 @@ namespace afd
         return columns;
     }
 
-   void MetaModel::CollectEnums(const YamlNodePtr& model) 
+    void MetaModel::CollectEnums(const YamlNodePtr& model) 
     {
         if (const YamlNodePtr enums = model->Find(kEnumsKey)) 
         {
@@ -203,7 +203,7 @@ namespace afd
                 else
                 {
                     const YamlNodePtr declaredValues = entry.second
-                        ? entry.second->Find("values")
+                        ? entry.second->Find(kEnumValuesKey)
                         : nullptr;
                     if (declaredValues && declaredValues->IsSequence())
                     {
@@ -220,6 +220,12 @@ namespace afd
                 }
             }
         }
+    }
+
+    const std::vector<std::string>* MetaModel::FindEnumValues(const std::string& name) const
+    {
+        const auto it = m_enums.find(name);
+        return it == m_enums.end() ? nullptr : &it->second;
     }
 
     bool MetaModel::ValidateEnumValue( const std::string& propertyName, const std::string& enumName, 

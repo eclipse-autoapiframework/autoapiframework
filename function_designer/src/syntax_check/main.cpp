@@ -14,11 +14,11 @@
  *   Thomas Pfleiderer - Command-line application (CLI) added
  ********************************************************************************/
 
-#include "meta_model.h"
-#include "validate_function.h"
-#include "yaml_node.h"
-#include "yaml_parser.h"
-#include "yaml_writer.h"
+#include "../meta_model.h"
+#include "../validate_function.h"
+#include "../yaml_node.h"
+#include "../yaml_parser.h"
+#include "../yaml_writer.h"
 
  #include <filesystem>
  #include <string>
@@ -73,9 +73,9 @@ namespace
         afd::MetaModel metaModel;
         std::string error;
         const std::string metaModelPath = std::string(AFD_EXAMPLES_DIR) + "/autoapiframework_metadata_V04.yaml";
-        if (!metaModel.Load(metaModelPath, error))
+        if (!metaModel.Load(metaModelPath, error) && !metaModel.Load("autoapiframework_meta_model.yaml", error))
         {
-            std::cout << "Could not load meta model: " << error << '\n';
+            std::cout << "Could not load meta model \n'" << metaModelPath << "':\n" << error << '\n';
             return 2;
         }      
 

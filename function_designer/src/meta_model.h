@@ -34,7 +34,8 @@ namespace afd
     static constexpr const char* kDescriptionKey = "description";    
     static constexpr const char* kVersionKey = "version";    
     static constexpr const char* kEnumKey = "enum";
-    static constexpr const char* kEnumsKey = "enums";    
+    static constexpr const char* kEnumsKey = "enums";  
+    static constexpr const char* kEnumValuesKey = "values";      
     static constexpr const char* kEnumRefKey = "enumRef";
     static constexpr const char* kInterfaceTypesKey = "interfaceTypes";
 
@@ -53,14 +54,27 @@ namespace afd
     static constexpr const char* kDataQualityKey = "DataQuality";
     static constexpr const char* kExecutionResultTypeKey = "type";
     static constexpr const char* kExecutionResultKey = "executionResult";
+    static constexpr const char* kFuSaKey = "FuSa";
+    static constexpr const char* kASILKey = "ASIL";
 
     static constexpr const char* kSupervisionRequiredPath = "supervision.required";
     static constexpr const char* kExecutionResultTypeFieldPath = "executionResult.type";
     static constexpr const char* kSupervisionKey = "supervision";
     static constexpr const char* kSupervisionRequiredKey = "required";
-    static constexpr const char* kFuSaKey = "FuSa";
-    static constexpr const char* kASILKey = "ASIL";    
-
+    static constexpr const char* kSupervisionTypeKey = "type";
+    static constexpr const char* kSupervisionAliveKey = "alive";
+    static constexpr const char* kSupervisionDeadlineKey = "deadline";
+    static constexpr const char* kSupervisionLogicalKey = "logical";
+    static constexpr const char* kMinIndicationsKey = "minIndications";
+    static constexpr const char* kMaxIndicationsKey = "maxIndications";
+    static constexpr const char* kReferenceCycleMsKey = "referenceCycleMs";
+    static constexpr const char* kMaxExecutionTimeMsKey = "maxExecutionTimeMs";
+    static constexpr const char* kPredecessorRefsKey = "predecessorRefs";
+    static constexpr const char* kSuccessorRefsKey = "successorRefs";
+    
+    static constexpr const char* kTrueKey = "true";
+    static constexpr const char* kFalseKey = "false";
+    static constexpr const char* kUnknownKey = "unknown";
     
     /// In-memory representation of autoapiframework_meta_model.yaml.
     class MetaModel 
@@ -87,6 +101,9 @@ namespace afd
 
         bool ValidateEnumValue(const std::string& propertyName, const std::string& enumName, 
                                const std::string& entry, std::string& error) const;
+
+        /// Values of the meta model enum @p name or nullptr if it is not defined.
+        const std::vector<std::string>* FindEnumValues(const std::string& name) const;
 
     private:                                            
         void CollectEnums(const YamlNodePtr& model);                                    

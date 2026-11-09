@@ -217,4 +217,7 @@ In addition to the help documentation, the application can check whether the
 COVESA tools are installed correctly. This information can help with
 troubleshooting and verifying that all required dependencies are available.
 
-The **Quick Tips** section provides additional guidance.
+The **Quick Tips** section provides concise guidance on using the Function Designer effectively, highlighting common tasks and best practices.
+
+.. figure:: figures/quick_tips.png
+   :alt: quick tips
