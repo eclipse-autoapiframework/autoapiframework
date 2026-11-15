@@ -1761,6 +1761,7 @@ namespace afd
         wxMessageBox( title + "\nThe automatic syntax check performed before saving a file to disk can be disabled.\n" +
                      "\nAdd 'null' to mandatory properties so that they are accepted by the syntax check.\n"         
                      "\nThe supervision node on the Scheduling collection is editable in the 'Edit scheduling item' dialog.\n" +
+                     "\nExisting *.afs files can be opened by dragging and dropping them onto the application window.\n" +
                      "\nAPI creation is not implemented yet.",
                      kApplicationName,
                      wxOK | wxICON_INFORMATION, this);

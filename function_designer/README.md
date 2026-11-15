@@ -175,6 +175,7 @@ ctest --test-dir build/windows-gcc-debug --output-on-failure
 | `AutoAPIFunctionDesigner_SyntaxCheck` | Command-line syntax check of an `.afs` file against the meta model. |
 | `AfsFileParser` | Command-line parser that reads an `.afs` file and prints the counts of enums, signals, parameters, schedules and errors. |
 | `function_designer_tests` | Unit tests built from `tests/yaml_tests.cpp` and the other sources listed in `CMakeLists.txt`, mainly covering the YAML parser and writer. |
+| `yaml_comment_tests` | Unit tests from `tests/yaml_comment_tests.cpp` that verify YAML comments are preserved during parse/write round trips. |
 | `syntax_check_tests` | Unit tests for the syntax check. |
 | `afs_file_parser_tests` | Unit tests for `AfsFileParser`. |
 

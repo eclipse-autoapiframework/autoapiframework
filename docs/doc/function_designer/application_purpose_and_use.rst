@@ -27,6 +27,11 @@ Graphical user interface (GUI)
 .. figure:: figures/meta_model_window.png
    :alt: meta model window
 
+.. tip::
+
+   In addition to the standard file open dialog, the application provides drag-and-drop functionality. 
+   For quick access, users can open an existing ``.afs`` file by dragging it from the operating system's file manager and dropping it onto the graphical user interface.
+
 Command-line application (CLI)
 ------------------------------ 
 
