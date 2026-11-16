@@ -12,6 +12,7 @@
  *
  * Contributors:
  *   Thomas Pfleiderer - initial function designer
+ *   Thomas Pfleiderer - support 4.1, Support YAML comments, Drag & Drop, Enums in afs files added
  ********************************************************************************/
  
 #include "function_specification.h"
@@ -293,8 +294,13 @@ namespace afd
         {
             return false;
         }
-        const YamlNodePtr collection = m_spec->Find(key);
-        if (!collection || !collection->IsSequence())
+        YamlNodePtr collection = m_spec->Find(key);
+        if (!collection)
+        {
+            collection = YamlNode::MakeSequence();
+            m_spec->Set(key, collection);
+        }
+        else if (!collection->IsSequence())
         {
             return false;
         }

@@ -12,6 +12,7 @@
  *
  * Contributors:
  *   Thomas Pfleiderer - CTest added
+ *   Thomas Pfleiderer - support 4.1, Support YAML comments, Drag & Drop, Enums in afs files added
  ********************************************************************************/
 
 #include "meta_model.h"
@@ -223,6 +224,24 @@ namespace
                 "error message should mention invalid property: " + error);
     }
 
+    // Parameter names must include the Vehicle hierarchy, not just a bare identifier.
+    void TestUnqualifiedParameterNameFails(const afd::MetaModel& mm)
+    {
+        const std::string yaml =
+            "functionSpecification:\n"
+            "  name: TestFunc\n"
+            "  version: 1.0.0\n"
+            "  dataInterfaces: []\n"
+            "  parameters:\n"
+            "    - name: RWS_deltaRAGradLim\n"
+            "  scheduling: []\n";
+        std::string error;
+        Require(!Validate(mm, yaml, error),
+                "unqualified parameter name was accepted");
+        Require(error.find("hierarchical naming convention") != std::string::npos,
+                "error message should describe the required parameter naming convention: " + error);
+    }
+
     // -------------------------------------------------------------------------
     // Enum validation tests
     // -------------------------------------------------------------------------
@@ -340,7 +359,7 @@ namespace
             "  version: 1.0.0\n"
             "  dataInterfaces: []\n"
             "  parameters:\n"
-            "    - name: Vehicle.Param\n"
+            "    - name: Vehicle.Test.Param\n"
             "      tunable: perhaps\n"
             "  scheduling: []\n";
         std::string error;
@@ -353,6 +372,72 @@ namespace
     // -------------------------------------------------------------------------
     // Type validation tests
     // -------------------------------------------------------------------------
+
+    std::string MakeNumericParameterYaml(const std::string& dataType,
+                                         const std::string& defaultValue,
+                                         const std::string& min,
+                                         const std::string& max)
+    {
+        return "functionSpecification:\n"
+            "  name: TestFunc\n"
+            "  version: 1.0.0\n"
+            "  dataInterfaces: []\n"
+            "  parameters:\n"
+            "    - name: Vehicle.Test.Param\n"
+            "      dataType: " + dataType + "\n"
+            "      defaultValue: " + defaultValue + "\n"
+            "      description: Numeric test parameter.\n"
+            "      unit: unit\n"
+            "      tunable: false\n"
+            "      min: " + min + "\n"
+            "      max: " + max + "\n"
+            "  scheduling: []\n";
+    }
+
+    // Each numeric parameter type must accept valid numbers and reject malformed values.
+    void TestNumericParameterValueTypes(const afd::MetaModel& mm)
+    {
+        struct Case
+        {
+            const char* name;
+            const char* dataType;
+            const char* defaultValue;
+            const char* min;
+            const char* max;
+            bool expectedValid;
+            const char* expectedError;
+        };
+
+        const Case cases[] = {
+            {"valid float", "float", "1.5", "0.5", "2.5", true, ""},
+            {"invalid float default", "float", "not_float", "0.5", "2.5", false, "float"},
+            {"invalid float min", "float", "1.5", "not_float", "2.5", false, "float"},
+            {"invalid float max", "float", "1.5", "0.5", "not_float", false, "float"},
+            {"valid integer", "uint32", "15", "5", "25", true, ""},
+            {"invalid integer default", "uint32", "not_integer", "5", "25", false, "integer"},
+            {"invalid integer min", "uint32", "15", "not_integer", "25", false, "integer"},
+            {"invalid integer max", "uint32", "15", "5", "not_integer", false, "integer"},
+            {"valid double", "double", "1.5", "0.5", "2.5", true, ""},
+            {"invalid double default", "double", "not_double", "0.5", "2.5", false, "double"},
+            {"invalid double min", "double", "1.5", "not_double", "2.5", false, "double"},
+            {"invalid double max", "double", "1.5", "0.5", "not_double", false, "double"},
+            {"double min greater than max", "double", "1.5", "2.5", "0.5", false, "max should be greater than min"},
+        };
+
+        for (const Case& testCase : cases)
+        {
+            std::string error;
+            const bool valid = Validate(mm, MakeNumericParameterYaml(
+                testCase.dataType, testCase.defaultValue, testCase.min, testCase.max), error);
+            Require(valid == testCase.expectedValid,
+                    std::string("numeric type case '") + testCase.name + "' had unexpected validation result: " + error);
+            if (!testCase.expectedValid)
+            {
+                Require(error.find(testCase.expectedError) != std::string::npos,
+                        std::string("numeric type case '") + testCase.name + "' produced an unexpected error: " + error);
+            }
+        }
+    }
 
     // A float data interface where min > max must be rejected.
     void TestFloatMinGreaterThanMaxFails(const afd::MetaModel& mm)
@@ -395,7 +480,7 @@ namespace
             "  version: 1.0.0\n"
             "  dataInterfaces: []\n"
             "  parameters:\n"
-            "    - name: Vehicle.Param\n"
+            "    - name: Vehicle.Test.Param\n"
             "      dataType: uint32\n"
             "      defaultValue: 100\n"
             "      description: Test parameter.\n"
@@ -456,6 +541,106 @@ namespace
                 error.find("integer") != std::string::npos,
                 "error message should mention maturationTimeMs: " + error);
     }
+
+        std::string MakeSupervisionYaml(const std::string& supervision)
+        {
+            return "functionSpecification:\n"
+                "  name: TestFunc\n"
+                "  version: 1.0.0\n"
+                "  dataInterfaces: []\n"
+                "  parameters: []\n"
+                "  scheduling:\n"
+                "    - functionName: TestFunc.Step\n"
+                "      runType: init\n"
+                "      description: Test runnable.\n"
+                "      implementedASIL: B\n"
+                "      executionResult:\n"
+                "        type: FunctionResult\n"
+                "      supervision:\n" + supervision;
+        }
+
+        // Validate the required flag, declared supervision types, and type-specific content.
+        void TestSupervisionValidation(const afd::MetaModel& mm)
+        {
+            struct Case
+            {
+                const char* name;
+                const char* supervision;
+                bool expectedValid;
+                const char* expectedError;
+            };
+
+            const Case cases[] = {
+                {"required false", "        required: false\n", true, ""},
+                {"valid alive", "        required: true\n"
+                    "        type:\n"
+                    "          - alive\n"
+                    "        alive:\n"
+                    "          minIndications: 1\n", true, ""},
+                {"valid deadline", "        required: true\n"
+                    "        type:\n"
+                    "          - deadline\n"
+                    "        deadline:\n"
+                    "          maxExecutionTimeMs: 10\n", true, ""},
+                {"valid logical", "        required: true\n"
+                    "        type:\n"
+                    "          - logical\n"
+                    "        logical:\n"
+                    "          predecessorRefs: []\n", true, ""},
+                {"valid combined types", "        required: true\n"
+                    "        type:\n"
+                    "          - alive\n"
+                    "          - deadline\n"
+                    "          - logical\n"
+                    "        alive:\n"
+                    "          referenceCycleMs: 100\n"
+                    "        deadline:\n"
+                    "          maxExecutionTimeMs: 10\n"
+                    "        logical:\n"
+                    "          successorRefs: []\n", true, ""},
+                {"missing required", "        type:\n"
+                    "          - alive\n", false, "Invalid supervision node"},
+                {"invalid required", "        required: maybe\n", false, "Invalid supervision node"},
+                {"required without type", "        required: true\n"
+                    "        alive:\n"
+                    "          minIndications: 1\n", false, "Missing supervision fields"},
+                {"missing declared type block", "        required: true\n"
+                    "        type:\n"
+                    "          - alive\n"
+                    "        deadline:\n"
+                    "          maxExecutionTimeMs: 10\n", false, "Missing required supervision type alive"},
+                {"empty type item", "        required: true\n"
+                    "        type:\n"
+                    "          - \"\"\n"
+                    "        alive:\n"
+                    "          minIndications: 1\n", false, "non-empty scalar"},
+                {"empty alive block", "        required: true\n"
+                    "        type:\n"
+                    "          - alive\n"
+                    "        alive: {}\n", false, "alive' has no content"},
+                {"empty deadline block", "        required: true\n"
+                    "        type:\n"
+                    "          - deadline\n"
+                    "        deadline: {}\n", false, "deadline' has no content"},
+                {"empty logical block", "        required: true\n"
+                    "        type:\n"
+                    "          - logical\n"
+                    "        logical: {}\n", false, "logical' has no content"},
+            };
+
+            for (const Case& testCase : cases)
+            {
+                std::string error;
+                const bool valid = Validate(mm, MakeSupervisionYaml(testCase.supervision), error);
+                Require(valid == testCase.expectedValid,
+                        std::string("supervision case '") + testCase.name + "' had unexpected validation result: " + error);
+                if (!testCase.expectedValid)
+                {
+                    Require(error.find(testCase.expectedError) != std::string::npos,
+                            std::string("supervision case '") + testCase.name + "' produced an unexpected error: " + error);
+                }
+            }
+        }
 
     // -------------------------------------------------------------------------
     // Error interface tests
@@ -529,49 +714,69 @@ int main()
         return 1;
     }
 
-    try
+    struct TestCase
     {
-        // Example file tests
-        TestAllExamplesPassValidation(metaModel);
-        TestMandatoryPropertyMissingFails(metaModel);
+        const char* name;
+        void (*run)(const afd::MetaModel&);
+    };
 
-        // Header validation
-        TestNoRootKeyFails(metaModel);
-        TestMissingHeaderNameFails(metaModel);
-        TestMissingHeaderVersionFails(metaModel);
+    const TestCase tests[] = {
+        // Example file tests        
+        {"TestAllExamplesPassValidation", TestAllExamplesPassValidation},
+        {"TestMandatoryPropertyMissingFails", TestMandatoryPropertyMissingFails},
+        // Header validation        
+        {"TestNoRootKeyFails", TestNoRootKeyFails},
+        {"TestMissingHeaderNameFails", TestMissingHeaderNameFails},
+        {"TestMissingHeaderVersionFails", TestMissingHeaderVersionFails},
+        // Required section tests        
+        {"TestMissingRequiredSectionFails", TestMissingRequiredSectionFails},
+        // Property name validation        
+        {"TestUnknownPropertyFails", TestUnknownPropertyFails},
+        {"TestUnqualifiedParameterNameFails", TestUnqualifiedParameterNameFails},
+        // Enum validation        
+        {"TestInvalidDirectionEnumFails", TestInvalidDirectionEnumFails},
+        {"TestInvalidASILEnumFails", TestInvalidASILEnumFails},
+        {"TestInvalidRunTypeEnumFails", TestInvalidRunTypeEnumFails},
+        {"TestFuSaFalseWithASILFails", TestFuSaFalseWithASILFails},
+        // Boolean validation        
+        {"TestInvalidBooleanFuSaFails", TestInvalidBooleanFuSaFails},
+        {"TestInvalidBooleanTunableFails", TestInvalidBooleanTunableFails},
+        // Type validation        
+        {"TestNumericParameterValueTypes", TestNumericParameterValueTypes},
+        {"TestFloatMinGreaterThanMaxFails", TestFloatMinGreaterThanMaxFails},
+        {"TestIntegerMinGreaterThanMaxFails", TestIntegerMinGreaterThanMaxFails},
+        {"TestNonIntegerCycleTimeFails", TestNonIntegerCycleTimeFails},   
+        {"TestNonIntegerMaturationTimeFails", TestNonIntegerMaturationTimeFails},
+        // Supervision validation             
+        {"TestSupervisionValidation", TestSupervisionValidation},
+        // Error interface tests        
+        {"TestValidErrorInterfacesPasses", TestValidErrorInterfacesPasses},
+        {"TestValidErrorInterfaceEnumPasses", TestValidErrorInterfaceEnumPasses},
+    };
 
-        // Required section tests
-        TestMissingRequiredSectionFails(metaModel);
-
-        // Property name validation
-        TestUnknownPropertyFails(metaModel);
-
-        // Enum validation
-        TestInvalidDirectionEnumFails(metaModel);
-        TestInvalidASILEnumFails(metaModel);
-        TestInvalidRunTypeEnumFails(metaModel);
-        TestFuSaFalseWithASILFails(metaModel);
-
-        // Boolean validation
-        TestInvalidBooleanFuSaFails(metaModel);
-        TestInvalidBooleanTunableFails(metaModel);
-
-        // Type validation
-        TestFloatMinGreaterThanMaxFails(metaModel);
-        TestIntegerMinGreaterThanMaxFails(metaModel);
-        TestNonIntegerCycleTimeFails(metaModel);
-        TestNonIntegerMaturationTimeFails(metaModel);
-
-        // Error interface tests
-        TestValidErrorInterfacesPasses(metaModel);
-        TestValidErrorInterfaceEnumPasses(metaModel);
-    }
-    catch (const std::exception& error)
+    int failedTests = 0;
+    for (const TestCase& test : tests)
     {
-        std::cerr << error.what() << '\n';
-        return 1;
+        try
+        {
+            test.run(metaModel);
+            std::cout << "[PASS] " << test.name << '\n';
+        }
+        catch (const std::exception& error)
+        {
+            std::cerr << "[FAIL] " << test.name << ": " << error.what() << '\n';
+            ++failedTests;
+        }
     }
 
-    std::cout << "All syntax check tests passed.\n";
-    return 0;
+    if (failedTests == 0)
+    {
+        std::cout << "All " << (sizeof(tests) / sizeof(tests[0]))
+                  << " syntax check tests passed.\n";
+        return 0;
+    }
+
+    std::cerr << failedTests << " of " << (sizeof(tests) / sizeof(tests[0]))
+              << " syntax check tests failed.\n";
+    return 1;
 }

@@ -7,76 +7,87 @@
     },
     "configurePresets": [
         {
-            "name": "windows-gcc-debug",
-            "displayName": "Windows (GCC - Debug)",
+            "name": "base",
+            "hidden": true,
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "windows-gcc-base",
+            "hidden": true,
+            "inherits": "base",
             "description": "Uses the GCC toolchain available on PATH and builds wxWidgets from source when it is not installed",
             "generator": "MinGW Makefiles",
-            "binaryDir": "${sourceDir}/build/windows-gcc-debug",
+            "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Windows" },
             "cacheVariables": {
-                "CMAKE_CXX_COMPILER": "g++",
-                "CMAKE_BUILD_TYPE": "Debug"
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++"
             }
+        },
+        {
+            "name": "msvc-base",
+            "hidden": true,
+            "inherits": "base",
+            "generator": "Ninja",
+            "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Windows" },
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            },
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "cl.exe",
+                "CMAKE_CXX_COMPILER": "cl.exe",
+                "CMAKE_COMPILE_WARNING_AS_ERROR": "OFF"
+            }
+        },
+        {
+            "name": "linux-base",
+            "hidden": true,
+            "inherits": "base",
+            "generator": "Ninja",
+            "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Linux" }
+        },
+        {
+            "name": "windows-gcc-debug",
+            "displayName": "Windows (GCC - Debug)",
+            "inherits": "windows-gcc-base",
+            "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
         },
         {
             "name": "windows-gcc-release",
             "displayName": "Windows (GCC - Release)",
-            "description": "Uses the GCC toolchain available on PATH and builds wxWidgets from source when it is not installed",
-            "generator": "MinGW Makefiles",
-            "binaryDir": "${sourceDir}/build/windows-gcc-release",
-            "cacheVariables": {
-                "CMAKE_CXX_COMPILER": "g++",
-                "CMAKE_BUILD_TYPE": "Release"
-            }
+            "inherits": "windows-gcc-base",
+            "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
         },
         {
             "name": "msvc_x64_x64_ninja_debug",
             "displayName": "msvc_x64_x64 (Ninja - Debug)",
             "description": "MS Visual C++ Compiler - Ninja Generator - Debug Build",
-            "generator": "Ninja",
+            "inherits": "msvc-base",
             "binaryDir": "${sourceDir}/build/msvc_x64_x64_debug",
-            "architecture": {
-                "value": "x64",
-                "strategy": "external"
-            },
-            "cacheVariables": {
-                "CMAKE_C_COMPILER": "cl.exe",
-                "CMAKE_CXX_COMPILER": "cl.exe",
-                "CMAKE_BUILD_TYPE": "Debug"
-            }
+            "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
         },
         {
             "name": "msvc_x64_x64_ninja_release",
             "displayName": "msvc_x64_x64 (Ninja - Release)",
             "description": "MS Visual C++ Compiler - Ninja Generator - Release Build",
-            "generator": "Ninja",
+            "inherits": "msvc-base",
             "binaryDir": "${sourceDir}/build/msvc_x64_x64_release",
-            "architecture": {
-                "value": "x64",
-                "strategy": "external"
-            },
-            "cacheVariables": {
-                "CMAKE_C_COMPILER": "cl.exe",
-                "CMAKE_CXX_COMPILER": "cl.exe",
-                "CMAKE_BUILD_TYPE": "Release"
-            }
+            "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
         },
         {
             "name": "linux-debug",
             "displayName": "Linux (Ninja, Debug)",
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/linux-debug",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
-            }
+            "inherits": "linux-base",
+            "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
         },
         {
             "name": "linux-release",
             "displayName": "Linux (Ninja, Release)",
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/build/linux-release",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
-            }
+            "inherits": "linux-base",
+            "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
         }
     ],
     "buildPresets": [
@@ -91,12 +102,12 @@
         "configurePreset": "windows-gcc-release"
       },
       {
-        "name": "msvc_x64_x64 (Ninja - Debug)",
+        "name": "msvc_x64_x64_ninja_debug",
         "displayName": "msvc_x64_x64 (Ninja - Debug)",
         "configurePreset": "msvc_x64_x64_ninja_debug"
       },
       {
-        "name": "msvc_x64_x64 (Ninja - Release)",
+        "name": "msvc_x64_x64_ninja_release",
         "displayName": "msvc_x64_x64 (Ninja - Release)",
         "configurePreset": "msvc_x64_x64_ninja_release"
       },
@@ -109,6 +120,38 @@
         "name": "linux-release",
         "displayName": "linux-release",
         "configurePreset": "linux-release"
+      }
+    ],
+    "testPresets": [
+      {
+        "name": "windows-gcc-debug",
+        "configurePreset": "windows-gcc-debug",
+        "output": { "outputOnFailure": true }
+      },
+      {
+        "name": "windows-gcc-release",
+        "configurePreset": "windows-gcc-release",
+        "output": { "outputOnFailure": true }
+      },
+      {
+        "name": "msvc_x64_x64_ninja_debug",
+        "configurePreset": "msvc_x64_x64_ninja_debug",
+        "output": { "outputOnFailure": true }
+      },
+      {
+        "name": "msvc_x64_x64_ninja_release",
+        "configurePreset": "msvc_x64_x64_ninja_release",
+        "output": { "outputOnFailure": true }
+      },
+      {
+        "name": "linux-debug",
+        "configurePreset": "linux-debug",
+        "output": { "outputOnFailure": true }
+      },
+      {
+        "name": "linux-release",
+        "configurePreset": "linux-release",
+        "output": { "outputOnFailure": true }
       }
     ]
 }

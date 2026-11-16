@@ -12,6 +12,7 @@
  *
  * Contributors:
  *   Thomas Pfleiderer - initial function designer
+ *   Thomas Pfleiderer - support 4.1, Support YAML comments, Drag & Drop, Enums in afs files added
  ********************************************************************************/
  
 #ifndef AFD_YAML_NODE_H
@@ -60,6 +61,15 @@ namespace afd
         ScalarStyle GetStyle() const { return m_style; }
         void SetStyle(ScalarStyle style) { m_style = style; }
 
+        /// Leading comments (full-line comments appearing before this node)
+        const std::vector<std::string>& GetLeadingComments() const { return m_leadingComments; }
+        void AddLeadingComment(std::string comment) { m_leadingComments.push_back(std::move(comment)); }
+        void ClearLeadingComments() { m_leadingComments.clear(); }
+
+        /// Inline comment (comment appearing after value on the same line)
+        const std::string& GetInlineComment() const { return m_inlineComment; }
+        void SetInlineComment(std::string comment) { m_inlineComment = std::move(comment); }
+
         const std::vector<MapEntry>& GetMap() const { return m_map; }
         const std::vector<YamlNodePtr>& GetSequence() const { return m_sequence; }
 
@@ -79,6 +89,8 @@ namespace afd
         ScalarStyle m_style = ScalarStyle::Plain;
         std::vector<MapEntry> m_map;
         std::vector<YamlNodePtr> m_sequence;
+        std::vector<std::string> m_leadingComments;  // Comments before the node
+        std::string m_inlineComment;                 // Comment after value on same line
     };
 
 } // namespace afd

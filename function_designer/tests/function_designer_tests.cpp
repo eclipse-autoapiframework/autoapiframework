@@ -12,8 +12,10 @@
  *
  * Contributors:
  *   Thomas Pfleiderer - CTest added
+ *   Thomas Pfleiderer - support 4.1, Support YAML comments, Drag & Drop, Enums in afs files added
  ********************************************************************************/
 
+#include "function_specification.h"
 #include "yaml_node.h"
 #include "yaml_parser.h"
 #include "yaml_writer.h"
@@ -134,6 +136,73 @@ namespace
                     reparsedInterfaces->GetSequence().size() == interfaces->GetSequence().size(),
                     example + " changed its data interface count after writing and reparsing");
         }
+
+    }
+
+    void TestAddMissingCollections()
+    {
+        afd::FunctionSpecification specification;
+        std::string error;
+        const std::string path = std::string(AFD_TESTS_DIR) + "/missing_collections.afs";
+        Require(specification.Load("0.4.1", path, error), "load failed: " + error);
+
+        const std::vector<std::string> keys = {
+            afd::FunctionSpecification::kErrorsKey,
+            afd::FunctionSpecification::kParametersKey,
+            afd::FunctionSpecification::kSchedulingKey
+        };
+        afd::YamlNodePtr item = afd::YamlNode::MakeMap();
+        item->Set("name", afd::YamlNode::MakeScalar("Added"));
+        for (const std::string& key : keys)
+        {
+            Require(specification.GetCollection(key).empty(), key + " should initially be absent");
+            Require(specification.AddCollectionItem(key, item), "could not add to missing " + key);
+            Require(specification.AddCollectionItem(key, item), "could not append to " + key);
+            Require(specification.GetCollection(key).size() == 2, key + " entries were not retained");
+        }
+        Require(!specification.AddCollectionItem("invalidCollection", item),
+                "non-sequence collection should not be overwritten");
+
+        afd::YamlParser parser;
+        const afd::YamlNodePtr root = Parse(parser, specification.ToText());
+        const afd::YamlNodePtr spec = root->Find("functionSpecification");
+        Require(spec->ScalarOf("invalidCollection") == "not-a-sequence",
+                "invalid collection was overwritten");
+        Require(spec->Find("dataInterfaces")->GetSequence().size() == 1,
+                "existing data interface was lost");
+        for (const std::string& key : keys)
+        {
+            const afd::YamlNodePtr collection = spec->Find(key);
+            Require(collection && collection->IsSequence() && collection->GetSequence().size() == 2,
+                    key + " was not serialized as a sequence");
+        }
+    }
+
+    void TestSequenceMapLeadingCommentRoundTrip()
+    {
+        afd::YamlParser parser;
+        afd::YamlWriter writer;
+        const afd::YamlNodePtr root = Parse(parser,
+            "items:\n"
+            "  - name: first\n"
+            "    description: example\n");
+        const afd::YamlNodePtr items = root->Find("items");
+        items->GetSequence().front()->Find("name")->AddLeadingComment("# first item name");
+
+        const std::string serialized = writer.WriteText(root);
+        Require(serialized.find("# first item name") != std::string::npos,
+                "sequence map key comment was lost");
+        const afd::YamlNodePtr reparsed = Parse(parser, serialized);
+        const afd::YamlNodePtr reparsedItems = reparsed->Find("items");
+        Require(reparsedItems && reparsedItems->IsSequence() &&
+                reparsedItems->GetSequence().size() == 1,
+                "sequence map item was not preserved");
+        const afd::YamlNodePtr item = reparsedItems->GetSequence().front();
+        Require(item->ScalarOf("name") == "first" && item->ScalarOf("description") == "example",
+                "sequence map values were not preserved");
+        Require(!item->Find("name")->GetLeadingComments().empty() &&
+                item->Find("name")->GetLeadingComments().front() == "# first item name",
+                "sequence map key comment was not preserved");
     }
 
     // -------------------------------------------------------------------------
@@ -371,32 +440,54 @@ namespace
 
 int main()
 {
-    try
+    struct TestCase
     {
-        // Original tests
-        TestOrderedNodes();
-        TestScalarsAndInvalidInput();
-        TestExampleRoundTrips();
+        const char* name;
+        void (*run)();
+    };
 
-        // Node API tests
-        TestFindReturnsNullForMissingKey();
-        TestNodeTypePredicates();
+    const TestCase tests[] = {
+        // Original tests        
+        {"TestOrderedNodes", TestOrderedNodes},
+        {"TestScalarsAndInvalidInput", TestScalarsAndInvalidInput},
+        {"TestExampleRoundTrips", TestExampleRoundTrips},     
+        {"TestAddMissingCollections", TestAddMissingCollections},
+        {"TestSequenceMapLeadingCommentRoundTrip", TestSequenceMapLeadingCommentRoundTrip},
+        // Node API tests           
+        {"TestFindReturnsNullForMissingKey", TestFindReturnsNullForMissingKey},
+        {"TestNodeTypePredicates", TestNodeTypePredicates},
+        // Parser tests        
+        {"TestDeepNesting", TestDeepNesting},
+        {"TestSequenceOfMaps", TestSequenceOfMaps},
+        // Writer tests        
+        {"TestWriterSpecialCharactersRoundTrip", TestWriterSpecialCharactersRoundTrip},
+        {"TestWriterEmptyCollectionsRoundTrip", TestWriterEmptyCollectionsRoundTrip},
+        {"TestWriterBlockScalarsRoundTrip", TestWriterBlockScalarsRoundTrip},
+    };
 
-        // Parser tests
-        TestDeepNesting();
-        TestSequenceOfMaps();
-
-        // Writer tests
-        TestWriterSpecialCharactersRoundTrip();
-        TestWriterEmptyCollectionsRoundTrip();
-        TestWriterBlockScalarsRoundTrip();
-    }
-    catch (const std::exception& error)
+    int failedTests = 0;
+    for (const TestCase& test : tests)
     {
-        std::cerr << error.what() << '\n';
-        return 1;
+        try
+        {
+            test.run();
+            std::cout << "[PASS] " << test.name << '\n';
+        }
+        catch (const std::exception& error)
+        {
+            std::cerr << "[FAIL] " << test.name << ": " << error.what() << '\n';
+            ++failedTests;
+        }
     }
 
-    std::cout << "All function designer tests passed.\n";
-    return 0;
+    if (failedTests == 0)
+    {
+        std::cout << "All " << (sizeof(tests) / sizeof(tests[0]))
+                  << " function designer tests passed.\n";
+        return 0;
+    }
+
+    std::cerr << failedTests << " of " << (sizeof(tests) / sizeof(tests[0]))
+              << " function designer tests failed.\n";
+    return 1;
 }

@@ -13,6 +13,7 @@
  *
  * Contributors:
  *   Thomas Pfleiderer - initial function designer
+ *   Thomas Pfleiderer - support 4.1, Support YAML comments, Drag & Drop, Enums in afs files added
  ********************************************************************************/
  
 #include "yaml_writer.h"
@@ -169,8 +170,15 @@ namespace afd
         bool firstKey = true;
         for (const auto& entry : node->GetMap()) 
         {
-            const std::string key = NeedsQuotes(entry.first) ? DoubleQuoted(entry.first) : entry.first;
             const YamlNodePtr& value = entry.second;
+            
+            // Output leading comments before the key
+            for (const auto& comment : value->GetLeadingComments()) 
+            {
+                out += Indent(indent) + comment + "\n";
+            }
+            
+            const std::string key = NeedsQuotes(entry.first) ? DoubleQuoted(entry.first) : entry.first;
             // Block scalars and collections are separated by a blank line, as in
             // the reference function specifications.
             const bool blockScalar = value && value->IsScalar() &&
@@ -201,7 +209,13 @@ namespace afd
                 } 
                 else 
                 {
-                    out += Indent(indent) + key + ": " + FormatScalar(value) + "\n";
+                    // Output value with inline comment if present
+                    out += Indent(indent) + key + ": " + FormatScalar(value);
+                    if (!value->GetInlineComment().empty()) 
+                    {
+                        out += "  " + value->GetInlineComment();
+                    }
+                    out += "\n";
                 }
                 continue;
             }
@@ -225,9 +239,21 @@ namespace afd
             {
                 continue;
             }
+            
+            // Output leading comments before the item
+            for (const auto& comment : item->GetLeadingComments()) 
+            {
+                out += Indent(indent) + comment + "\n";
+            }
+            
             if (item->IsScalar()) 
             {
-                out += Indent(indent) + "- " + FormatScalar(item) + "\n";
+                out += Indent(indent) + "- " + FormatScalar(item);
+                if (!item->GetInlineComment().empty()) 
+                {
+                    out += "  " + item->GetInlineComment();
+                }
+                out += "\n";
                 first = false;
                 continue;
             }
@@ -238,7 +264,13 @@ namespace afd
             first = false;
             std::string block;
             EmitNode(item, indent + 2, block, true);
-            if (block.size() > static_cast<std::size_t>(indent)) 
+            const std::size_t contentOffset = static_cast<std::size_t>(indent + 2);
+            if (block.size() > contentOffset && block[contentOffset] == '#')
+            {
+                out += Indent(indent) + "-\n" + block;
+                continue;
+            }
+            if (block.size() > static_cast<std::size_t>(indent))
             {
                 block[static_cast<std::size_t>(indent)] = '-';
             }
@@ -269,6 +301,13 @@ namespace afd
     std::string YamlWriter::WriteText(const YamlNodePtr& root) const 
     {
         std::string out;
+        if (root)
+        {
+            for (const auto& comment : root->GetLeadingComments())
+            {
+                out += comment + "\n";
+            }
+        }
         EmitNode(root, 0, out);
         return out;
     }

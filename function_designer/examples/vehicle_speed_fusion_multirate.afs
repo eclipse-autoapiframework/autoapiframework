@@ -13,6 +13,7 @@
 # Contributors:
 #   Thomas Pfleiderer - Function specification added
 #   Saran Gundlapalli - vehicle_speed_fusion_multirate.afs.yaml updated according to metamodel v0.4.1
+#   Thomas Pfleiderer - Support YAML comments, Drag & Drop, Enums in afs files added
 # *******************************************************************************
 
 functionSpecification:
@@ -22,7 +23,7 @@ functionSpecification:
     name: Eclipse-autoapiframework-Metamodel
     version: 0.4.1
 
-    description: Fuses standard VSS wheel-speed inputs into Vehicle.Speed. Input preprocessing is modeled as a separate function/runnable and referenced through the predecessor relationship.
+  description: Fuses standard VSS wheel-speed inputs into Vehicle.Speed. Input preprocessing is modeled as a separate function/runnable and referenced through the predecessor relationship.
 
   dataInterfaces:
     - name: Vehicle.Chassis.Axle.Row1.Wheel.Left.Speed

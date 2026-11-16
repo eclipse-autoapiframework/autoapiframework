@@ -13,6 +13,7 @@
    #
    # Contributors:
    #   Thomas Pfleiderer - documentation
+   #   Thomas Pfleiderer - support 4.1, Support YAML comments, Drag & Drop, Enums in afs files added
    # *******************************************************************************
 
 Welcome to Automotive API Framework Documentation
@@ -75,5 +76,4 @@ Function Designer:
    doc/function_designer/application_purpose_and_use
    doc/function_designer/function_designer_configuration
    doc/function_designer/executables
-
-
+   doc/function_designer/yaml_comments

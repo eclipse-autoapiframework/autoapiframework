@@ -12,6 +12,7 @@
  *
  * Contributors:
  *   Thomas Pfleiderer - initial function designer
+ *   Thomas Pfleiderer - support 4.1, Support YAML comments, Drag & Drop, Enums in afs files added
  ********************************************************************************/
  
 #include "validate_function.h"
@@ -21,6 +22,7 @@
 
 #include <cstdint>
 #include <algorithm>
+#include <regex>
 
 #include "yaml_parser.h"
 
@@ -164,6 +166,10 @@ namespace afd
 
         // Parameters
         if (!SyntaxCheckForSequence(parameters, FunctionSpecification::kNamePathKey, error, FunctionSpecification::kParametersKey)) 
+        {
+            return false;
+        }
+        if (!ValidateParameterNames(parameters, error))
         {
             return false;
         }
@@ -333,7 +339,23 @@ namespace afd
             }
         }        
         return true;
-    }    
+    }
+
+    bool ValidateFunction::ValidateParameterNames(const YamlNodePtr& parameters, std::string& error)
+    {
+        static const std::regex parameterNamePattern(R"(^Vehicle(?:\.[A-Za-z0-9_]+){2,}$)");
+        for (const YamlNodePtr& parameter : parameters->GetSequence())
+        {
+            const std::string name = parameter->Find(FunctionSpecification::kNamePathKey)->GetScalar();
+            if (!std::regex_match(name, parameterNamePattern))
+            {
+                error = "Parameter name '" + name + "' must follow the hierarchical naming convention "
+                    "Vehicle.<Domain/Subdomains>.<Parameter>.";
+                return false;
+            }
+        }
+        return true;
+    }
 
     bool ValidateFunction::ValidatePropertyExists(const YamlNodePtr& dataInterfaces, const std::string& interfaceTypeName,
                                             const MetaModel& metaModel, std::string& error)
@@ -471,8 +493,8 @@ namespace afd
         return true;
     }
 
-    bool ValidateFunction::ValidateDefaultValueEnum(const YamlNodePtr& functionSpecification, const std::string& defaultValue, 
-                            const std::string& enumName, const MetaModel& metaModel, std::string& error)
+    bool ValidateFunction::ValidateDefaultValueEnum(const std::string& itemName, const YamlNodePtr& functionSpecification, 
+                            const std::string& defaultValue, const std::string& enumName, const MetaModel& metaModel, std::string& error)
     {    
         auto enums = GetEnums(functionSpecification);
         for (const auto& enumPair : enums)
@@ -486,7 +508,7 @@ namespace afd
                         return true;
                     }
                 }
-                error = "Invalid enum value '" + defaultValue +"' for property '" + enumName + "'.";
+                error = "Default value syntax check: failed\n\nInvalid enum value '" + defaultValue +"' for property '" + enumName + "'. (" + itemName + ")";
                 error += "\n\nValid would be:\n";
                 for (const auto& value : enumPair.second)
                 {
@@ -672,7 +694,7 @@ namespace afd
                     error = itemName + ":\ntype = enum, enumRef expected but not found.";
                     return false;
                 }
-                if (!ValidateDefaultValueEnum(functionSpecification, itemDefault, enumRef, metaModel, error))
+                if (!ValidateDefaultValueEnum(itemName, functionSpecification, itemDefault, enumRef, metaModel, error))
                 {
                     return false;
                 }

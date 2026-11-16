@@ -71,8 +71,18 @@ if(AFD_BUILD_APP)
         FetchContent_Declare(wxWidgets
             GIT_REPOSITORY https://github.com/wxWidgets/wxWidgets.git
             GIT_TAG v3.2.6
-            GIT_SHALLOW TRUE)
+            GIT_SHALLOW TRUE
+            SYSTEM)
+        # wxWidgets itself must never be built with warnings as errors.
+        set(CMAKE_COMPILE_WARNING_AS_ERROR OFF)
         FetchContent_MakeAvailable(wxWidgets)
+        if(CMAKE_VERSION VERSION_LESS 3.24)
+            foreach(wx_target wxbase wxcore wxadv)
+                if(TARGET ${wx_target})
+                    target_compile_options(${wx_target} PRIVATE /WX-)
+                endif()
+            endforeach()
+        endif()
         set(ACD_WX_LIBRARIES wx::core wx::base)
     else()
         message(FATAL_ERROR
@@ -107,8 +117,18 @@ if(AFD_BUILD_APP)
         AFD_VSPEC_EXECUTABLE="${VSPEC_EXECUTABLE}")
 
     if(MSVC)
-        target_compile_options(AutoAPIFunctionDesigner PRIVATE /W4 /WX /utf-8)
-        target_compile_definitions(AutoAPIFunctionDesigner PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+        # /external:W0 silences warnings from wx headers (SYSTEM include dirs) while /WX stays active for our code.
+        target_compile_options(AutoAPIFunctionDesigner PRIVATE /W4 /WX /utf-8 /external:W0)
+        target_compile_definitions(AutoAPIFunctionDesigner PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN _CRT_SECURE_NO_WARNINGS)
+        # CMake < 3.25 ignores SYSTEM for FetchContent, so mark the wx include dirs external manually.
+        if(TARGET wxbase)
+            get_target_property(ACD_WX_INCLUDES wxbase INTERFACE_INCLUDE_DIRECTORIES)
+            foreach(ACD_WX_INC IN LISTS ACD_WX_INCLUDES)
+                if(NOT ACD_WX_INC MATCHES "^\\$<")
+                    target_compile_options(AutoAPIFunctionDesigner PRIVATE "/external:I${ACD_WX_INC}")
+                endif()
+            endforeach()
+        endif()
         set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT AutoAPIFunctionDesigner)
     else()
         target_compile_options(AutoAPIFunctionDesigner PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -212,20 +232,36 @@ if(BUILD_TESTING)
     add_test(NAME afs_file_parser_tests COMMAND afs_file_parser_tests)
 
     add_executable(function_designer_tests
-        tests/yaml_tests.cpp
+        tests/function_designer_tests.cpp
+        src/function_specification.cpp
         src/yaml_node.cpp
         src/yaml_parser.cpp
         src/yaml_writer.cpp
     )
     target_include_directories(function_designer_tests PRIVATE src)
     target_compile_definitions(function_designer_tests PRIVATE
-        AFD_EXAMPLES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/examples")
+        AFD_EXAMPLES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/examples"
+        AFD_TESTS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests")
     if(MSVC)
         target_compile_options(function_designer_tests PRIVATE /W4 /WX /utf-8)
     else()
         target_compile_options(function_designer_tests PRIVATE -Wall -Wextra -Wpedantic -Werror)
     endif()
     add_test(NAME function_designer_tests COMMAND function_designer_tests)
+
+    add_executable(yaml_comment_tests
+        tests/yaml_comment_tests.cpp
+        src/yaml_node.cpp
+        src/yaml_parser.cpp
+        src/yaml_writer.cpp
+    )
+    target_include_directories(yaml_comment_tests PRIVATE src)
+    if(MSVC)
+        target_compile_options(yaml_comment_tests PRIVATE /W4 /WX /utf-8)
+    else()
+        target_compile_options(yaml_comment_tests PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+    add_test(NAME yaml_comment_tests COMMAND yaml_comment_tests)
 
     # Unit tests for ValidateFunction / MetaModel — no wxWidgets dependency.
     add_executable(syntax_check_tests

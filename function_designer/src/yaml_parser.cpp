@@ -12,6 +12,7 @@
  *
  * Contributors:
  *   Thomas Pfleiderer - initial function designer
+ *   Thomas Pfleiderer - support 4.1, Support YAML comments, Drag & Drop, Enums in afs files added
  ********************************************************************************/
 
 #include "yaml_parser.h"
@@ -37,12 +38,6 @@ namespace afd
             return text.substr(begin, end - begin + 1);
         }
 
-        bool IsBlankOrComment(const std::string& line) 
-        {
-            const std::string trimmed = Trim(line);
-            return trimmed.empty() || trimmed[0] == '#';
-        }
-
         int IndentOf(const std::string& line) 
         {
             int indent = 0;
@@ -53,8 +48,10 @@ namespace afd
             return indent;
         }
 
-        /// Removes a trailing `# comment` that is not part of a quoted scalar.
-        std::string StripComment(const std::string& text) 
+        /// Extracts a trailing `# comment` that is not part of a quoted scalar.
+        /// Returns a pair of (content_without_comment, comment_text).
+        /// If no comment is found, the comment text will be empty.
+        std::pair<std::string, std::string> ExtractComment(const std::string& text) 
         {
             char quote = '\0';
             for (std::size_t i = 0; i < text.size(); ++i) 
@@ -73,10 +70,21 @@ namespace afd
                 } 
                 else if (c == '#' && (i == 0 || text[i - 1] == ' ' || text[i - 1] == '\t')) 
                 {
-                    return text.substr(0, i);
+                    // Found a comment. Trim trailing spaces from content.
+                    std::string content = text.substr(0, i);
+                    const std::string spaces = " \t";
+                    const std::size_t end = content.find_last_not_of(spaces);
+                    if (end != std::string::npos) 
+                    {
+                        content = content.substr(0, end + 1);
+                    } else 
+                    {
+                        content = std::string();
+                    }
+                    return std::make_pair(content, text.substr(i));
                 }
             }
-            return text;
+            return std::make_pair(text, std::string());
         }
 
         /// Finds the `:` that separates a mapping key from its value, ignoring colons
@@ -174,10 +182,19 @@ namespace afd
             YamlNodePtr Parse(std::string& error) 
             {
                 m_error.clear();
-                SkipIgnorable();
+                m_leadingComments.clear();
+                SkipBlankLines();
+                CollectLeadingComments();
+                std::vector<std::string> documentComments;
+                documentComments.swap(m_leadingComments);
                 if (AtEnd()) 
                 {
-                    return YamlNode::MakeMap();
+                    YamlNodePtr root = YamlNode::MakeMap();
+                    for (const auto& comment : documentComments)
+                    {
+                        root->AddLeadingComment(comment);
+                    }
+                    return root;
                 }
                 YamlNodePtr root = ParseBlock(IndentOf(m_lines[m_index]));
                 if (!m_error.empty()) 
@@ -185,25 +202,64 @@ namespace afd
                     error = m_error;
                     return nullptr;
                 }
+                for (const auto& comment : documentComments)
+                {
+                    root->AddLeadingComment(comment);
+                }
                 return root;
             }
 
         private:
+            std::vector<std::string> m_lines;
+            std::size_t m_index = 0;
+            std::string m_error;
+            std::vector<std::string> m_leadingComments;  // Comments before current node
+
             bool AtEnd() const { return m_index >= m_lines.size(); }
 
-            void SkipIgnorable() 
+            void SkipBlankLines() 
             {
-                while (!AtEnd() && IsBlankOrComment(m_lines[m_index])) 
+                while (!AtEnd() && Trim(m_lines[m_index]).empty()) 
                 {
                     ++m_index;
                 }
+            }
+
+            void CollectLeadingComments() 
+            {
+                std::vector<std::string> newComments;
+                while (!AtEnd()) 
+                {
+                    const std::string trimmed = Trim(m_lines[m_index]);
+                    if (trimmed.empty()) 
+                    {
+                        ++m_index;
+                    } 
+                    else if (trimmed[0] == '#') 
+                    {
+                        newComments.push_back(trimmed);
+                        ++m_index;
+                    } 
+                    else 
+                    {
+                        break;
+                    }
+                }
+                // Append new comments to existing ones
+                m_leadingComments.insert(m_leadingComments.end(), newComments.begin(), newComments.end());
+            }
+
+            void SkipIgnorable() 
+            {
+                SkipBlankLines();
+                CollectLeadingComments();
             }
 
             /// Indent of the next content line, or kNoIndent at end of input.
             int PeekIndent() 
             {
                 const std::size_t saved = m_index;
-                SkipIgnorable();
+                SkipBlankLines();
                 const int indent = AtEnd() ? kNoIndent : IndentOf(m_lines[m_index]);
                 m_index = saved;
                 return indent;
@@ -276,10 +332,28 @@ namespace afd
                     }
                     ScalarStyle keyStyle = ScalarStyle::Plain;
                     const std::string key = Unquote(Trim(content.substr(0, separator)), keyStyle);
-                    const std::string rest = Trim(StripComment(content.substr(separator + 1)));
+                    
+                    // Extract inline comment from the value part
+                    const auto& [valuePart, inlineComment] = ExtractComment(content.substr(separator + 1));
+                    const std::string rest = Trim(valuePart);
                     ++m_index;
 
-                    map->Set(key, ParseValue(indent, rest));
+                    YamlNodePtr value = ParseValue(indent, rest);
+                    
+                    // Add leading comments to the value node
+                    for (const auto& comment : m_leadingComments) 
+                    {
+                        value->AddLeadingComment(comment);
+                    }
+                    m_leadingComments.clear();
+                    
+                    // Add inline comment to the value node
+                    if (!inlineComment.empty()) 
+                    {
+                        value->SetInlineComment(inlineComment);
+                    }
+                    
+                    map->Set(key, value);
                 }
                 return map;
             }
@@ -305,7 +379,13 @@ namespace afd
                     if (item == "{}" || item == "[]")
                     {
                         ++m_index;
-                        sequence->Append(item == "{}" ? YamlNode::MakeMap() : YamlNode::MakeSequence());
+                        YamlNodePtr node = item == "{}" ? YamlNode::MakeMap() : YamlNode::MakeSequence();
+                        for (const auto& comment : m_leadingComments) 
+                        {
+                            node->AddLeadingComment(comment);
+                        }
+                        m_leadingComments.clear();
+                        sequence->Append(node);
                         continue;
                     }
                     if (!item.empty() && (item.front() == '{' || item.front() == '['))
@@ -317,14 +397,21 @@ namespace afd
                     {
                         ++m_index;
                         const int childIndent = PeekIndent();
+                        YamlNodePtr node;
                         if (childIndent == kNoIndent || childIndent <= indent) 
                         {
-                            sequence->Append(YamlNode::MakeScalar(std::string()));
+                            node = YamlNode::MakeScalar(std::string());
                         } 
                         else 
                         {
-                            sequence->Append(ParseBlock(childIndent));
+                            node = ParseBlock(childIndent);
                         }
+                        for (const auto& comment : m_leadingComments) 
+                        {
+                            node->AddLeadingComment(comment);
+                        }
+                        m_leadingComments.clear();
+                        sequence->Append(node);
                         continue;
                     }
 
@@ -334,14 +421,37 @@ namespace afd
                         // remaining keys of the item are parsed with the same indent.
                         const int itemIndent = indent + 2;
                         m_lines[m_index] = std::string(static_cast<std::size_t>(itemIndent), ' ') + item;
-                        sequence->Append(ParseMapping(itemIndent));
+                        YamlNodePtr node = ParseMapping(itemIndent);
+                        for (const auto& comment : m_leadingComments) 
+                        {
+                            node->AddLeadingComment(comment);
+                        }
+                        m_leadingComments.clear();
+                        sequence->Append(node);
                         continue;
                     }
 
                     ++m_index;
+                    // Extract inline comment from sequence item
+                    const auto& [itemContent, inlineComment] = ExtractComment(item);
                     ScalarStyle style = ScalarStyle::Plain;
-                    const std::string value = Unquote(Trim(StripComment(item)), style);
-                    sequence->Append(YamlNode::MakeScalar(value, style));
+                    const std::string value = Unquote(Trim(itemContent), style);
+                    YamlNodePtr node = YamlNode::MakeScalar(value, style);
+                    
+                    // Add leading comments
+                    for (const auto& comment : m_leadingComments) 
+                    {
+                        node->AddLeadingComment(comment);
+                    }
+                    m_leadingComments.clear();
+                    
+                    // Add inline comment
+                    if (!inlineComment.empty()) 
+                    {
+                        node->SetInlineComment(inlineComment);
+                    }
+                    
+                    sequence->Append(node);
                 }
                 return sequence;
             }
@@ -434,10 +544,6 @@ namespace afd
                 }
                 return YamlNode::MakeScalar(value, style);
             }
-
-            std::vector<std::string> m_lines;
-            std::size_t m_index = 0;
-            std::string m_error;
         };
 
     } // namespace

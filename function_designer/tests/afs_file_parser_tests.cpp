@@ -12,6 +12,7 @@
  *
  * Contributors:
  *   Thomas Pfleiderer - CTest added
+ *   Thomas Pfleiderer - support 4.1, Support YAML comments, Drag & Drop, Enums in afs files added
  ********************************************************************************/
 
 #include "../src/afs_file_parser/afs_file_parser.h"
@@ -248,7 +249,7 @@ namespace
             "functionSpecification:\n"
             "  name: TestFunc\n"
             "  version: 1.0.0\n"
-            "  errors:\n"
+            "  errorInterfaces:\n"
             "    - name: TestFunc.OverheatError.ErrorStatus\n"
             "      dataType: boolean\n"
             "      description: Temperature exceeded safe threshold.\n"
@@ -428,18 +429,18 @@ namespace
         Require(!error.empty(), "invalid number did not produce an error message");
     }
 
-    // Each list section (dataInterfaces, parameters, scheduling, errors) must be
-    // a YAML sequence; a scalar value in its place is an error.
+    // Each list section (dataInterfaces, parameters, scheduling, errorInterfaces)
+    // must be a YAML sequence; a scalar value in its place is an error.
     void TestSectionsRequireSequence()
     {
         afp::AfsFileParser parser;
 
         struct Case { std::string key; std::string description; };
         const Case cases[] = {
-            { "dataInterfaces", "dataInterfaces" },
-            { "parameters",     "parameters"     },
-            { "scheduling",     "scheduling"     },
-            { "errors",         "errors"         },
+            { "dataInterfaces",  "dataInterfaces"  },
+            { "parameters",      "parameters"      },
+            { "scheduling",      "scheduling"      },
+            { "errorInterfaces", "errorInterfaces" },
         };
 
         for (const Case& c : cases)
@@ -462,33 +463,54 @@ namespace
 
 int main()
 {
-    try
+    struct TestCase
     {
-        // Original tests
-        TestSampleExtraction();
-        TestInvalidDocument();
+        const char* name;
+        void (*run)();
+    };
 
-        // Example file coverage
-        TestSpeedHazardDetectionExample();
-        TestVehicleSpeedFusionNullFields();
-        TestMissingMandatoryPropertyFile();
+    const TestCase tests[] = {
+        // Original tests        
+        {"TestSampleExtraction", TestSampleExtraction},
+        {"TestInvalidDocument", TestInvalidDocument},
+        // Example file coverage        
+        {"TestSpeedHazardDetectionExample", TestSpeedHazardDetectionExample},
+        {"TestVehicleSpeedFusionNullFields", TestVehicleSpeedFusionNullFields},
+        {"TestMissingMandatoryPropertyFile", TestMissingMandatoryPropertyFile},
+        // Inline-document tests        
+        {"TestErrorInterfaces", TestErrorInterfaces},
+        {"TestAliveSupervision", TestAliveSupervision},
+        {"TestParameterDimensions", TestParameterDimensions},
+        {"TestOptionalSectionsAreOptional", TestOptionalSectionsAreOptional},
+        // Error-handling tests        
+        {"TestInvalidBooleanValue", TestInvalidBooleanValue},
+        {"TestInvalidNumberValue", TestInvalidNumberValue},
+        {"TestSectionsRequireSequence", TestSectionsRequireSequence},
+    };
 
-        // Inline-document tests
-        TestErrorInterfaces();
-        TestAliveSupervision();
-        TestParameterDimensions();
-        TestOptionalSectionsAreOptional();
-
-        // Error-handling tests
-        TestInvalidBooleanValue();
-        TestInvalidNumberValue();
-        TestSectionsRequireSequence();
-    }
-    catch (const std::exception& error)
+    int failedTests = 0;
+    for (const TestCase& test : tests)
     {
-        std::cerr << error.what() << '\n';
-        return 1;
+        try
+        {
+            test.run();
+            std::cout << "[PASS] " << test.name << '\n';
+        }
+        catch (const std::exception& error)
+        {
+            std::cerr << "[FAIL] " << test.name << ": " << error.what() << '\n';
+            ++failedTests;
+        }
     }
-    std::cout << "All AFS file parser tests passed.\n";
-    return 0;
+
+    if (failedTests == 0)
+    {
+        std::cout << "All " << (sizeof(tests) / sizeof(tests[0]))
+                  << " AFS file parser tests passed.\n";
+        return 0;
+    }
+
+    std::cerr << failedTests << " of " << (sizeof(tests) / sizeof(tests[0]))
+              << " AFS file parser tests failed.\n";
+    return 1;
 }

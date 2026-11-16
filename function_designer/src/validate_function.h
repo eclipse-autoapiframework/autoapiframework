@@ -12,6 +12,7 @@
  *
  * Contributors:
  *   Thomas Pfleiderer - initial function designer
+ *   Thomas Pfleiderer - support 4.1, Support YAML comments, Drag & Drop, Enums in afs files added
  ********************************************************************************/
  
 #ifndef AFD_VALIDATE_FUNCTION_H
@@ -36,10 +37,12 @@ namespace afd
         bool ValidateEnumDefinitions(const YamlNodePtr& root, const MetaModel& metaModel, std::string& error);
         bool InterfaceTypesSyntaxCheck(const YamlNodePtr& root, const MetaModel& metaModel, std::string& error);
         bool SyntaxCheckForSequence(const YamlNodePtr& node, const std::string& key, std::string& error, const std::string& displayName);
+        bool ValidateParameterNames(const YamlNodePtr& parameters, std::string& error);
         bool ValidatePropertyExists(const YamlNodePtr& dataInterfaces, const std::string& interfaceTypeName, const MetaModel& metaModel, std::string& error);
         bool ValidateProperties(const YamlNodePtr& functionSpecification, const YamlNodePtr& dataInterfaces, const std::string& interfaceTypeName, const MetaModel& metaModel, std::string& error);
         bool ValidateEnums(const YamlNodePtr& dataInterfaces, const std::string& interfaceTypeName, const MetaModel& metaModel, std::string& error);
-        bool ValidateDefaultValueEnum(const YamlNodePtr& functionSpecification, const std::string& defaultValue, const std::string& enumName,const MetaModel& metaModel, std::string& error);
+        bool ValidateDefaultValueEnum(const std::string& itemName, const YamlNodePtr& functionSpecification, const std::string& defaultValue, 
+                                      const std::string& enumName,const MetaModel& metaModel, std::string& error);
         bool ValidateSupervision(const YamlNodePtr& dataInterfaces, std::string& error);
         bool ValidateBoolean(const YamlNodePtr& dataInterfaces, const std::string& interfaceTypeName, const MetaModel& metaModel, std::string& error);        
         bool ValidateMandatory(const YamlNodePtr& dataInterfaces, const std::string& interfaceTypeName, const MetaModel& metaModel, std::string& error);        
