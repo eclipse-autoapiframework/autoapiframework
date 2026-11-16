@@ -264,6 +264,13 @@
   </a>
 </li>
 
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="yaml_comments.html">
+    YAML comments in AFS files
+  </a>
+</li>
+
                 </ul>
             </li>
             
@@ -451,6 +458,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="yaml_comments.html">
+    YAML comments in AFS files
+  </a>
+</li>
+
   </ul>
 </nav></div>
           
@@ -556,6 +570,11 @@ and trailing whitespace is removed and empty lines are ignored.</p></li>
 <p>Enums can then be referenced from interfaces via <code class="docutils literal notranslate"><span class="pre">enumRef</span></code>.</p>
 <figure class="align-default">
 <img alt="edit enums dialog" src="../../_images/edit_enums.png" />
+</figure>
+<p>To use these enums in an interface, set <code class="docutils literal notranslate"><span class="pre">dataType</span></code> to <code class="docutils literal notranslate"><span class="pre">enum</span></code> and reference them via the <code class="docutils literal notranslate"><span class="pre">enumRef</span></code> property of the relevant signal.
+The default value of the signal should be one of the enumerated values defined in the referenced enum.</p>
+<figure class="align-default">
+<img alt="use enums in the interface" src="../../_images/use_enums.png" />
 </figure>
 </section>
 <section id="signal-collection">

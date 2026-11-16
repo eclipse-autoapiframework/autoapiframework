@@ -46,6 +46,8 @@ Executables
        not as proof that the input file is syntactically correct or specification-compliant.  
    * - ``function_designer_tests.exe``
      - The test program built from yaml_tests.cpp and the other sources listed in CMakeLists.txt, mainly covering the YAML parser and writer.
+   * - ``yaml_comment_tests.exe``
+     - Unit tests that verify YAML comments are preserved during parse/write round trips.
    * - ``syntax_check_tests.exe``
      - The test program for the syntax check; the test source is syntax_check_tests.cpp.
    * - ``afs_file_parser_tests.exe``

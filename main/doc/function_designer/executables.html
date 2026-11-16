@@ -66,6 +66,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'doc/function_designer/executables';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="YAML comments in AFS files" href="yaml_comments.html" />
     <link rel="prev" title="Function Specification Authoring" href="function_designer_configuration.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -263,6 +264,13 @@
   </a>
 </li>
 
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="yaml_comments.html">
+    YAML comments in AFS files
+  </a>
+</li>
+
                 </ul>
             </li>
             
@@ -450,6 +458,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="yaml_comments.html">
+    YAML comments in AFS files
+  </a>
+</li>
+
   </ul>
 </nav></div>
           
@@ -571,10 +586,13 @@ not as proof that the input file is syntactically correct or specification-compl
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">function_designer_tests.exe</span></code></p></td>
 <td><p>The test program built from yaml_tests.cpp and the other sources listed in CMakeLists.txt, mainly covering the YAML parser and writer.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">syntax_check_tests.exe</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">yaml_comment_tests.exe</span></code></p></td>
+<td><p>Unit tests that verify YAML comments are preserved during parse/write round trips.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">syntax_check_tests.exe</span></code></p></td>
 <td><p>The test program for the syntax check; the test source is syntax_check_tests.cpp.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">afs_file_parser_tests.exe</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">afs_file_parser_tests.exe</span></code></p></td>
 <td><p>The test program for the AfsFileParser; the test source is afs_file_parser_tests.cpp.</p></td>
 </tr>
 </tbody>
@@ -639,6 +657,15 @@ Supported lines (# starts a comment):</p>
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">Function Specification Authoring</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="yaml_comments.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">YAML comments in AFS files</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
