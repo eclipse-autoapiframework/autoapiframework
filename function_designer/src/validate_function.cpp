@@ -731,12 +731,42 @@ namespace afd
             error = nodeName + ":\n\n" + FunctionSpecification::kStackSizeBytesKey + " must be integer: "  + itemStackSizeBytes;        
             return false;
         }          
-        std::string itemCycleTimeMs = node->Find(FunctionSpecification::kCycleTimeMsKey) ? node->Find(FunctionSpecification::kCycleTimeMsKey)->GetScalar() : "";              
+        std::string itemRunType = node->Find(FunctionSpecification::kRunTypeKey) ? node->Find(FunctionSpecification::kRunTypeKey)->GetScalar() : "";              
+        std::string itemCycleTimeMs = node->Find(FunctionSpecification::kCycleTimeMsKey) ? node->Find(FunctionSpecification::kCycleTimeMsKey)->GetScalar() : "";   
         if (!Isinteger(itemCycleTimeMs))
         {
             error = nodeName + ":\n\n" + FunctionSpecification::kCycleTimeMsKey + " must be integer: "  + itemCycleTimeMs;        
             return false;
         }  
+        if (itemRunType == "cyclic")
+        {
+            uint32_t cycleTime = 0;
+            try
+            {
+                size_t pos;
+                cycleTime = std::stoi(itemCycleTimeMs, &pos);
+                
+                if ( pos != itemCycleTimeMs.length()) // Ensure the entire string was parsed
+                {
+                    cycleTime = 0;
+                }
+            }
+            catch (...)
+            {
+            }
+            if (cycleTime == 0)
+            {
+                error = nodeName + ":\n\n'" + FunctionSpecification::kCycleTimeMsKey + "' must be specified for 'cyclic' run type";        
+                return false;
+            }
+        }
+        else if (!(itemRunType == "cyclic") && !itemCycleTimeMs.empty())
+        {
+            error = nodeName + ":\n\n'" + FunctionSpecification::kCycleTimeMsKey + "' requires 'cyclic' run type";        
+            return false;
+        }
+
+
         // Error interface related properties
         std::string itemMaturationTimeMs = node->Find(FunctionSpecification::kMaturationTimeMsKey) ? node->Find(FunctionSpecification::kMaturationTimeMsKey)->GetScalar() : "";              
         if (!Isinteger(itemMaturationTimeMs))
