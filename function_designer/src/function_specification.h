@@ -67,6 +67,7 @@ namespace afd
         static constexpr const char* kUInt64DataType = "uint64";              
         static constexpr const char* kPrecisionKey = "precision";
         static constexpr const char* kMinUpdatePeriodMsKey = "minUpdatePeriodMs";
+        static constexpr const char* kRunTypeKey = "runType";
         static constexpr const char* kCycleTimeMsKey = "cycleTimeMs";
         static constexpr const char* kMaturationTimeMsKey = "maturationTimeMs";
         static constexpr const char* kResetTimeMsKey = "resetTimeMs";
