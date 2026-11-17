@@ -32,7 +32,7 @@ class wxMenu;
 namespace afd 
 {
     static constexpr const char* kApplicationName = "AutoAPI Function Designer";
-    static constexpr const char* kApplicationVersion = "Version 0.2";
+    static constexpr const char* kApplicationVersion = "Version 0.3";
 
     /// Main window of the AutoAPI Function Designer application.
     class MainFrame : public wxFrame 
