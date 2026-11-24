@@ -60,8 +60,13 @@ python -m pip install vss-tools==6.1.0
 ```
 
 On Linux, activate the environment with `source venv/bin/activate` instead.
-Keep the environment activated while configuring and building so CMake can
-find `vspec`.
+In the S-CORE dev container, workspace preparation installs the build
+dependencies and creates `.venv-vss-tools` in the workspace root; activate it
+with `source ../.venv-vss-tools/bin/activate` from this folder instead. System
+package installation and optional CA trust updates use sudo; the virtual
+environment is created as the container user.
+
+Keep the environment activated while configuring so CMake can find `vspec`.
 
 ### VS Code (CMake Tools extension)
 
@@ -105,7 +110,8 @@ afterwards. Disable it with `-DACD_FETCH_WXWIDGETS=OFF`.
 ### Linux
 
 ```bash
-sudo apt-get install cmake libwxgtk3.2-dev
+# Outside the prepared S-CORE dev container:
+sudo apt-get install cmake ninja-build g++ libwxgtk3.2-dev python3-venv
 cd function_designer
 cmake --preset linux-debug
 cmake --build --preset linux-debug
@@ -114,6 +120,50 @@ cmake --build --preset linux-debug
 
 The meta model and the sample specification are copied next to the executable
 after each build.
+
+### CI build
+
+The Linux CI job uses the S-CORE dev container to build all seven executables
+with the `linux-release` preset and run CTest. It runs on pull requests, pushes
+to `main`, and manually. If all tests pass, the job uploads
+`autoapiframework-function-designer-linux-x86_64.zip` as a workflow artifact
+(kept for 14 days). It does not create GitHub releases.
+
+CI configures with `-DAFD_PORTABLE_TEST_DATA=ON`, so the executables use the
+`examples` and `tests` folders relative to the working directory and both
+folders are included in the ZIP. Extract the archive and run the executables
+from the extracted folder, for example:
+
+```bash
+./function_designer_tests
+./AfsFileParser examples/speed_hazard_detection.afs examples/speed_hazard_detection_expected.txt
+```
+
+The binaries are built on Ubuntu 24.04. The command-line tools and test
+programs have no extra runtime dependencies; the GUI `AutoAPIFunctionDesigner`
+needs wxWidgets 3.2 and GTK 3 (`sudo apt-get install libwxgtk3.2-1t64`).
+
+Limitation: the GUI looks for the `vspec` executable (see
+[vspec files](#vspec-files)) at the absolute path found when it was built. In
+the CI binary this is a path inside the CI build environment, so importing
+`.vspec` files (*Add by vspec file*) does not work in the downloaded GUI and the
+application reports that vss-tools is not installed. All other GUI features
+and all command-line tools are unaffected. To use the import, build the
+application yourself with `vss-tools` activated as described in
+[Build](#build).
+
+Maintainer note: to make the downloaded GUI work, `MainFrame::GetVspecExecutable`
+and `MainFrame::GetVspecUnavailableMessage` in `src/main_frame.cpp` need to
+change. `GetVspecExecutable` should fall back to searching `PATH` for `vspec`
+(for example with `wxFindFileInPath`) when the compiled-in `AFD_VSPEC_EXECUTABLE`
+path does not exist, and the unavailable message should tell users to install
+`vss-tools` and add it to `PATH` instead of rebuilding. This cannot be fixed in
+`CMakeLists.txt` alone, because `IsVspecAvailable` checks that the configured
+path is an existing file.
+
+CI extracts the ZIP into a fresh folder and runs the test executables from
+there before uploading it. Without the option (the default), the paths of the
+source tree are compiled in.
 
 ### Syntax check
 

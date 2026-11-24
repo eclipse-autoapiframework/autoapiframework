@@ -1,0 +1,68 @@
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container:
+      image: ghcr.io/eclipse-score/devcontainer:v1.2.0
+    defaults:
+      run:
+        shell: bash
+        working-directory: function_designer
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build dependencies
+        run: |
+          sh ../.devcontainer/prepare_workspace.sh
+      - name: Configure
+        run: |
+          . ../.venv-vss-tools/bin/activate
+          cmake --preset linux-release -DACD_FETCH_WXWIDGETS=OFF -DAFD_PORTABLE_TEST_DATA=ON
+      - name: Build
+        run: cmake --build --preset linux-release --parallel
+      - name: Verify executables
+        run: |
+          for executable in AutoAPIFunctionDesigner AutoAPIFunctionDesigner_SyntaxCheck \
+            AfsFileParser function_designer_tests yaml_comment_tests \
+            syntax_check_tests afs_file_parser_tests; do
+            test -x "build/linux-release/bin/$executable"
+          done
+      - name: Test
+        run: ctest --preset linux-release
+      - name: Package executables
+        run: |
+          mkdir -p "$RUNNER_TEMP/dist"
+          cmake -E copy ../LICENSE build/linux-release/bin/LICENSE
+          cmake -E chdir build/linux-release/bin \
+            cmake -E tar cf "$RUNNER_TEMP/dist/autoapiframework-function-designer-linux-x86_64.zip" --format=zip .
+      - name: Test packaged executables
+        run: |
+          mkdir "$RUNNER_TEMP/extracted"
+          cd "$RUNNER_TEMP/extracted"
+          cmake -E tar xf "$RUNNER_TEMP/dist/autoapiframework-function-designer-linux-x86_64.zip"
+          for test in function_designer_tests yaml_comment_tests syntax_check_tests afs_file_parser_tests; do
+            "./$test"
+          done
+          ./AfsFileParser examples/speed_hazard_detection.afs examples/speed_hazard_detection_expected.txt
+          ./AutoAPIFunctionDesigner_SyntaxCheck examples/speed_hazard_detection.afs
+      - name: Upload executables
+        uses: actions/upload-artifact@v7
+        with:
+          path: ${{ runner.temp }}/dist/autoapiframework-function-designer-linux-x86_64.zip
+          archive: false
+          if-no-files-found: error
+          retention-days: 14
