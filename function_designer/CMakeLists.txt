@@ -39,9 +39,15 @@ option(AFD_PORTABLE_TEST_DATA "Bundle test data next to the executables" OFF)
 if(AFD_PORTABLE_TEST_DATA)
     set(AFD_EXAMPLES_DIR "examples")
     set(AFD_TESTS_DIR "tests")
-    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/examples" DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/tests/missing_collections.afs"
-         DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/tests")
+    file(GLOB_RECURSE AFD_EXAMPLE_FILES CONFIGURE_DEPENDS
+         RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}/examples"
+         "${CMAKE_CURRENT_SOURCE_DIR}/examples/*")
+    foreach(AFD_EXAMPLE_FILE IN LISTS AFD_EXAMPLE_FILES)
+        configure_file("${CMAKE_CURRENT_SOURCE_DIR}/examples/${AFD_EXAMPLE_FILE}"
+                       "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/examples/${AFD_EXAMPLE_FILE}" COPYONLY)
+    endforeach()
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tests/missing_collections.afs"
+                   "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/tests/missing_collections.afs" COPYONLY)
 else()
     set(AFD_EXAMPLES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/examples")
     set(AFD_TESTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tests")
