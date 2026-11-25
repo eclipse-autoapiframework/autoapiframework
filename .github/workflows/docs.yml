@@ -22,7 +22,8 @@ jobs:
   docs-publish:
     needs: docs
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    uses: eclipse-score/cicd-workflows/.github/workflows/docs-publish.yml@v0.0.3
+    # Includes the Pages artifact-visibility fix (eclipse-score/cicd-workflows#315).
+    uses: eclipse-score/cicd-workflows/.github/workflows/docs-publish.yml@2d1dc93f0edb9f99dbcce4c0065d31d73996f04a
     with:
       # Omit for GitHub Actions Pages deployments. Set to "legacy" when
       # GitHub Pages is configured to publish from the gh-pages branch.
