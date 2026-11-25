@@ -32,6 +32,27 @@ if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 endif()
 
+# Portable mode: executables look for "examples" and "tests" relative to the
+# working directory, and both folders are copied next to the executables. The
+# binaries can then be zipped and run from any extracted location.
+option(AFD_PORTABLE_TEST_DATA "Bundle test data next to the executables" OFF)
+if(AFD_PORTABLE_TEST_DATA)
+    set(AFD_EXAMPLES_DIR "examples")
+    set(AFD_TESTS_DIR "tests")
+    file(GLOB_RECURSE AFD_EXAMPLE_FILES CONFIGURE_DEPENDS
+         RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}/examples"
+         "${CMAKE_CURRENT_SOURCE_DIR}/examples/*")
+    foreach(AFD_EXAMPLE_FILE IN LISTS AFD_EXAMPLE_FILES)
+        configure_file("${CMAKE_CURRENT_SOURCE_DIR}/examples/${AFD_EXAMPLE_FILE}"
+                       "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/examples/${AFD_EXAMPLE_FILE}" COPYONLY)
+    endforeach()
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tests/missing_collections.afs"
+                   "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/tests/missing_collections.afs" COPYONLY)
+else()
+    set(AFD_EXAMPLES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/examples")
+    set(AFD_TESTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tests")
+endif()
+
 
 find_program(VSPEC_EXECUTABLE
     NAMES vspec vspec.exe
@@ -190,7 +211,7 @@ if(AFD_BUILD_APP)
 
     target_include_directories(AutoAPIFunctionDesigner_SyntaxCheck PRIVATE src)
     target_compile_definitions(AutoAPIFunctionDesigner_SyntaxCheck PRIVATE
-        AFD_EXAMPLES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/examples")
+        AFD_EXAMPLES_DIR="${AFD_EXAMPLES_DIR}")
     if(MSVC)
         target_compile_options(AutoAPIFunctionDesigner_SyntaxCheck PRIVATE /W4 /WX /utf-8)
     else()
@@ -223,7 +244,7 @@ if(BUILD_TESTING)
     )
     target_include_directories(afs_file_parser_tests PRIVATE src/afs_file_parser)
     target_compile_definitions(afs_file_parser_tests PRIVATE
-        AFS_PARSER_EXAMPLES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/examples")
+        AFS_PARSER_EXAMPLES_DIR="${AFD_EXAMPLES_DIR}")
     if(MSVC)
         target_compile_options(afs_file_parser_tests PRIVATE /W4 /WX /utf-8)
     else()
@@ -240,8 +261,8 @@ if(BUILD_TESTING)
     )
     target_include_directories(function_designer_tests PRIVATE src)
     target_compile_definitions(function_designer_tests PRIVATE
-        AFD_EXAMPLES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/examples"
-        AFD_TESTS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests")
+        AFD_EXAMPLES_DIR="${AFD_EXAMPLES_DIR}"
+        AFD_TESTS_DIR="${AFD_TESTS_DIR}")
     if(MSVC)
         target_compile_options(function_designer_tests PRIVATE /W4 /WX /utf-8)
     else()
@@ -273,7 +294,7 @@ if(BUILD_TESTING)
     )
     target_include_directories(syntax_check_tests PRIVATE src)
     target_compile_definitions(syntax_check_tests PRIVATE
-        AFD_EXAMPLES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/examples")
+        AFD_EXAMPLES_DIR="${AFD_EXAMPLES_DIR}")
     if(MSVC)
         target_compile_options(syntax_check_tests PRIVATE /W4 /WX /utf-8)
     else()
@@ -286,7 +307,7 @@ if(BUILD_TESTING)
     # regardless of whether the exit code is zero or non-zero.
     if(AFD_BUILD_APP)
         set(SC_EXE "$<TARGET_FILE:AutoAPIFunctionDesigner_SyntaxCheck>")
-        set(EX_DIR "${CMAKE_CURRENT_SOURCE_DIR}/examples")
+        set(EX_DIR "${AFD_EXAMPLES_DIR}")
 
         add_test(NAME syntax_check_cli_speed_hazard
                  COMMAND "${SC_EXE}" "${EX_DIR}/speed_hazard_detection.afs")
@@ -318,4 +339,10 @@ if(BUILD_TESTING)
         set_tests_properties(syntax_check_cli_no_args PROPERTIES
                              PASS_REGULAR_EXPRESSION "Usage:")
     endif() #(AFD_BUILD_APP)
+
+    if(AFD_PORTABLE_TEST_DATA)
+        get_property(AFD_ALL_TESTS DIRECTORY PROPERTY TESTS)
+        set_tests_properties(${AFD_ALL_TESTS} PROPERTIES
+                             WORKING_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+    endif()
 endif() #(BUILD_TESTING)

@@ -19,11 +19,17 @@ This repository provides a pre-configured development container [Eclipse S-CORE 
 
 1. Open the project in Visual Studio Code.
 2. Install the "Dev Containers" extension if not already installed.
-3. Edit Line 7 in file `.devcontainer/prepare_workspace.sh`. Do not check in this change.
+3. Only if your environment needs a custom CA bundle (e.g. a corporate network),
+   uncomment and set `CA_BUNDLE_URL` in `.devcontainer/prepare_workspace.sh`.
+   Do not check in this change.
 4. Open the Command Palette (Shift + Ctrl + P) and select “Dev Containers: Rebuild and Reopen in Container”.
 5. Lower left corner: `Dev Container: eclipse-s-core` should be visible.
 6. Run `bazel run //:live_preview` in terminal to create the documentation in folder `_build`.
 
-The dev container automatically prepares the workspace, including CA bundle setup and system trust updates if configured. See `.devcontainer/prepare_workspace.sh` for details.
+The dev container automatically installs the Function Designer build dependencies
+and prepares the workspace, including CA bundle setup and system trust updates
+if `CA_BUNDLE_URL` is set in that script. The CI workflow runs the same script
+without it.
+See `.devcontainer/prepare_workspace.sh` for details.
 
 
